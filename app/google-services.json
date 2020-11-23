@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "620270153119",
+    "firebase_url": "https://tiptop-d795a.firebaseio.com",
+    "project_id": "tiptop-d795a",
+    "storage_bucket": "tiptop-d795a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620270153119:android:2737a58736008de04ea1aa",
+        "android_client_info": {
+          "package_name": "com.example.tiptop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620270153119-sam1atputjdfcurnpdufmdk65mpvgru1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA65Iz-JfLH9EFKNPeUG8JBj3ClNDkBr4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620270153119-sam1atputjdfcurnpdufmdk65mpvgru1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
