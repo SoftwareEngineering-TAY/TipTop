@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    >
+
+    <EditText
+        android:id="@+id/enterEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:gravity="left"
+        android:text="Enter Email" />
+    <EditText
+        android:id="@+id/enterPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:layout_below="@+id/enterEmail"
+        android:layout_marginTop="20dp"
+        android:text="Enter Password"/>
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enterPassword"
+        android:layout_centerHorizontal="true"
+        android:text="Login"/>
+    <TextView
+        android:id="@+id/newUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/login"
+        android:layout_marginTop="300dp"
+        android:text="Not registered? Click here to register"/>
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/newUserName"
+        android:layout_marginTop="15dp"
+        android:text="Register"/>
+
+</RelativeLayout>
