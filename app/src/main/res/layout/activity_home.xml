@@ -10,52 +10,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="setting"/>
+        android:text="Setting"/>
     <Button
         android:id="@+id/profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:text="profile"/>
-
+        android:text="Profile"/>
     <ImageButton
-        android:id="@+id/ImageButton"
+        android:id="@+id/imageButton"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@+id/profile"
         android:layout_marginTop="50dp"
         android:background="#ff9999"/>
 
+    <!--All buttons on the left below the image-->
     <RelativeLayout
-        android:layout_width="120dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/profile">
-        <Button
-            android:id="@+id/followUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="320dp"
-            android:text="follow up"/>
-        <Button
-            android:id="@+id/Statistics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/followUp"
-            android:layout_marginTop="50dp"
-            android:text="Statistics" />
+     android:layout_width="120dp"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
+     android:layout_alignParentLeft="true"
+     android:layout_below="@+id/profile">
+     <Button
+         android:id="@+id/followUp"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="320dp"
+         android:text="Follow up"/>
+     <Button
+         android:id="@+id/statistics"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/followUp"
+         android:layout_marginTop="50dp"
+         android:text="Statistics" />
+     <Button
+         android:id="@+id/chat"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/statistics"
+         android:layout_marginTop="50dp"
+         android:text="Chat" />
 
-        <Button
-            android:id="@+id/chat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/Statistics"
-            android:layout_marginTop="50dp"
-            android:text="chat" />
+ </RelativeLayout>
 
-    </RelativeLayout>
-
+ <!--All buttons on the right below the image-->
     <RelativeLayout
         android:layout_width="120dp"
         android:layout_height="match_parent"
@@ -63,7 +63,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/setting">
         <Button
-            android:id="@+id/Tasks"
+            android:id="@+id/tasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="320dp"
@@ -72,12 +72,11 @@
             android:id="@+id/history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/Tasks"
+            android:layout_below="@+id/tasks"
             android:layout_marginTop="50dp"
             android:text="History" />
-
         <Button
-            android:id="@+id/Points"
+            android:id="@+id/points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/history"
