@@ -12,6 +12,15 @@
         <activity android:name=".LoginActivity"/>
         <activity android:name=".NewClientActivity"/>
         <activity android:name=".HomeActivity"/>
+        <activity android:name=".ChatActivity"/>
+        <activity android:name=".FollowUpActivity"/>
+        <activity android:name=".HistoryActivity"/>
+        <activity android:name=".ImageActivity"/>
+        <activity android:name=".PointsActivity"/>
+        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".SettingActivity"/>
+        <activity android:name=".StatisticsActivity"/>
+        <activity android:name=".TasksActivity"/>
         <activity android:name=".LogoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
