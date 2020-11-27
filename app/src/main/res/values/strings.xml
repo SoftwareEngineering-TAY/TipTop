@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">TipTop</string>
-
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="next">Continue</string>
+    <string name="login">Login</string>
+    <string name="already_have_an_account">already have an account?</string>
+    <string-array name="Type">
+        <item>Parent</item>
+        <item>Child</item>
+    </string-array>
 </resources>

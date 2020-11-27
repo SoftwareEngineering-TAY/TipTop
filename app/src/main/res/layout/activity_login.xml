@@ -1,48 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    >
+    android:padding="20dp">
 
-    <EditText
-        android:id="@+id/enterEmail"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:gravity="left"
-        android:text="Enter Email" />
-    <EditText
-        android:id="@+id/enterPassword"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:layout_below="@+id/enterEmail"
-        android:layout_marginTop="20dp"
-        android:text="Enter Password"/>
-    <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/enterPassword"
-        android:layout_centerHorizontal="true"
-        android:text="Login"/>
-    <TextView
-        android:id="@+id/newUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/login"
-        android:layout_marginTop="300dp"
-        android:text="Not registered? Click here to register"/>
-    <Button
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/newUserName"
-        android:layout_marginTop="15dp"
-        android:text="Register"/>
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/enterEmail"
+            android:hint="@string/enter_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/enterPassword"
+            android:hint="@string/enter_password"
+            app:passwordToggleEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Login"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/login"
+            android:layout_marginTop="300dp"
+            android:text="Don't have an account? "/>
+
+        <TextView
+            android:id="@+id/signUp"
+            android:layout_width="53dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:text="Sign Up"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
+
+</LinearLayout>
