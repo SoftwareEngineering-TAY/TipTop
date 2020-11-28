@@ -19,12 +19,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button login = null;
-    private TextView sign_up = null;
-    private com.google.android.material.textfield.TextInputLayout email = null;
-    private com.google.android.material.textfield.TextInputLayout password = null;
+    //xml variables
+    private Button login;
+    private TextView sign_up;
+    private com.google.android.material.textfield.TextInputLayout email;
+    private com.google.android.material.textfield.TextInputLayout password;
 
-    private FirebaseAuth dbA = null;
+    //Fire base variable
+    private FirebaseAuth dbA;
 
     private static final String TAG = "LoginActivity";
 
@@ -32,20 +34,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        login = (Button)findViewById(R.id.login);
-        sign_up = (TextView) findViewById(R.id.signUp);
-        email =  findViewById(R.id.enterEmail);
-        password = findViewById(R.id.enterPassword);
 
-        dbA = FirebaseAuth.getInstance();
+        initializeClassVariables();
 
-        sign_up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),NewClientActivity.class);
-                startActivity(i);
-            }
-        });
+        setSignUpTextView();
+
+        setLoginButton();
+    }
+
+    private void setLoginButton(){
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            Intent i = new Intent(v.getContext(),HomeActivity.class);
-                            startActivity(i);
+                            Intent go_home_screen = new Intent(v.getContext(),HomeActivity.class);
+                            startActivity(go_home_screen);
                         }
                         else {
                             Log.d(TAG,task.getException().toString());
@@ -76,5 +73,25 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void setSignUpTextView(){
+        sign_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent go_new_client = new Intent(v.getContext(),NewClientActivity.class);
+                startActivity(go_new_client);
+            }
+        });
+    }
+
+    private void initializeClassVariables(){
+
+        login = (Button)findViewById(R.id.login);
+        sign_up = (TextView) findViewById(R.id.signUp);
+        email =  findViewById(R.id.enterEmail);
+        password = findViewById(R.id.enterPassword);
+
+        dbA = FirebaseAuth.getInstance();
     }
 }
