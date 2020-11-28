@@ -7,10 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,9 +46,7 @@ public class NewClientActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_new_client);
 
-        initializeXmlVariables();
-
-        initializeFireBaseVariables();
+        initializeClassVariables();
 
         setSpinner();
 
@@ -81,9 +77,17 @@ public class NewClientActivity extends AppCompatActivity{
                     return;
                 }
 
-                createUserInFireBase();
+                String mail = email.getEditText().getText().toString();
+                String pass = password.getEditText().getText().toString();
+                String birth = birthday.getEditText().getText().toString();
+                user.setEmail(mail);
+                user.setPassword(pass);
+                user.setBirthday(birth);
 
-                Intent go_id_family = new Intent(v.getContext(),IdFamilyActivity.class);
+                Intent go_id_family = new Intent(v.getContext(), FamilyIDActivity.class);
+
+                go_id_family.putExtra("user",user);
+
                 startActivity(go_id_family);
             }
         });
@@ -108,7 +112,7 @@ public class NewClientActivity extends AppCompatActivity{
         });
     }
 
-    private void initializeXmlVariables(){
+    private void initializeClassVariables(){
         next = (Button)findViewById(R.id.next);
         login = (TextView)findViewById(R.id.login);
         email = findViewById(R.id.newEmail);
@@ -116,42 +120,7 @@ public class NewClientActivity extends AppCompatActivity{
         confirm_password = findViewById(R.id.confirmPassword);
         birthday = findViewById(R.id.birthday);
         type_spinner = (Spinner) findViewById(R.id.type_spinner);
-    }
-
-    private void initializeFireBaseVariables(){
-        root = FirebaseDatabase.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        reference = root.getReference();
         user = new User();
-    }
-
-    private void createUserInFireBase(){
-
-        String mail = email.getEditText().getText().toString();
-        String pass = password.getEditText().getText().toString();
-        String birth = birthday.getEditText().getText().toString();
-
-        mAuth.createUserWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "onComplete: Sign to Auth successed.");
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    String uid = firebaseUser.getUid();
-                    user.setEmail(mail);
-                    user.setPassword(pass);
-                    user.setBirthday(birth);
-                    Log.d(TAG, "onComplete: From auth, Type:" + user.getType() + ",  uid:" + uid);
-                    reference.child("users").child(user.getType()).child(uid).setValue(user);
-                    Log.d(TAG, "onComplete: user have been auth and saved to database" + user.toString());
-                }
-                else{
-                    //Auth went wrong the sign in failed.
-                    Log.d(TAG, "onComplete: Auth failed" + task.getException().toString());
-                }
-
-            }
-        });
     }
 
     private boolean validateEmail(){

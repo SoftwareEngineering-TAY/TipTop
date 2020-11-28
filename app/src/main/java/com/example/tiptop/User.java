@@ -1,6 +1,8 @@
 package com.example.tiptop;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String Email;
     private String password;
