@@ -36,9 +36,6 @@ public class NewClientActivity extends AppCompatActivity{
 
     //Fire base variables
     private User user;
-    private FirebaseDatabase root;
-    private DatabaseReference reference;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

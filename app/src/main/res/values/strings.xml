@@ -17,8 +17,18 @@
     <string name="want_to_create_a_new_family_id">Want to create a new family ID?</string>
     <string name="sign_up">Sign Up</string>
     <string name="take_a_photo">Take a photo</string>
+    <string name="attach_a_photo">Attach a photo</string>
+    <string name="route_type">Route type:</string>
+    <string name="route_information">Route information</string>
+
     <string-array name="Type">
         <item>Parent</item>
         <item>Child</item>
     </string-array>
+
+    <string-array name="Route">
+        <item>With bonuses</item>
+        <item>Without bonuses</item>
+    </string-array>
+
 </resources>

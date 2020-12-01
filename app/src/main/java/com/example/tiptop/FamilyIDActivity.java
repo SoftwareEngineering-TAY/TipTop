@@ -21,6 +21,7 @@ public class FamilyIDActivity extends AppCompatActivity {
 
     private User user_to_add;
     private Button sign_up;
+    private Button click_here;
     private com.google.android.material.textfield.TextInputLayout family_id;
 
     private FirebaseDatabase root;
@@ -42,7 +43,9 @@ public class FamilyIDActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: got user from newclinet activity, " + user_to_add);
 
-        set_sign_in_button();
+        set_sign_up_button();
+
+        set_click_here_button();
     }
 
     private void initializeClassVariables(){
@@ -51,10 +54,11 @@ public class FamilyIDActivity extends AppCompatActivity {
         reference = root.getReference();
         family_id = findViewById(R.id.enterFamilyId);
         sign_up = findViewById(R.id.signUp);
+        click_here = findViewById(R.id.click_here);
         user_to_add = new User();
     }
 
-    private void set_sign_in_button(){
+    private void set_sign_up_button(){
 
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +90,17 @@ public class FamilyIDActivity extends AppCompatActivity {
                     Log.d(TAG, "onComplete: Auth failed" + task.getException().toString());
                 }
 
+            }
+        });
+    }
+
+    private void set_click_here_button() {
+        click_here.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent go_to_new_family_id = new Intent(v.getContext(),NewFamilyIDActivity.class);
+                go_to_new_family_id.putExtra("user",user_to_add);
+                startActivity(go_to_new_family_id);
             }
         });
     }
