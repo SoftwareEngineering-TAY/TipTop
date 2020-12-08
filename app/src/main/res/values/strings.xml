@@ -21,6 +21,7 @@
     <string name="route_type">Route type:</string>
     <string name="route_information">Route information</string>
     <string name="name">Name</string>
+    <string name="family_name">Family Name</string>
 
     <string-array name="Route">
         <item>With bonuses</item>

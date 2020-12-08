@@ -1,5 +1,6 @@
 package com.example.tiptop;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,18 +24,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class NewClientActivity extends AppCompatActivity{
+import java.util.Calendar;
+
+public class NewClientActivity extends AppCompatActivity {
 
     private static final String TAG = "NewClientActivity";
 
     //xml variables
     private Button next;
+    private Button select_date;
     private TextView login;
+    private TextView birthday;
     private com.google.android.material.textfield.TextInputLayout name;
     private com.google.android.material.textfield.TextInputLayout email;
     private com.google.android.material.textfield.TextInputLayout password;
     private com.google.android.material.textfield.TextInputLayout confirm_password ;
-    private com.google.android.material.textfield.TextInputLayout birthday;
 
     //Fire base variables
     private User user;
@@ -44,6 +50,8 @@ public class NewClientActivity extends AppCompatActivity{
         setContentView(R.layout.activity_new_client);
 
         initializeClassVariables();
+
+        setSelectDateButton();
 
         setContinueButton();
 
@@ -60,6 +68,29 @@ public class NewClientActivity extends AppCompatActivity{
         });
     }
 
+    private void setSelectDateButton(){
+        select_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(NewClientActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                                birthday.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
+    }
+
     private void setContinueButton(){
         next.setOnClickListener(new View.OnClickListener() {
 
@@ -68,20 +99,21 @@ public class NewClientActivity extends AppCompatActivity{
 
                 Log.d(TAG, "onClick: nxt button has been clicked");
 
-                if(!validateEmail() || !validatePassword() || !validateConfirmPassword() || !validateBirthday()){
+                if(!validateEmail() || !validatePassword() || !validateConfirmPassword() || !validateName()){
                     return;
                 }
+
                 String user_name = name.getEditText().getText().toString();
                 String mail = email.getEditText().getText().toString();
                 String pass = password.getEditText().getText().toString();
-                String birth = birthday.getEditText().getText().toString();
+                String birth = birthday.getText().toString();
                 user.setName(user_name);
                 user.setEmail(mail);
                 user.setPassword(pass);
                 user.setBirthday(birth);
                 user.setType("Parent");
 
-                Intent go_new_id_family = new Intent(v.getContext(), NewFamilyIDActivity.class);
+                Intent go_new_id_family = new Intent(NewClientActivity.this, NewFamilyIDActivity.class);
 
                 go_new_id_family.putExtra("user",user);
 
@@ -97,8 +129,21 @@ public class NewClientActivity extends AppCompatActivity{
         email = findViewById(R.id.newEmail);
         password = findViewById(R.id.newPassword);
         confirm_password = findViewById(R.id.confirmPassword);
-        birthday = findViewById(R.id.birthday);
+        birthday = (TextView) findViewById(R.id.birthday);
+        select_date = (Button) findViewById(R.id.selectDate);
         user = new User();
+    }
+
+    private boolean validateName(){
+        String user_name = name.getEditText().getText().toString();
+        if(user_name.isEmpty()){
+            email.setError("Field cannot be empty");
+            return false;
+        }
+        else{
+            email.setError(null);
+            return true;
+        }
     }
 
     private boolean validateEmail(){
@@ -138,18 +183,6 @@ public class NewClientActivity extends AppCompatActivity{
         }
         else{
             confirm_password.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateBirthday(){
-        String birth = birthday.getEditText().getText().toString();
-        if(birth.isEmpty()){
-            birthday.setError("Field cannot be empty");
-            return false;
-        }
-        else{
-            birthday.setError(null);
             return true;
         }
     }

@@ -20,7 +20,6 @@
 
         <activity android:name=".LoginActivity"/>
         <activity android:name=".NewClientActivity"/>
-        <activity android:name=".FamilyIDActivity"/>
         <activity android:name=".NewFamilyIDActivity"/>
         <activity android:name=".HomeActivity"/>
         <activity android:name=".ChatActivity"/>

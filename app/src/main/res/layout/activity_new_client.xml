@@ -84,19 +84,28 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/birthday"
-            android:hint="@string/birthday"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <TextView
+                android:id="@+id/birthday"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/birthday"
+                android:paddingLeft="12dp"/>
+
+            <Button
+                android:id="@+id/selectDate"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:textColor="@android:color/black"
+                android:text="Select a Date"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
+        </LinearLayout>
 
         <Button
             android:id="@+id/next"

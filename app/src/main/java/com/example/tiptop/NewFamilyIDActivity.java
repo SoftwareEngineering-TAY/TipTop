@@ -36,7 +36,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -55,6 +59,12 @@ public class NewFamilyIDActivity extends AppCompatActivity {
     private String route_type_in_firebase;
     private User user_to_add;
 
+    private Bitmap bitmap_image =null;
+    private Uri uri_image = null;
+
+    private static final int CAMERA_PHOTO = 1;
+    private static final int GALLERY_PHOTO = 2;
+
     private FirebaseDatabase root;
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
@@ -64,19 +74,12 @@ public class NewFamilyIDActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_family_id);
 
-        new_image = (ImageButton) findViewById(R.id.newImage);
-        route_type = (Spinner) findViewById(R.id.route_type_spinner);
-        finish = (Button) findViewById(R.id.finish);
-        family_id = findViewById(R.id.familyId);
-        route_information = (TextView) findViewById(R.id.route_information);
-        user_to_add = new User();
-        root = FirebaseDatabase.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        reference = root.getReference();
-
         Bundle extras = getIntent().getExtras();
 
         user_to_add = (User)extras.get("user");
+        Log.d(TAG, "onCreate: usertoadd" + user_to_add.toString());
+
+        initializeClassVariables();
 
         setNewImagwButton();
 
@@ -85,6 +88,21 @@ public class NewFamilyIDActivity extends AppCompatActivity {
         setRouteInformation();
 
         setFinishButton();
+    }
+
+    private void initializeClassVariables(){
+        new_image = (ImageButton) findViewById(R.id.newImage);
+        route_type = (Spinner) findViewById(R.id.route_type_spinner);
+        finish = (Button) findViewById(R.id.finish);
+        family_id = findViewById(R.id.familyName);
+        route_information = (TextView) findViewById(R.id.route_information);
+
+        root = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        reference = root.getReference();
+
+        bitmap_image = null;
+        uri_image = null;
     }
 
     private void setRouteInformation(){
@@ -97,7 +115,7 @@ public class NewFamilyIDActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(route_type_in_firebase.equals("With bonuses")){
                     dlgAlert.setCancelable(true);
-                    dlgAlert.setMessage("Explanation about With bonuses route...");
+                    dlgAlert.setMessage("In this route you can determine the value of each task and depending on the points the child has accumulated you can agree with the child on a gift or something else he wants.");
                     dlgAlert.setTitle("With bonuses:");
                     dlgAlert.setPositiveButton("OK", null);
                     dlgAlert.setCancelable(true);
@@ -109,7 +127,7 @@ public class NewFamilyIDActivity extends AppCompatActivity {
                 }
                 else if(route_type_in_firebase.equals("Without bonuses")) {
                     dlgAlert.setCancelable(true);
-                    dlgAlert.setMessage("Explanation about Without bonuses route...");
+                    dlgAlert.setMessage("In this route no points will be given to the child for tasks he has done.");
                     dlgAlert.setTitle("Without bonuses");
                     dlgAlert.setPositiveButton("OK", null);
                     dlgAlert.setCancelable(true);
@@ -147,23 +165,23 @@ public class NewFamilyIDActivity extends AppCompatActivity {
         new_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+                final CharSequence[] options = {"Take photo from camera", "Choose photo from Gallery", "Cancel"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(NewFamilyIDActivity.this);
-                builder.setTitle("Add Photo!");
+                builder.setTitle("Attach a photo");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        if (options[item].equals("Take Photo"))
+                        if (options[item].equals(options[0]))
                         {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(intent, 1);
+                            startActivityForResult(intent, CAMERA_PHOTO);
                         }
-                        else if (options[item].equals("Choose from Gallery"))
+                        else if (options[item].equals(options[1]))
                         {
                             Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(intent, 2);
+                            startActivityForResult(intent, GALLERY_PHOTO);
                         }
-                        else if (options[item].equals("Cancel")) {
+                        else if (options[item].equals(options[2])) {
                             dialog.dismiss();
                         }
                     }
@@ -177,14 +195,14 @@ public class NewFamilyIDActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
+            if (requestCode == CAMERA_PHOTO) {
                 Bundle extras = data.getExtras();
-                Bitmap bit = (Bitmap)extras.get("data");
-                new_image.setImageBitmap(bit);
+                bitmap_image = (Bitmap)extras.get("data");
+                new_image.setImageBitmap(bitmap_image);
             }
-            else if (requestCode == 2) {
-                Uri selectedImage = data.getData();
-                new_image.setImageURI(selectedImage);
+            else if (requestCode == GALLERY_PHOTO) {
+                uri_image = data.getData();
+                new_image.setImageURI(uri_image);
             }
         }
     }
@@ -205,6 +223,8 @@ public class NewFamilyIDActivity extends AppCompatActivity {
 
     private void createUserInFireBase(){
         String key = reference.child("Families").push().getKey();
+        Log.d(TAG, "createUserInFireBase: emailuser" + user_to_add.getEmail());
+        Log.d(TAG, "createUserInFireBase: password user" + user_to_add.getPassword());
         mAuth.createUserWithEmailAndPassword(user_to_add.getEmail(),user_to_add.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -218,15 +238,50 @@ public class NewFamilyIDActivity extends AppCompatActivity {
                     reference.child("Families").child(key).child(uid).setValue(user_to_add.getName());
                     reference.child("UserFamilies").child(uid).child(key).setValue(family_id.getEditText().getText().toString());
                     reference.child("Users").child(uid).setValue(user_to_add);
+                    uploadImage(key);
 
                     Log.d(TAG, "onComplete: user have been auth and saved to database" + user_to_add.toString());
                 }
                 else{
-                    //Auth went wrong the sign in failed.
                     Log.d(TAG, "onComplete: Auth failed" + task.getException().toString());
                 }
 
             }
         });
+    }
+
+    private void uploadImage(String family_key){
+        String path = "Families/" + family_key;
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference mStorageRef = storage.getReference(path);
+        if(uri_image != null){
+            mStorageRef.putFile(uri_image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "onComplete: uri upload went good");
+                    }
+                    else{
+                        Log.d(TAG, "onComplete: uri upload failed.");
+                    }
+                }
+            });
+        }
+        else if(bitmap_image != null){
+            ByteArrayOutputStream to_stream = new ByteArrayOutputStream();
+            bitmap_image.compress(Bitmap.CompressFormat.JPEG,100, to_stream);
+            byte bytes[] = to_stream.toByteArray();
+            mStorageRef.putBytes(bytes).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "onComplete: bitmap upload went good");
+                    }
+                    else{
+                        Log.d(TAG, "onComplete: bitmap upload failed.");
+                    }
+                }
+            });
+        }
     }
 }
