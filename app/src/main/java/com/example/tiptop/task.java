@@ -83,12 +83,25 @@ public class task implements Serializable {
     public void setStatus(STATUS status) {
         this.status = status;
     }
-    
+
     public void setComment(String comment) {
         this.comment = comment;
     }
 
     public void setImage(StorageReference image) {
         this.image = image;
+    }
+
+
+    //methods
+    @Override
+    public String toString() {
+        return "Task{"+"Name: "+nameTask+'\'' +
+                "Bonus Score: "+bonusScore+'\'' +
+                "Start date and hour: "+startDateAndHour+'\'' +
+                "End date and hour: "+endDateAndHour+'\'' +
+                "Status"+status+'\'' +
+                "Comment"+comment+'\''+
+                "}";         
     }
 }
