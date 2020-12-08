@@ -6,12 +6,23 @@ import com.google.firebase.storage.StorageReference;
 
 public class task implements Serializable {
 
+    //Default constructor
+    public task() {
+    }
+
+    enum STATUS {
+        NotAssociated,
+        Associated,
+        WaitingForApproval,
+        Confirmed,
+        NotConfirmed
+    }
     private String nameTask;
     private int bonusScore;
-    private String  belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid
+    private String belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid
     private  LocalDateTime startDateAndHour;
     private  LocalDateTime endDateAndHour;
-    private int status; //when 0-Not associated, 1 - Associated, 2 - Waiting for approval, 3- Confirmed, 4 - Not confirmed.
+    private STATUS status;
     private String comment;
     private StorageReference image;
 
@@ -36,7 +47,7 @@ public class task implements Serializable {
         return endDateAndHour;
     }
 
-    public int getStatus() {
+    public STATUS getStatus() {
         return status;
     }
 
@@ -69,10 +80,10 @@ public class task implements Serializable {
         this.endDateAndHour = endDateAndHour;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(STATUS status) {
         this.status = status;
     }
-
+    
     public void setComment(String comment) {
         this.comment = comment;
     }
