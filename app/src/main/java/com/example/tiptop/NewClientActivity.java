@@ -28,11 +28,11 @@ public class NewClientActivity extends AppCompatActivity{
     //xml variables
     private Button next;
     private TextView login;
+    private com.google.android.material.textfield.TextInputLayout name;
     private com.google.android.material.textfield.TextInputLayout email;
     private com.google.android.material.textfield.TextInputLayout password;
     private com.google.android.material.textfield.TextInputLayout confirm_password ;
     private com.google.android.material.textfield.TextInputLayout birthday;
-    private Spinner type_spinner;
 
     //Fire base variables
     private User user;
@@ -44,8 +44,6 @@ public class NewClientActivity extends AppCompatActivity{
         setContentView(R.layout.activity_new_client);
 
         initializeClassVariables();
-
-        setSpinner();
 
         setContinueButton();
 
@@ -73,38 +71,21 @@ public class NewClientActivity extends AppCompatActivity{
                 if(!validateEmail() || !validatePassword() || !validateConfirmPassword() || !validateBirthday()){
                     return;
                 }
-
+                String user_name = name.getEditText().getText().toString();
                 String mail = email.getEditText().getText().toString();
                 String pass = password.getEditText().getText().toString();
                 String birth = birthday.getEditText().getText().toString();
+                user.setName(user_name);
                 user.setEmail(mail);
                 user.setPassword(pass);
                 user.setBirthday(birth);
+                user.setType("Parent");
 
-                Intent go_id_family = new Intent(v.getContext(), FamilyIDActivity.class);
+                Intent go_new_id_family = new Intent(v.getContext(), NewFamilyIDActivity.class);
 
-                go_id_family.putExtra("user",user);
+                go_new_id_family.putExtra("user",user);
 
-                startActivity(go_id_family);
-            }
-        });
-    }
-
-    private void setSpinner(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(NewClientActivity.this,
-                android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.Type));
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        type_spinner.setAdapter(adapter);
-
-        type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected: From spinner item selected");
-                user.setType((String) parent.getItemAtPosition(position));
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                startActivity(go_new_id_family);
             }
         });
     }
@@ -112,11 +93,11 @@ public class NewClientActivity extends AppCompatActivity{
     private void initializeClassVariables(){
         next = (Button)findViewById(R.id.next);
         login = (TextView)findViewById(R.id.login);
+        name = findViewById(R.id.name);
         email = findViewById(R.id.newEmail);
         password = findViewById(R.id.newPassword);
         confirm_password = findViewById(R.id.confirmPassword);
         birthday = findViewById(R.id.birthday);
-        type_spinner = (Spinner) findViewById(R.id.type_spinner);
         user = new User();
     }
 

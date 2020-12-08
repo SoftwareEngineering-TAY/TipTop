@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,8 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private com.google.android.material.textfield.TextInputLayout password;
 
     //Fire base variable
-    private FirebaseAuth dbA;
-
+    private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
 
     @Override
@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String mail = email.getEditText().getText().toString();
                 String pass = password.getEditText().getText().toString();
-                dbA.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
@@ -91,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
         sign_up = (TextView) findViewById(R.id.signUp);
         email =  findViewById(R.id.enterEmail);
         password = findViewById(R.id.enterPassword);
-
-        dbA = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
     }
 }

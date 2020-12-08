@@ -204,7 +204,7 @@ public class NewFamilyIDActivity extends AppCompatActivity {
     }
 
     private void createUserInFireBase(){
-
+        String key = reference.child("Families").push().getKey();
         mAuth.createUserWithEmailAndPassword(user_to_add.getEmail(),user_to_add.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -213,8 +213,12 @@ public class NewFamilyIDActivity extends AppCompatActivity {
                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
                     String uid = firebaseUser.getUid();
                     Log.d(TAG, "onComplete: From auth, Type:" + user_to_add.getType() + ",  uid:" + uid);
-                    reference.child("users").child(family_id.getEditText().getText().toString()).child(user_to_add.getType()).child(uid).setValue(user_to_add);
-                    reference.child("users").child(family_id.getEditText().getText().toString()).child("Route").setValue(route_type_in_firebase);
+
+                    reference.child("Families").child(key).child("Family name").setValue(family_id.getEditText().getText().toString());
+                    reference.child("Families").child(key).child(uid).setValue(user_to_add.getName());
+                    reference.child("UserFamilies").child(uid).child(key).setValue(family_id.getEditText().getText().toString());
+                    reference.child("Users").child(uid).setValue(user_to_add);
+
                     Log.d(TAG, "onComplete: user have been auth and saved to database" + user_to_add.toString());
                 }
                 else{
@@ -225,5 +229,4 @@ public class NewFamilyIDActivity extends AppCompatActivity {
             }
         });
     }
-
 }

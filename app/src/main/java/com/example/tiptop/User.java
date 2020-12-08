@@ -1,15 +1,25 @@
 package com.example.tiptop;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 public class User implements Serializable {
 
-    private String Email;
+    private String name;
+    private String email;
     private String password;
     private String birthday;
     private String type;
 
     public User() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {
@@ -21,11 +31,11 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPassword() {
@@ -47,7 +57,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "Email='" + Email + '\'' +
+                "Email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", type='" + type + '\'' +
