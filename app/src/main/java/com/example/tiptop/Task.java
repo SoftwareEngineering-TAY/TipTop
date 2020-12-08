@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime; // import the LocalDateTime class
 import com.google.firebase.storage.StorageReference;
 
-public class task implements Serializable {
+public class Task implements Serializable {
 
     //Default constructor
-    public task() {
+    public Task() {
     }
 
     enum STATUS {
@@ -102,6 +102,6 @@ public class task implements Serializable {
                 "End date and hour: "+endDateAndHour+'\'' +
                 "Status"+status+'\'' +
                 "Comment"+comment+'\''+
-                "}";         
+                "}";
     }
 }

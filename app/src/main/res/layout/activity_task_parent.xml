@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="2">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+         >
+        <TextView
+            android:id="@+id/TaskPool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Task pool:"
+            android:textColor="#070707"
+            android:textSize="32dp"
+            android:textStyle="bold|italic"
+           />
+        <ListView
+                android:id="@+id/ListOfTasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+         />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        >
+        <TextView
+            android:id="@+id/TaskPool1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Task pool:"
+            android:textColor="#070707"
+            android:textSize="32dp"
+            android:textStyle="bold|italic"
+            />
+        <ListView
+            android:id="@+id/ListOfTasks1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+</LinearLayout>
