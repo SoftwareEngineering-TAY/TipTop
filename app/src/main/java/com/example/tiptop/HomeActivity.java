@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -145,9 +146,11 @@ public class HomeActivity extends AppCompatActivity {
         ArrayList <String> allFamilies = new ArrayList<>();
         List <String> allKeys = new ArrayList<>();
 
-        databaseReference.child("UserFamilies").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("UserFamilies").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                allFamilies.clear();
+                allKeys.clear();
                 for (DataSnapshot ds : snapshot.getChildren() )
                 {
                     String toAddFamiliy =(String) ds.getValue();
@@ -166,9 +169,17 @@ public class HomeActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allFamilies);
         SpinnerFamily.setAdapter(adapter);
 
-        SpinnerFamily.setOnItemClickListener((adapterView,view,i,l) -> {
-            databaseReference.child("Users").child(uid).child("currFamilyId").setValue(allKeys.get(i));
-            currFamilyId = allKeys.get(i);
+        SpinnerFamily.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currFamilyId =allKeys.get(position);
+                Log.v("click", allFamilies.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
     }
 }
