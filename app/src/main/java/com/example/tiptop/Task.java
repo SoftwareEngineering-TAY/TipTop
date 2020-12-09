@@ -31,7 +31,7 @@ public class Task implements Serializable {
         return nameTask;
     }
 
-    public int getBonusScore() {
+    public int getBonusScore(int i) {
         return bonusScore;
     }
 
@@ -51,7 +51,7 @@ public class Task implements Serializable {
         return status;
     }
 
-    public String getComment() {
+    public String getComment(String blaBlaBla) {
         return comment;
     }
 

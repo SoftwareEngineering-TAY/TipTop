@@ -223,6 +223,7 @@ public class NewFamilyIDActivity extends AppCompatActivity {
 
     private void createUserInFireBase(){
         String key = reference.child("Families").push().getKey();
+        user_to_add.setCurrFamilyId(key);
         Log.d(TAG, "createUserInFireBase: emailuser" + user_to_add.getEmail());
         Log.d(TAG, "createUserInFireBase: password user" + user_to_add.getPassword());
         mAuth.createUserWithEmailAndPassword(user_to_add.getEmail(),user_to_add.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

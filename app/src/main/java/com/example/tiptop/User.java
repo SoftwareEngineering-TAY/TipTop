@@ -10,8 +10,17 @@ public class User implements Serializable {
     private String password;
     private String birthday;
     private String type;
+    private String currFamilyId;
 
     public User() {
+    }
+
+    public String getCurrFamilyId() {
+        return currFamilyId;
+    }
+
+    public void setCurrFamilyId(String currFamilyId) {
+        this.currFamilyId = currFamilyId;
     }
 
     public String getName() {
@@ -61,6 +70,7 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", type='" + type + '\'' +
+                ", currFamilyId='" + currFamilyId + '\'' +
                 '}';
     }
 }
