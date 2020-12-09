@@ -2,11 +2,26 @@ package com.example.tiptop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -20,6 +35,12 @@ public class HomeActivity extends AppCompatActivity {
     private Button Tasks = null;
     private Button history = null;
     private Button points = null;
+    private Spinner SpinnerFamily = null;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private String uid=null;
+    private String currFamilyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(),FollowUpActivity.class);
+                i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);
             }
         });
@@ -81,7 +103,7 @@ public class HomeActivity extends AppCompatActivity {
         Tasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),TasksActivity.class);
+                Intent i = new Intent(v.getContext(), TasksParentActivity.class);
                 startActivity(i);
             }
         });
@@ -116,5 +138,37 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getCurrentUser().getUid();
+        ArrayList <String> allFamilies = new ArrayList<>();
+        List <String> allKeys = new ArrayList<>();
+
+        databaseReference.child("UserFamilies").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren() )
+                {
+                    String toAddFamiliy =(String) ds.getValue();
+                    String toAddKey =(String) ds.getKey();
+                    allFamilies.add(toAddFamiliy);
+                    allKeys.add(toAddKey);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allFamilies);
+        SpinnerFamily.setAdapter(adapter);
+
+        SpinnerFamily.setOnItemClickListener((adapterView,view,i,l) -> {
+            databaseReference.child("Users").child(uid).child("currFamilyId").setValue(allKeys.get(i));
+            currFamilyId = allKeys.get(i);
+        });
     }
 }

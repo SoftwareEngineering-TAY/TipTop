@@ -1,0 +1,231 @@
+Index: app/src/main/res/layout/activity_task_parent.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    android:weightSum=\"2\">\r\n\r\n    <LinearLayout\r\n        android:layout_weight=\"1\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:orientation=\"vertical\"\r\n        android:layout_margin=\"15dp\"\r\n         >\r\n        <TextView\r\n            android:id=\"@+id/TaskPool\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:gravity=\"center_horizontal\"\r\n            android:text=\"Task pool:\"\r\n            android:textColor=\"#070707\"\r\n            android:textSize=\"32dp\"\r\n            android:textStyle=\"bold|italic\"\r\n           />\r\n        <ListView\r\n                android:id=\"@+id/ListOfTasks\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n         />\r\n    </LinearLayout>\r\n\r\n    <LinearLayout\r\n        android:layout_weight=\"1\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"0dp\"\r\n        android:orientation=\"vertical\"\r\n        android:layout_margin=\"15dp\"\r\n        >\r\n        <TextView\r\n            android:id=\"@+id/TaskPool1\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:gravity=\"center_horizontal\"\r\n            android:text=\"Task pool:\"\r\n            android:textColor=\"#070707\"\r\n            android:textSize=\"32dp\"\r\n            android:textStyle=\"bold|italic\"\r\n            />\r\n        <ListView\r\n            android:id=\"@+id/ListOfTasks1\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            />\r\n    </LinearLayout>\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_task_parent.xml	(revision 565ffd0606bceae79ac7c0dba29f6be2db9d35cd)
++++ app/src/main/res/layout/activity_task_parent.xml	(date 1607539137502)
+@@ -24,7 +24,7 @@
+             android:textStyle="bold|italic"
+            />
+         <ListView
+-                android:id="@+id/ListOfTasks"
++                android:id="@+id/ListOfTasksNotAssociated"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+          />
+Index: app/src/main/java/com/example/tiptop/HomeActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiptop;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.ImageButton;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\npublic class HomeActivity extends AppCompatActivity {\r\n\r\n    //Variables that will contain all the buttons\r\n    private Button setting = null;\r\n    private Button profile = null;\r\n    private ImageButton  imageButton;\r\n    private Button followUp = null;\r\n    private Button Statistics = null;\r\n    private Button chat = null;\r\n    private Button Tasks = null;\r\n    private Button history = null;\r\n    private Button points = null;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_home);\r\n\r\n        //Set the settings button\r\n        setting = (Button)findViewById(R.id.setting);\r\n        setting.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),SettingActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n        //Set the profile button\r\n        profile = (Button)findViewById(R.id.profile);\r\n        profile.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),ProfileActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n        //Set the followUp button\r\n        followUp = (Button)findViewById(R.id.followUp);\r\n        followUp.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),FollowUpActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n        //Set the Statistics button\r\n        Statistics = (Button)findViewById(R.id.statistics);\r\n        Statistics.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),StatisticsActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n        //Set the chat button\r\n        chat = (Button)findViewById(R.id.chat);\r\n        chat.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),ChatActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n        //Set the Tasks button\r\n        Tasks = (Button)findViewById(R.id.tasks);\r\n        Tasks.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),TasksActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n        //Set the history button\r\n        history = (Button)findViewById(R.id.history);\r\n        history.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),HistoryActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n        //Set the points button\r\n        points = (Button)findViewById(R.id.points);\r\n        points.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),PointsActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n        //Set the ImageButton button\r\n        imageButton = (ImageButton)findViewById(R.id.imageButton);\r\n        imageButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(), ImageActivity.class);\r\n                startActivity(i);\r\n            }\r\n        });\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/HomeActivity.java	(revision 565ffd0606bceae79ac7c0dba29f6be2db9d35cd)
++++ app/src/main/java/com/example/tiptop/HomeActivity.java	(date 1607541108932)
+@@ -5,6 +5,7 @@
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.ImageButton;
++import android.widget.Spinner;
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+@@ -20,6 +21,7 @@
+     private Button Tasks = null;
+     private Button history = null;
+     private Button points = null;
++    private Spinner SpinnerFamily = null;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -81,7 +83,7 @@
+         Tasks.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                Intent i = new Intent(v.getContext(),TasksActivity.class);
++                Intent i = new Intent(v.getContext(), TasksParentActivity.class);
+                 startActivity(i);
+             }
+         });
+@@ -116,5 +118,7 @@
+             }
+         });
+ 
++        SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
++
+     }
+ }
+Index: app/src/main/java/com/example/tiptop/TaskChildActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiptop;\r\n\r\nimport android.os.Bundle;\r\nimport android.widget.ListView;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\n\r\npublic class TaskChildActivity extends AppCompatActivity {\r\n    DatabaseReference databaseReference;\r\n    ListView listOfTasks;\r\n    //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();\r\n    String FamilyID=\"\";\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_task_child);\r\n        databaseReference = FirebaseDatabase.getInstance().getReference();\r\n        databaseReference.child(\"Tasks\").child(FamilyID).getDatabase();\r\n        listOfTasks=(ListView)findViewById(R.id.ListOfTasks);\r\n\r\n\r\n\r\n\r\n    }\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/TaskChildActivity.java	(revision 565ffd0606bceae79ac7c0dba29f6be2db9d35cd)
++++ app/src/main/java/com/example/tiptop/TaskChildActivity.java	(date 1607504523762)
+@@ -1,6 +1,9 @@
+ package com.example.tiptop;
+ 
+ import android.os.Bundle;
++import android.view.View;
++import android.widget.AdapterView;
++import android.widget.ArrayAdapter;
+ import android.widget.ListView;
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+@@ -15,20 +18,39 @@
+     ListView listOfTasks;
+     //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+     String FamilyID="";
++    private ArrayAdapter arrAdapter;
++    String [] allElement;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_task_child);
++
++        initializeClassVariables();
++        setAdapterFunc();
++
++    }
++
++    private void setAdapterFunc() {
++        //link between listOfTasks and arrAdapter
++        if(listOfTasks!=null) {
++            listOfTasks.setAdapter(arrAdapter);
++        }
++
++        listOfTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
++            @Override
++            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
++
++            }
++        });
++    }
++
++
++    private void initializeClassVariables() {
+         databaseReference = FirebaseDatabase.getInstance().getReference();
+-        databaseReference.child("Tasks").child(FamilyID).getDatabase();
+         listOfTasks=(ListView)findViewById(R.id.ListOfTasks);
+-
+-
+-
+-
++        arrAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, allElement);
+     }
+-
+ 
+ 
+ }
+Index: app/src/main/res/layout/activity_home.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"wrap_content\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:layout_margin=\"30dp\"\r\n    android:orientation=\"vertical\">\r\n    <Button\r\n        android:id=\"@+id/setting\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentRight=\"true\"\r\n        android:text=\"Setting\"/>\r\n    <Button\r\n        android:id=\"@+id/profile\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentLeft=\"true\"\r\n        android:text=\"Profile\"/>\r\n    <ImageButton\r\n        android:id=\"@+id/imageButton\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"200dp\"\r\n        android:layout_below=\"@+id/profile\"\r\n        android:layout_marginTop=\"50dp\"\r\n        android:background=\"#ff9999\"/>\r\n\r\n    <!--All buttons on the left below the image-->\r\n    <RelativeLayout\r\n     android:layout_width=\"120dp\"\r\n     android:layout_height=\"match_parent\"\r\n     android:orientation=\"vertical\"\r\n     android:layout_alignParentLeft=\"true\"\r\n     android:layout_below=\"@+id/profile\">\r\n     <Button\r\n         android:id=\"@+id/followUp\"\r\n         android:layout_width=\"match_parent\"\r\n         android:layout_height=\"wrap_content\"\r\n         android:layout_marginTop=\"320dp\"\r\n         android:text=\"Follow up\"/>\r\n     <Button\r\n         android:id=\"@+id/statistics\"\r\n         android:layout_width=\"match_parent\"\r\n         android:layout_height=\"wrap_content\"\r\n         android:layout_below=\"@+id/followUp\"\r\n         android:layout_marginTop=\"50dp\"\r\n         android:text=\"Statistics\" />\r\n     <Button\r\n         android:id=\"@+id/chat\"\r\n         android:layout_width=\"match_parent\"\r\n         android:layout_height=\"wrap_content\"\r\n         android:layout_below=\"@+id/statistics\"\r\n         android:layout_marginTop=\"50dp\"\r\n         android:text=\"Chat\" />\r\n\r\n </RelativeLayout>\r\n\r\n <!--All buttons on the right below the image-->\r\n    <RelativeLayout\r\n        android:layout_width=\"120dp\"\r\n        android:layout_height=\"match_parent\"\r\n        android:orientation=\"vertical\"\r\n        android:layout_alignParentRight=\"true\"\r\n        android:layout_below=\"@+id/setting\">\r\n        <Button\r\n            android:id=\"@+id/tasks\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginTop=\"320dp\"\r\n            android:text=\"Tasks\"/>\r\n        <Button\r\n            android:id=\"@+id/history\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_below=\"@+id/tasks\"\r\n            android:layout_marginTop=\"50dp\"\r\n            android:text=\"History\" />\r\n        <Button\r\n            android:id=\"@+id/points\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_below=\"@+id/history\"\r\n            android:layout_marginTop=\"50dp\"\r\n            android:text=\"Points\" />\r\n\r\n    </RelativeLayout>\r\n\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_home.xml	(revision 565ffd0606bceae79ac7c0dba29f6be2db9d35cd)
++++ app/src/main/res/layout/activity_home.xml	(date 1607541108944)
+@@ -17,6 +17,16 @@
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:text="Profile"/>
++
++    <Spinner
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:id="@+id/SpinnerFamily"
++        android:spinnerMode="dropdown"
++        android:layout_marginTop="55dp"
++        android:layout_marginLeft="150dp"
++        android:gravity="center_horizontal" />
++
+     <ImageButton
+         android:id="@+id/imageButton"
+         android:layout_width="match_parent"
+Index: app/src/main/java/com/example/tiptop/TasksActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiptop;\r\n\r\nimport android.os.Bundle;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\npublic class TasksActivity  extends AppCompatActivity {\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_task);\r\n    }\r\n}\r\n
+===================================================================
+--- app/src/main/java/com/example/tiptop/TasksActivity.java	(revision 565ffd0606bceae79ac7c0dba29f6be2db9d35cd)
++++ app/src/main/java/com/example/tiptop/TasksParentActivity.java	(date 1607539295060)
+@@ -1,13 +1,34 @@
+ package com.example.tiptop;
+ 
+ import android.os.Bundle;
++import android.widget.ListView;
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+-public class TasksActivity  extends AppCompatActivity {
++import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++
++public class TasksParentActivity extends AppCompatActivity {
++
++    private ListView ListOfTasksNotAssociated;
++    private FirebaseAuth mAuth;
++    private FirebaseDatabase db;
++    private DatabaseReference reference;
++    private  String uid;
++
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+-        setContentView(R.layout.activity_task);
++        setContentView(R.layout.activity_task_parent);
++        initializeClassVariables();
++
++    }
++
++    private void initializeClassVariables() {
++        ListOfTasksNotAssociated =(ListView) findViewById(R.id.ListOfTasksNotAssociated);
++        mAuth = FirebaseAuth.getInstance();
++        uid = mAuth.getCurrentUser().getUid();
+     }
+ }
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"false\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 565ffd0606bceae79ac7c0dba29f6be2db9d35cd)
++++ .idea/misc.xml	(date 1607502149002)
+@@ -1,4 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/build/classes" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.tiptop\">\r\n\r\n    <application\r\n\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.TipTop\">\r\n\r\n        <activity android:name=\".LogoActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n\r\n        <activity android:name=\".LoginActivity\"/>\r\n        <activity android:name=\".NewClientActivity\"/>\r\n        <activity android:name=\".NewFamilyIDActivity\"/>\r\n        <activity android:name=\".HomeActivity\"/>\r\n        <activity android:name=\".ChatActivity\"/>\r\n        <activity android:name=\".FollowUpActivity\"/>\r\n        <activity android:name=\".HistoryActivity\"/>\r\n        <activity android:name=\".ImageActivity\"/>\r\n        <activity android:name=\".PointsActivity\"/>\r\n        <activity android:name=\".ProfileActivity\"/>\r\n        <activity android:name=\".SettingActivity\"/>\r\n        <activity android:name=\".StatisticsActivity\"/>\r\n        <activity android:name=\".TasksActivity\"/>\r\n\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 565ffd0606bceae79ac7c0dba29f6be2db9d35cd)
++++ app/src/main/AndroidManifest.xml	(date 1607538895994)
+@@ -30,7 +30,7 @@
+         <activity android:name=".ProfileActivity"/>
+         <activity android:name=".SettingActivity"/>
+         <activity android:name=".StatisticsActivity"/>
+-        <activity android:name=".TasksActivity"/>
++        <activity android:name=".TasksParentActivity"/>
+ 
+     </application>
+ 

@@ -1,6 +1,9 @@
 package com.example.tiptop;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,20 +18,39 @@ public class TaskChildActivity extends AppCompatActivity {
     ListView listOfTasks;
     //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String FamilyID="";
+    private ArrayAdapter arrAdapter;
+    String [] allElement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_child);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("Tasks").child(FamilyID).getDatabase();
-        listOfTasks=(ListView)findViewById(R.id.ListOfTasks);
 
-
-
+        initializeClassVariables();
+        setAdapterFunc();
 
     }
 
+    private void setAdapterFunc() {
+        //link between listOfTasks and arrAdapter
+        if(listOfTasks!=null) {
+            listOfTasks.setAdapter(arrAdapter);
+        }
+
+        listOfTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+    }
+
+
+    private void initializeClassVariables() {
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        listOfTasks=(ListView)findViewById(R.id.ListOfTasks);
+        arrAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, allElement);
+    }
 
 
 }
