@@ -46,7 +46,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),SettingActivity.class);
+                Intent i = new Intent(v.getContext(),NewTask.class);
                 startActivity(i);
             }
         });
@@ -68,26 +68,26 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         //Updating the spinner
-        databaseReference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                for (DataSnapshot ds : snapshot.getChildren() )
-                {
-                    if(ds.child("status").toString().equals("NotAssociated"))
-                    {
-                        ListUnassignedTasks.add(ds.child("nameTask").toString());
-                        ListKeysUnassignedTasks.add(ds.getKey());
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        databaseReference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                for (DataSnapshot ds : snapshot.getChildren() )
+//                {
+//                    if(ds.child("status").toString().equals("NotAssociated"))
+//                    {
+//                        ListUnassignedTasks.add(ds.child("nameTask").toString());
+//                        ListKeysUnassignedTasks.add(ds.getKey());
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
     }
 
