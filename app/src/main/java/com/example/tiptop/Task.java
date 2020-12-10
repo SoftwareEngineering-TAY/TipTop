@@ -31,7 +31,7 @@ public class Task implements Serializable {
         return nameTask;
     }
 
-    public int getBonusScore(int i) {
+    public int getBonusScore() {
         return bonusScore;
     }
 
