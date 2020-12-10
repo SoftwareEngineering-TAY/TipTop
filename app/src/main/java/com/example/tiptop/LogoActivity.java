@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 public class LogoActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN = 1000;
+    private static int SPLASH_SCREEN = 3000;
 
     private TextView logo_text;
     private ImageView logo_image;

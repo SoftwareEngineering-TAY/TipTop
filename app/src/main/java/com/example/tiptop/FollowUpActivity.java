@@ -1,5 +1,6 @@
 package com.example.tiptop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,9 @@ public class FollowUpActivity extends AppCompatActivity {
     private FirebaseDatabase root;
     private DatabaseReference reference;
     private String currFamilyId;
+    private String uid;
+    private TaskAdapter mTaskAdapter;
+
 
 
     @Override
@@ -34,66 +38,63 @@ public class FollowUpActivity extends AppCompatActivity {
         followList = (ListView) findViewById(R.id.followList);
 
         mAuth = FirebaseAuth.getInstance();
-
-        String uid = mAuth.getCurrentUser().getUid();
-
-
-        ArrayList<String> list = new ArrayList<>();
-        list.add("A");
-
-
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,list);
-        followList.setAdapter(adapter);
-
-
-
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
+        uid = mAuth.getCurrentUser().getUid();
 
+        Bundle extras = getIntent().getExtras();
+        currFamilyId = extras.getString("currFamilyId");
+
+        ArrayList<Task> list = new ArrayList<>();
         Task toAdd = new Task();
         toAdd.setStatus(Task.STATUS.WaitingForApproval);
         toAdd.setBelongsToUID(uid);
-        toAdd.setBonusScore(20);
+        toAdd.setBonusScore((long) 20);
         toAdd.setComment("BlaBlaBla");
         toAdd.setNameTask("Wash The Car");
+        list.add(toAdd);
 
-//        currFamilyId = "-MO7kVA-EJQ60OanPdD-bbb";
-        reference.child("Users").child(uid).child("currFamilyId").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currFamilyId = snapshot.getValue().toString();
-                Log.v("currFamilyIdAfter",currFamilyId);
-            }
+        String key = reference.child("Tasks").child(currFamilyId).push().getKey();
+        reference.child("Tasks").child(currFamilyId).child(key).setValue(toAdd);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        mTaskAdapter = new TaskAdapter(getApplicationContext(),R.layout.row_task,list);
 
-            }
-        });
+        followList.setAdapter(mTaskAdapter);
 
-//        Log.v("currFamilyId",currFamilyId);
+
+
 
         followList.setOnItemClickListener((adapterView,view,i,l) -> {
-            Log.v("PLACE",list.get(i));
-            String key = reference.child("Tasks").child(currFamilyId).push().getKey();
-            reference.child("Tasks").child(currFamilyId).child(key).setValue(toAdd);
+            Log.v("PLACE",list.get(i).getNameTask());
+
+            Intent intent = new Intent(view.getContext(), TaskInfoActivity.class);
+            intent.putExtra("task",list.get(i));
+            startActivity(intent);
+
+//            String key = reference.child("Tasks").child(currFamilyId).push().getKey();
+//            reference.child("Tasks").child(currFamilyId).child(key).setValue(toAdd);
         });
 
-        DatabaseReference familyRef = reference.child("Tasks").child(currFamilyId);
-        familyRef.addValueEventListener(new ValueEventListener() {
+        reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    list.clear();
                 for (DataSnapshot Snapshot : snapshot.getChildren()){
                     if (Snapshot.child("belongsToUID").getValue().equals(uid)){
-                        String toAdd = Snapshot.child("nameTask").getValue().toString();
+                        Task toAdd = Snapshot.getValue(Task.class);
+//                        Task toAdd = new Task();
+//                        toAdd.setNameTask(Snapshot.child("nameTask").getValue().toString());
+//                        toAdd.setBonusScore((Long)Snapshot.child("bonusScore").getValue());
+//
+//                        toAdd.setStatus((Task.STATUS)Snapshot.child("status").getValue());
+//
+//                        toAdd.setBelongsToUID((String) Snapshot.child("belongsToUID").getValue());
                         list.add(toAdd);
-                        Log.v("Add to list",toAdd);
+                        Log.v("Add to list",toAdd.getNameTask());
                     }
                 }
                 Log.v("Data changed","www");
-                adapter.notifyDataSetChanged();
+                mTaskAdapter.notifyDataSetChanged();
             }
 
             @Override

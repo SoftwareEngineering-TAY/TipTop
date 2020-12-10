@@ -21,20 +21,12 @@
     <string name="route_type">Route type:</string>
     <string name="route_information">Route information</string>
     <string name="name">Name</string>
-    <string name="family_name">Family Name</string>
-    <string name="edit_my_profile">EDIT MY PROFILE</string>
-    <string name="manage_circles">Manage Circles</string>
-    <string name="circle_s_you_belong_to">Circle(s) you belong to</string>
-    <string name="circle_information">Circle information</string>
+    <string name="family_name">Family name</string>
+    <string name="spinnerTitle">TipTop</string>
 
     <string-array name="Route">
         <item>With bonuses</item>
         <item>Without bonuses</item>
-    </string-array>
-
-    <string-array name="CircleInformation">
-        <item>Members</item>
-        <item>Parent rights</item>
     </string-array>
 
 </resources>

@@ -17,6 +17,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:text="Profile"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SpinnerFamily"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="55dp"
+        android:layout_marginLeft="150dp"
+        android:gravity="center_horizontal"
+        android:prompt="@string/spinnerTitle"/>
+
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="match_parent"

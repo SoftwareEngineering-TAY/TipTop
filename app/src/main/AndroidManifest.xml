@@ -30,11 +30,8 @@
         <activity android:name=".ProfileActivity"/>
         <activity android:name=".SettingActivity"/>
         <activity android:name=".StatisticsActivity"/>
-        <activity android:name=".TasksActivity"/>
-        <activity android:name=".ManageCirclesActivity"/>
-        <activity android:name=".CurrentCircleActivity"/>
-        <activity android:name=".MembersActivity"/>
-        <activity android:name=".InviteMemberActivity"/>
+        <activity android:name=".PoolTasksParentActivity"/>
+        <activity android:name=".TaskInfoActivity"/>
 
     </application>
 

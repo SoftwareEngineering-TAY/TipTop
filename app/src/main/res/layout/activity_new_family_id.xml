@@ -46,7 +46,7 @@
             android:layout_gravity="center_horizontal"
             android:scaleType="fitCenter"/>
 
-    </LinearLayout>;
+    </LinearLayout>
 
     <Spinner
         android:id="@+id/route_type_spinner"

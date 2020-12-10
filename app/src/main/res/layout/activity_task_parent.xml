@@ -14,17 +14,17 @@
         android:layout_margin="15dp"
          >
         <TextView
-            android:id="@+id/TaskPool"
+            android:id="@+id/UnassignedTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="task_pool"
+            android:text="Unassigned tasks"
             android:textColor="#070707"
             android:textSize="32dp"
             android:textStyle="bold|italic"
            />
         <ListView
-                android:id="@+id/ListOfTasks"
+                android:id="@+id/ListUnassignedTasks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
          />
@@ -38,20 +38,28 @@
         android:layout_margin="15dp"
         >
         <TextView
-            android:id="@+id/TaskPool1"
+            android:id="@+id/AssociatedTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Task pool:"
+            android:text="Associated tasks"
             android:textColor="#070707"
             android:textSize="32dp"
             android:textStyle="bold|italic"
             />
         <ListView
-            android:id="@+id/ListOfTasks1"
+            android:id="@+id/ListAssociatedTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/addTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Add Task"
+        android:layout_marginBottom="30dp"/>
 
 </LinearLayout>
