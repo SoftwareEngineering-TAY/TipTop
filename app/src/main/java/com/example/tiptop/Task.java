@@ -18,7 +18,7 @@ public class Task implements Serializable {
         NotConfirmed
     }
     private String nameTask;
-    private int bonusScore;
+    private Long bonusScore;
     private String belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid
     private  LocalDateTime startDateAndHour;
     private  LocalDateTime endDateAndHour;
@@ -31,7 +31,7 @@ public class Task implements Serializable {
         return nameTask;
     }
 
-    public int getBonusScore() {
+    public Long getBonusScore() {
         return bonusScore;
     }
 
@@ -64,7 +64,7 @@ public class Task implements Serializable {
         this.nameTask = nameTask;
     }
 
-    public void setBonusScore(int bonusScore) {
+    public void setBonusScore(Long bonusScore) {
         this.bonusScore = bonusScore;
     }
 

@@ -1,6 +1,7 @@
 package com.example.tiptop;
 
         import android.os.Bundle;
+        import android.util.Log;
         import android.view.View;
         import android.widget.AdapterView;
         import android.widget.ArrayAdapter;
@@ -32,7 +33,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_child);
+        setContentView(R.layout.activity_task_info);
 
         Bundle extras = getIntent().getExtras();
 
@@ -50,8 +51,12 @@ public class TaskInfoActivity extends AppCompatActivity {
     }
 
     private void setTextInfo() {
+        Log.v("nameeeeeeeee", task_to_show.getNameTask());
+        Log.v("ghfgghdfhdfhdh",task_name.getText().toString());
         task_name.setText(task_to_show.getNameTask());
-        bonus_score.setText(task_to_show.getBonusScore());
+        String bonus = task_to_show.getBonusScore().toString();
+        Log.v("bbbbbbboonnnnnuuusssss", bonus);
+        bonus_score.setText(bonus);
     }
 
     private void initializeClassVariables(){
