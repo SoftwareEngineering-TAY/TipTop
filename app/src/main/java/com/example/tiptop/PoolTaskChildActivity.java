@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class TaskChildActivity extends AppCompatActivity {
+public class PoolTaskChildActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     ListView listOfTasks;
     //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

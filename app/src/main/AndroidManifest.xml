@@ -30,7 +30,7 @@
         <activity android:name=".ProfileActivity"/>
         <activity android:name=".SettingActivity"/>
         <activity android:name=".StatisticsActivity"/>
-        <activity android:name=".TasksParentActivity"/>
+        <activity android:name=".PoolTasksParentActivity"/>
 
     </application>
 
