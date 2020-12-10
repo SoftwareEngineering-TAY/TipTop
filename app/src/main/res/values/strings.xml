@@ -27,6 +27,10 @@
     <string name="circle_s_you_belong_to">circle(s) you belong to</string>
     <string name="edit_my_profile">EDIT MY PROFILE</string>
     <string name="manage_circles">manage circles</string>
+    <string name="name_of_task">Name of task</string>
+    <string name="bonus_point">Bonus point</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
 
     <string-array name="Route">
         <item>With bonuses</item>
