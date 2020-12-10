@@ -134,13 +134,7 @@ public class HomeActivity extends AppCompatActivity  {
             }
         });
 
-        allKeys = new ArrayList<>();
-        allFamilies = new ArrayList<>();
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allFamilies);
-        SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-        uid = mAuth.getCurrentUser().getUid();
+
 
         //Updating the spinner
         databaseReference.child("UserFamilies").child(uid).addValueEventListener(new ValueEventListener() {
@@ -206,6 +200,30 @@ public class HomeActivity extends AppCompatActivity  {
         points = (Button)findViewById(R.id.points);
         //Set the ImageButton button
         imageButton = (ImageButton)findViewById(R.id.imageButton);
+        allKeys = new ArrayList<>();
+        allFamilies = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allFamilies);
+        SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getCurrentUser().getUid();
+        databaseReference.child("Users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren() )
+                {
+                    if(ds.getKey().equals("currFamilyId")){
+                        currFamilyId = (String) ds.getValue();
+                    }
+                }
+                Log.v("currFamilyId!!!!!!!", currFamilyId);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }

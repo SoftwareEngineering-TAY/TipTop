@@ -24,6 +24,8 @@ public class FollowUpActivity extends AppCompatActivity {
     private FirebaseDatabase root;
     private DatabaseReference reference;
     private String currFamilyId;
+    private String uid;
+
 
 
     @Override
@@ -34,45 +36,27 @@ public class FollowUpActivity extends AppCompatActivity {
         followList = (ListView) findViewById(R.id.followList);
 
         mAuth = FirebaseAuth.getInstance();
-
-        String uid = mAuth.getCurrentUser().getUid();
+        root = FirebaseDatabase.getInstance();
+        reference = root.getReference();
+        uid = mAuth.getCurrentUser().getUid();
 
 
         ArrayList<String> list = new ArrayList<>();
         list.add("A");
 
-
+        Bundle extras = getIntent().getExtras();
+        currFamilyId = extras.getString("currFamilyId");
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,list);
         followList.setAdapter(adapter);
 
-
-
-        root = FirebaseDatabase.getInstance();
-        reference = root.getReference();
-
         Task toAdd = new Task();
-        toAdd.setStatus(Task.STATUS.WaitingForApproval);
+        toAdd.setStatus(Task.STATUS.NotAssociated);
         toAdd.setBelongsToUID(uid);
         toAdd.setBonusScore(20);
         toAdd.setComment("BlaBlaBla");
         toAdd.setNameTask("Wash The Car");
 
-//        currFamilyId = "-MO7kVA-EJQ60OanPdD-bbb";
-        reference.child("Users").child(uid).child("currFamilyId").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currFamilyId = snapshot.getValue().toString();
-                Log.v("currFamilyIdAfter",currFamilyId);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-//        Log.v("currFamilyId",currFamilyId);
 
         followList.setOnItemClickListener((adapterView,view,i,l) -> {
             Log.v("PLACE",list.get(i));
@@ -80,8 +64,7 @@ public class FollowUpActivity extends AppCompatActivity {
             reference.child("Tasks").child(currFamilyId).child(key).setValue(toAdd);
         });
 
-        DatabaseReference familyRef = reference.child("Tasks").child(currFamilyId);
-        familyRef.addValueEventListener(new ValueEventListener() {
+        reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
