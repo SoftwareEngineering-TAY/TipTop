@@ -32,6 +32,10 @@
         <activity android:name=".StatisticsActivity"/>
         <activity android:name=".PoolTasksParentActivity"/>
         <activity android:name=".TaskInfoActivity"/>
+        <activity android:name=".ManageCirclesActivity"/>
+        <activity android:name=".InviteMemberActivity"/>
+        <activity android:name=".CurrentCircleActivity"/>
+        <activity android:name=".MembersActivity"/>
 
     </application>
 
