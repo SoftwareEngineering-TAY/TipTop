@@ -1,6 +1,7 @@
 package com.example.tiptop;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,97 +17,82 @@ import java.util.Calendar;
 
 public class NewTask extends AppCompatActivity {
 
-    private Task toAddTask= new Task();
-    private TextView NameOfTask;
-    private TextView BonusPoint;
-    private TextView StartDate;
-    private TextView EndDate;
-    private DatePickerDialog.OnDateSetListener mDateSetListener1;
-    private DatePickerDialog.OnDateSetListener mDateSetListener2;
+    private Task toAddTask = new Task();
+    private com.google.android.material.textfield.TextInputLayout NameOfTask;
+    private com.google.android.material.textfield.TextInputLayout BonusPoint;
+    private Button StartDateButton;
+    private Button EndDateButton;
+    private TextView StartDateTV;
+    private TextView EndDateTV;
+    private Button SubmitButton;
+    private String StartDate;
+    private String EndDate;
     private static final String TAG = "NewActivity";
+    private DatePickerDialog.OnDateSetListener mDateSetListener2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
-        //initializationFromXML();
-        //initializationTask();
+        initializationFromXML();
+        setSelectDateButton(StartDateButton, StartDateTV);
+        setSelectDateButton(EndDateButton, EndDateTV);
+        setFinishButton();
 
     }
 
     private void initializationTask() {
-        toAddTask.setNameTask(NameOfTask.getText().toString());
-        long bp = Integer.parseInt(BonusPoint.getText().toString());
+        toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
+        long bp = Integer.parseInt(BonusPoint.getEditText().getText().toString());
         toAddTask.setBonusScore(bp);
-        setStartDate();
-        setEndDate();
     }
 
-    private void setEndDate() {
-        EndDate.setOnClickListener(new View.OnClickListener(){
+    private void setFinishButton() {
+        SubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(
-                        NewTask.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener1,
-                        year,month,day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                initializationTask();
+
+            }
+        });
+    }
+
+    private Void setSelectDateButton(Button button, TextView tv) {
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(NewTask.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                tv.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
             }
         });
 
-        mDateSetListener1 = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
-
-                String date = month + "/" + day + "/" + year;
-                EndDate.setText(date);
-            }
-        };
     }
 
 
-    private void setStartDate() {
-        StartDate.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(
-                        NewTask.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        mDateSetListener2,
-                        year,month,day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-
-        mDateSetListener2 = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                month = month + 1;
-                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
-
-                String date = month + "/" + day + "/" + year;
-                StartDate.setText(date);
-            }
-        };
-    }
 
     private void initializationFromXML() {
-        NameOfTask = (TextView)findViewById(R.id.NameOfTask);
-        BonusPoint = (TextView)findViewById(R.id.BonusPoint);
-        StartDate = (TextView)findViewById(R.id.StartDate);
-        EndDate = (TextView)findViewById(R.id.EndDate);
+        NameOfTask = findViewById(R.id.NameOfTask);
+        BonusPoint = findViewById(R.id.BonusPoint);
+        StartDateButton = (Button) findViewById(R.id.StartDateButton);
+        EndDateButton = (Button)findViewById(R.id.EndDateButton);
+        StartDateTV = (TextView) findViewById(R.id.StartDateTV);
+        EndDateTV = (TextView)findViewById(R.id.EndDateTV);
+        SubmitButton = (Button)findViewById(R.id.SubmitButton);
     }
 }
+
