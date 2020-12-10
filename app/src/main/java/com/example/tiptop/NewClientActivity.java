@@ -99,7 +99,7 @@ public class NewClientActivity extends AppCompatActivity {
 
                 Log.d(TAG, "onClick: nxt button has been clicked");
 
-                if(!validateEmail() || !validatePassword() || !validateConfirmPassword() || !validateName()){
+                if(!validateName() || !validateEmail() || !validatePassword() || !validateConfirmPassword()){
                     return;
                 }
 
