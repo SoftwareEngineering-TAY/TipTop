@@ -55,7 +55,6 @@ public class FollowUpActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         currFamilyId = extras.getString("currFamilyId");
         permission = extras.getString("permission");
-//        Log.v("Gettpermissionnn!!!!!!!", permission);
     }
 
     private void createListOfTask() {
@@ -67,7 +66,6 @@ public class FollowUpActivity extends AppCompatActivity {
     private void crateClickEvent() {
         followList.setOnItemClickListener((adapterView,view,i,l) -> {
             Intent intent;
-            Log.v("Chepermissionnn!!!!!!!", permission);
             if (permission.equals("Parent")){
                 intent = new Intent(view.getContext(), ApproveActivity.class);
             }
@@ -76,7 +74,6 @@ public class FollowUpActivity extends AppCompatActivity {
                 intent = new Intent(view.getContext(), TaskInfoActivity.class);
             }
             else return;
-            Log.v("Chepermissionnn!!!!!!!", permission);
             intent.putExtra("task",list.get(i));
             startActivity(intent);
         });

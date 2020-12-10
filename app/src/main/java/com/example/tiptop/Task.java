@@ -40,11 +40,11 @@ public class Task implements Serializable {
         return belongsToUID;
     }
 
-    public LocalDate getStartDateAndHour() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public LocalDate getEndDateAndHour() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
@@ -73,12 +73,12 @@ public class Task implements Serializable {
         this.belongsToUID = belongsToUID;
     }
 
-    public void setStartDateAndHour(LocalDate startDateAndHour) {
-        this.startDate = startDateAndHour;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public void setEndDateAndHour(LocalDate endDateAndHour) {
-        this.endDate = endDateAndHour;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public void setStatus(STATUS status) {

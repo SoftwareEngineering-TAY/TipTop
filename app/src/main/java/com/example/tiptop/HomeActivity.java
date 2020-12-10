@@ -209,9 +209,16 @@ public class HomeActivity extends AppCompatActivity  {
         Tasks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), PoolTasksParentActivity.class);
+                Intent i;
+                if (permission.equals("Parent")){
+                    i = new Intent(v.getContext(), PoolTasksParentActivity.class);
+                }
+
+                else if (permission.equals("Child")){
+                    i = new Intent(v.getContext(), PoolTaskChildActivity.class);
+                }
+                else return;
                 i.putExtra("currFamilyId", currFamilyId);
-                i.putExtra("permission",permission);
                 startActivity(i);
             }
         });

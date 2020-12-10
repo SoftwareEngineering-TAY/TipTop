@@ -2,6 +2,7 @@ package com.example.tiptop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,12 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PoolTasksParentActivity extends AppCompatActivity {
-    private String currFamilyid;
-    private List <String> ListUnassignedTasks;
-    private List <String> ListKeysUnassignedTasks;
-    private DatabaseReference databaseReference;
-    private ArrayAdapter adapter;
+
     private ListView UnassignedTasks;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase root;
+    private DatabaseReference reference;
+    private String currFamilyid;
+    private String uid;
+    private ArrayList<Task> ListUnassignedTasks;
+    private TaskAdapter adapter;
 
     private Button addTaskButton;
 
@@ -39,56 +43,23 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_parent);
         initializeClassVariables();
         getExtrasFromIntent();
-        getAllUnassignedTasksFromDB();
-        showlistUnassignedTasks();
+        createListOfTask();
+        crateClickEvent();
+        updateListFromDB();
 
-        addTaskButton = (Button)findViewById(R.id.addTaskButton);
-        addTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),NewTask.class);
-                i.putExtra("currFamilyId", currFamilyid);
-                startActivity(i);
-            }
-        });
-    }
+        addButtonFunc();
 
-    private void showlistUnassignedTasks() {
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ListUnassignedTasks);
-        UnassignedTasks =(ListView) findViewById(R.id.ListUnassignedTasks);
-        UnassignedTasks.setAdapter(adapter);
+
     }
 
     private void initializeClassVariables() {
+        UnassignedTasks = (ListView) findViewById(R.id.ListUnassignedTasks);
 
-    }
+        mAuth = FirebaseAuth.getInstance();
+        root = FirebaseDatabase.getInstance();
+        reference = root.getReference();
+        uid = mAuth.getCurrentUser().getUid();
 
-    private void getAllUnassignedTasksFromDB() {
-        ListUnassignedTasks = new ArrayList<>();
-        ListKeysUnassignedTasks = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        //Updating the spinner
-//        databaseReference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//                for (DataSnapshot ds : snapshot.getChildren() )
-//                {
-//                    if(ds.child("status").toString().equals("NotAssociated"))
-//                    {
-//                        ListUnassignedTasks.add(ds.child("nameTask").toString());
-//                        ListKeysUnassignedTasks.add(ds.getKey());
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
     }
 
@@ -108,5 +79,52 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         }
     }
 
+    private void createListOfTask() {
+        ListUnassignedTasks = new ArrayList<>();
+        adapter = new TaskAdapter(getApplicationContext(),R.layout.row_task,ListUnassignedTasks);
+        UnassignedTasks.setAdapter(adapter);
+    }
 
+    private void crateClickEvent() {
+        UnassignedTasks.setOnItemClickListener((adapterView,view,i,l) -> {
+            Intent intent =new Intent(view.getContext(), TaskInfoActivity.class);
+            ////Chang destination!!
+            intent.putExtra("task",ListUnassignedTasks.get(i));
+            startActivity(intent);
+        });
+    }
+
+    private void updateListFromDB() {
+        reference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ListUnassignedTasks.clear();
+                for (DataSnapshot Snapshot : snapshot.getChildren()){
+                    if (Snapshot.child("status").getValue().equals("NotAssociated")){
+                        Task toAdd = Snapshot.getValue(Task.class);
+                        ListUnassignedTasks.add(toAdd);
+                        Log.v("Add to list",toAdd.getNameTask());
+                    }
+                }
+                Log.v("Data changed","www");
+                adapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void addButtonFunc() {
+        addTaskButton = (Button)findViewById(R.id.addTaskButton);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(),NewTask.class);
+                i.putExtra("currFamilyid",currFamilyid);
+                startActivity(i);
+            }
+        });
+    }
 }

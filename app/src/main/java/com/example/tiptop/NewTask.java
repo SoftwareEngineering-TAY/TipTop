@@ -24,7 +24,7 @@ import java.util.Calendar;
 
 public class NewTask extends AppCompatActivity {
 
-    private Task toAddTask = new Task();
+    private Task toAddTask;
     private com.google.android.material.textfield.TextInputLayout NameOfTask;
     private com.google.android.material.textfield.TextInputLayout BonusPoint;
     private Button StartDateButton;
@@ -53,18 +53,20 @@ public class NewTask extends AppCompatActivity {
 
 
     private void initializationTask() {
+        toAddTask = new Task();
         toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
         long bp = Integer.parseInt(BonusPoint.getEditText().getText().toString());
         toAddTask.setBonusScore(bp);
-        toAddTask.setStartDateAndHour(StartDate);
-        toAddTask.setEndDateAndHour(EndDate);
+        toAddTask.setStartDate(StartDate);
+//        toAddTask.setEndDate(EndDate);
 
     }
     private void addTaskToDB()
     {
         String key = reference.child("Tasks").child(currFamilyid).push().getKey();
+        System.out.println("key!!!!!!!!!!!!!!!!!!!!!!!"+key);
+        System.out.println("fid))))))))))  " + currFamilyid);
         reference.child("Tasks").child(currFamilyid).child(key).setValue(toAddTask);
-
     }
 
     private void setFinishButton() {
@@ -94,6 +96,7 @@ public class NewTask extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 StartDate  = LocalDate.parse(year+"-"+(monthOfYear + 1)+"-"+dayOfMonth);
+                                System.out.println("StartDate****************************"+StartDate);
                                 StartDateTV.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                             }
                         }, year, month, day);
@@ -131,7 +134,7 @@ public class NewTask extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(extras!=null)
         {
-            String currFamilyidTemp = extras.getString("currFamilyId");
+            String currFamilyidTemp = extras.getString("currFamilyid");
             if(currFamilyidTemp!=null)
             {
                 currFamilyid=currFamilyidTemp;
