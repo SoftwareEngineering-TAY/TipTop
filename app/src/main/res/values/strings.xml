@@ -23,6 +23,10 @@
     <string name="name">Name</string>
     <string name="family_name">Family name</string>
     <string name="spinnerTitle">TipTop</string>
+    <string name="name_of_task">Name of task</string>
+    <string name="bonus_point">Bonus Point</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
 
     <string-array name="Route">
         <item>With bonuses</item>
