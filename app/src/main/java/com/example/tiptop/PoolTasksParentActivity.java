@@ -47,6 +47,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(),NewTask.class);
+                i.putExtra("currFamilyId", currFamilyid);
                 startActivity(i);
             }
         });

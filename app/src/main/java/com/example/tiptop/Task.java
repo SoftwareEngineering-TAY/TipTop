@@ -1,6 +1,7 @@
 package com.example.tiptop;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime; // import the LocalDateTime class
 import com.google.firebase.storage.StorageReference;
 
@@ -20,8 +21,8 @@ public class Task implements Serializable {
     private String nameTask;
     private Long bonusScore;
     private String belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid
-    private  LocalDateTime startDateAndHour;
-    private  LocalDateTime endDateAndHour;
+    private LocalDate startDate;
+    private  LocalDate endDate;
     private STATUS status;
     private String comment;
     private StorageReference image;
@@ -39,12 +40,12 @@ public class Task implements Serializable {
         return belongsToUID;
     }
 
-    public LocalDateTime getStartDateAndHour() {
-        return startDateAndHour;
+    public LocalDate getStartDateAndHour() {
+        return startDate;
     }
 
-    public LocalDateTime getEndDateAndHour() {
-        return endDateAndHour;
+    public LocalDate getEndDateAndHour() {
+        return endDate;
     }
 
     public STATUS getStatus() {
@@ -72,12 +73,12 @@ public class Task implements Serializable {
         this.belongsToUID = belongsToUID;
     }
 
-    public void setStartDateAndHour(LocalDateTime startDateAndHour) {
-        this.startDateAndHour = startDateAndHour;
+    public void setStartDateAndHour(LocalDate startDateAndHour) {
+        this.startDate = startDateAndHour;
     }
 
-    public void setEndDateAndHour(LocalDateTime endDateAndHour) {
-        this.endDateAndHour = endDateAndHour;
+    public void setEndDateAndHour(LocalDate endDateAndHour) {
+        this.endDate = endDateAndHour;
     }
 
     public void setStatus(STATUS status) {
@@ -98,8 +99,8 @@ public class Task implements Serializable {
     public String toString() {
         return "Task{"+"Name: "+nameTask+'\'' +
                 "Bonus Score: "+bonusScore+'\'' +
-                "Start date and hour: "+startDateAndHour+'\'' +
-                "End date and hour: "+endDateAndHour+'\'' +
+                "Start date and hour: "+startDate+'\'' +
+                "End date and hour: "+endDate+'\'' +
                 "Status"+status+'\'' +
                 "Comment"+comment+'\''+
                 "}";

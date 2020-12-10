@@ -4,15 +4,22 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class NewTask extends AppCompatActivity {
@@ -25,9 +32,10 @@ public class NewTask extends AppCompatActivity {
     private TextView StartDateTV;
     private TextView EndDateTV;
     private Button SubmitButton;
-    private String StartDate;
-    private String EndDate;
-    private static final String TAG = "NewActivity";
+    private LocalDate StartDate;
+    private LocalDate EndDate;
+    private String currFamilyid;
+    private DatabaseReference reference;
     private DatePickerDialog.OnDateSetListener mDateSetListener2;
 
 
@@ -36,16 +44,27 @@ public class NewTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
         initializationFromXML();
-        setSelectDateButton(StartDateButton, StartDateTV);
-        setSelectDateButton(EndDateButton, EndDateTV);
+        getExtrasFromIntent();
+        setSelectStartDateButton();
+        setSelectEndDateButton();
         setFinishButton();
-
     }
+
+
 
     private void initializationTask() {
         toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
         long bp = Integer.parseInt(BonusPoint.getEditText().getText().toString());
         toAddTask.setBonusScore(bp);
+        toAddTask.setStartDateAndHour(StartDate);
+        toAddTask.setEndDateAndHour(EndDate);
+
+    }
+    private void addTaskToDB()
+    {
+        String key = reference.child("Tasks").child(currFamilyid).push().getKey();
+        reference.child("Tasks").child(currFamilyid).child(key).setValue(toAddTask);
+
     }
 
     private void setFinishButton() {
@@ -53,14 +72,13 @@ public class NewTask extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 initializationTask();
-
+                addTaskToDB();
             }
         });
     }
 
-    private Void setSelectDateButton(Button button, TextView tv) {
-
-        button.setOnClickListener(new View.OnClickListener() {
+    private void setSelectStartDateButton(){
+        StartDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -72,15 +90,57 @@ public class NewTask extends AppCompatActivity {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NewTask.this,
                         new DatePickerDialog.OnDateSetListener() {
 
+                            @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                tv.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                StartDate  = LocalDate.parse(year+"-"+(monthOfYear + 1)+"-"+dayOfMonth);
+                                StartDateTV.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                             }
                         }, year, month, day);
                 datePickerDialog.show();
             }
         });
+    }
 
+    private void setSelectEndDateButton() {
+        EndDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(NewTask.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                EndDate = LocalDate.parse(year+"-"+(monthOfYear + 1)+"-"+dayOfMonth);
+                                EndDateTV.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            }
+                        }, year, month, day);
+                datePickerDialog.show();
+            }
+        });
+    }
+
+    private void getExtrasFromIntent() {
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null)
+        {
+            String currFamilyidTemp = extras.getString("currFamilyId");
+            if(currFamilyidTemp!=null)
+            {
+                currFamilyid=currFamilyidTemp;
+            }
+            else
+            {
+                Toast.makeText(this, "currFamily didn't pass", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
@@ -93,6 +153,7 @@ public class NewTask extends AppCompatActivity {
         StartDateTV = (TextView) findViewById(R.id.StartDateTV);
         EndDateTV = (TextView)findViewById(R.id.EndDateTV);
         SubmitButton = (Button)findViewById(R.id.SubmitButton);
+        reference = FirebaseDatabase.getInstance().getReference();
     }
 }
 

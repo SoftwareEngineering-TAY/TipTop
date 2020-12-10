@@ -94,33 +94,14 @@
 
         </LinearLayout>
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:id="@+id/StartDate"-->
-<!--            android:hint="@string/start_date"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"/>-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:id="@+id/EndDate"-->
-<!--            android:hint="@string/end_date"-->
-<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"/>-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+         </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
