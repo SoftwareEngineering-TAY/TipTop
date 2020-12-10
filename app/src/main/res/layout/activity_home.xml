@@ -26,7 +26,7 @@
         android:layout_marginTop="55dp"
         android:layout_marginLeft="150dp"
         android:gravity="center_horizontal"
-        android:prompt="@string/spinner_title"/>
+        android:prompt="@string/spinnerTitle"/>
 
     <ImageButton
         android:id="@+id/imageButton"

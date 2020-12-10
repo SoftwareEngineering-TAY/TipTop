@@ -22,7 +22,7 @@
     <string name="route_information">Route information</string>
     <string name="name">Name</string>
     <string name="family_name">Family name</string>
-    <string name="spinner_title">TipTop</string>
+    <string name="spinnerTitle">TipTop</string>
 
     <string-array name="Route">
         <item>With bonuses</item>
