@@ -26,15 +26,25 @@ public class FollowUpActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private String currFamilyId;
     private String uid;
+    private String permission;
     private TaskAdapter mTaskAdapter;
-
-
+    private ArrayList<Task> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_followup);
 
+        initializeClassVariables();
+
+        createListOfTask();
+
+        crateClickEvent();
+
+        updateListFromDB();
+    }
+
+    private void initializeClassVariables() {
         followList = (ListView) findViewById(R.id.followList);
 
         mAuth = FirebaseAuth.getInstance();
@@ -44,51 +54,42 @@ public class FollowUpActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         currFamilyId = extras.getString("currFamilyId");
+        permission = extras.getString("permission");
+//        Log.v("Gettpermissionnn!!!!!!!", permission);
+    }
 
-        ArrayList<Task> list = new ArrayList<>();
-        Task toAdd = new Task();
-        toAdd.setStatus(Task.STATUS.WaitingForApproval);
-        toAdd.setBelongsToUID(uid);
-        toAdd.setBonusScore((long) 20);
-        toAdd.setComment("BlaBlaBla");
-        toAdd.setNameTask("Wash The Car");
-        list.add(toAdd);
-
-        String key = reference.child("Tasks").child(currFamilyId).push().getKey();
-        reference.child("Tasks").child(currFamilyId).child(key).setValue(toAdd);
-
+    private void createListOfTask() {
+        list = new ArrayList<>();
         mTaskAdapter = new TaskAdapter(getApplicationContext(),R.layout.row_task,list);
-
         followList.setAdapter(mTaskAdapter);
+    }
 
-
-
-
+    private void crateClickEvent() {
         followList.setOnItemClickListener((adapterView,view,i,l) -> {
-            Log.v("PLACE",list.get(i).getNameTask());
+            Intent intent;
+            Log.v("Chepermissionnn!!!!!!!", permission);
+            if (permission.equals("Parent")){
+                intent = new Intent(view.getContext(), ApproveActivity.class);
+            }
 
-            Intent intent = new Intent(view.getContext(), TaskInfoActivity.class);
+            else if (permission.equals("Child")){
+                intent = new Intent(view.getContext(), TaskInfoActivity.class);
+            }
+            else return;
+            Log.v("Chepermissionnn!!!!!!!", permission);
             intent.putExtra("task",list.get(i));
             startActivity(intent);
-
-//            String key = reference.child("Tasks").child(currFamilyId).push().getKey();
-//            reference.child("Tasks").child(currFamilyId).child(key).setValue(toAdd);
         });
+    }
 
+    private void updateListFromDB() {
         reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
             @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    list.clear();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for (DataSnapshot Snapshot : snapshot.getChildren()){
                     if (Snapshot.child("belongsToUID").getValue().equals(uid)){
                         Task toAdd = Snapshot.getValue(Task.class);
-//                        Task toAdd = new Task();
-//                        toAdd.setNameTask(Snapshot.child("nameTask").getValue().toString());
-//                        toAdd.setBonusScore((Long)Snapshot.child("bonusScore").getValue());
-//
-//                        toAdd.setStatus((Task.STATUS)Snapshot.child("status").getValue());
-//
-//                        toAdd.setBelongsToUID((String) Snapshot.child("belongsToUID").getValue());
                         list.add(toAdd);
                         Log.v("Add to list",toAdd.getNameTask());
                     }
@@ -102,6 +103,5 @@ public class FollowUpActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }

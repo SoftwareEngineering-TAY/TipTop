@@ -47,16 +47,19 @@ public class TaskInfoActivity extends AppCompatActivity {
     }
 
     private void setDoneButton() {
-        task_to_show.setStatus(Task.STATUS.WaitingForApproval);
+        done_task.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                task_to_show.setStatus(Task.STATUS.WaitingForApproval);
+                //add intent!!!!!
+            }
+        });
+
     }
 
     private void setTextInfo() {
-        Log.v("nameeeeeeeee", task_to_show.getNameTask());
-        Log.v("ghfgghdfhdfhdh",task_name.getText().toString());
         task_name.setText(task_to_show.getNameTask());
-        String bonus = task_to_show.getBonusScore().toString();
-        Log.v("bbbbbbboonnnnnuuusssss", bonus);
-        bonus_score.setText(bonus);
+        bonus_score.setText(task_to_show.getBonusScore().toString());
     }
 
     private void initializeClassVariables(){

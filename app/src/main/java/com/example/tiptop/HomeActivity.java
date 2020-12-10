@@ -40,11 +40,13 @@ public class HomeActivity extends AppCompatActivity  {
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private String uid;
+    private String permission;
     private String currFamilyId;
     private List <String> allKeys;
     private ArrayList <String> allFamilies;
     private ArrayAdapter adapter;
     public String spinnerTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,11 @@ public class HomeActivity extends AppCompatActivity  {
                         currFamilyId = (String) ds.getValue();
                         spinnerTitle =  (String) ds.getValue();
                     }
+                    if (ds.getKey().equals("type")){
+                        permission = (String) ds.getValue();
+                    }
                 }
+                Log.v("permissionnnnnn!!!!!!!", permission);
                 Log.v("currFamilyId!!!!!!!", currFamilyId);
             }
 
@@ -176,6 +182,7 @@ public class HomeActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(),FollowUpActivity.class);
                 i.putExtra("currFamilyId", currFamilyId);
+                i.putExtra("permission",permission);
                 startActivity(i);
             }
         });
@@ -204,6 +211,7 @@ public class HomeActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), PoolTasksParentActivity.class);
                 i.putExtra("currFamilyId", currFamilyId);
+                i.putExtra("permission",permission);
                 startActivity(i);
             }
         });

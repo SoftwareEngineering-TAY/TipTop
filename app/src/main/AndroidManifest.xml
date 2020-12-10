@@ -36,6 +36,8 @@
         <activity android:name=".InviteMemberActivity"/>
         <activity android:name=".CurrentCircleActivity"/>
         <activity android:name=".MembersActivity"/>
+        <activity android:name=".ApproveActivity"/>
+
 
     </application>
 

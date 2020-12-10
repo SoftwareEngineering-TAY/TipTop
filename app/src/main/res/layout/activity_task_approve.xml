@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/TaskName"
+            android:gravity="center_horizontal"
+            android:text="Task Name:"
+            android:textColor="#070707"
+            android:textSize="40dp"
+            android:textStyle="bold|italic"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/TaskNameShow"
+            android:gravity="center_horizontal"
+            android:text="Name"
+            android:textColor="#070707"
+            android:textSize="50dp"
+            android:textStyle="bold|italic"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/BonusPoint"
+            android:gravity="center_horizontal"
+            android:text="Bonus Points:"
+            android:textColor="#070707"
+            android:textSize="20dp"
+            android:textStyle="bold|italic"
+            android:layout_marginTop="30dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/BonusPointShow"
+            android:gravity="center_horizontal"
+            android:text="100"
+            android:textColor="#070707"
+            android:textSize="30dp"
+            android:textStyle="bold|italic"
+            />
+
+        <ImageView
+            android:id="@+id/taskImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="#009688"
+            android:scaleType="fitCenter" />
+        <TextView
+            android:id="@+id/Comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Comment:"
+            android:layout_marginTop="30dp"
+            android:textSize="25dp"
+
+            />
+        <TextView
+            android:id="@+id/CommentShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:hint="CommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentCommentComment"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/TaskApprove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:text="Approve" />
+
+            <Button
+                android:id="@+id/TaskRepeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:text="Repeat" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

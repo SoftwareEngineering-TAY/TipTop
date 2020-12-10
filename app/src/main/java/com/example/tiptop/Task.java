@@ -51,7 +51,7 @@ public class Task implements Serializable {
         return status;
     }
 
-    public String getComment(String blaBlaBla) {
+    public String getComment() {
         return comment;
     }
 
