@@ -33,7 +33,7 @@
         <activity android:name=".PoolTasksParentActivity"/>
         <activity android:name=".TaskInfoActivity"/>
         <activity android:name=".ManageCirclesActivity"/>
-        <activity android:name=".InviteMemberActivity"/>
+        <activity android:name=".CreateChildAccountActivity"/>
         <activity android:name=".CurrentCircleActivity"/>
         <activity android:name=".MembersActivity"/>
         <activity android:name=".ApproveActivity"/>

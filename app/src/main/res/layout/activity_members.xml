@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
-        android:text="Invite new member"
+        android:text="@string/create_a_child_account"
         android:textAllCaps="false"
         android:textColor="@android:color/black" />
 

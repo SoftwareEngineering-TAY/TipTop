@@ -31,6 +31,9 @@
     <string name="bonus_point">Bonus point</string>
     <string name="start_date">Start date</string>
     <string name="end_date">End date</string>
+    <string name="create_a_child_account">Create a child account</string>
+    <string name="username">Username</string>
+    <string name="enter_email_or_username">Enter Email or Username</string>
 
     <string-array name="Route">
         <item>With bonuses</item>

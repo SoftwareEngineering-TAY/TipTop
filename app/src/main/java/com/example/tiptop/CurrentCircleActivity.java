@@ -79,10 +79,12 @@ public class CurrentCircleActivity extends AppCompatActivity {
 
         circle_information.setOnItemClickListener((adapterView,view,i,l) -> {
 
-            Intent go_to_current_circle = new Intent(CurrentCircleActivity.this,MembersActivity.class);
+            if(i==0) {
+                Intent go_to_members = new Intent(CurrentCircleActivity.this, MembersActivity.class);
 
-            go_to_current_circle.putExtra("family_uid", family_uid);
-            startActivity(go_to_current_circle);
+                go_to_members.putExtra("family_uid", family_uid);
+                startActivity(go_to_members);
+            }
 
         });
     }

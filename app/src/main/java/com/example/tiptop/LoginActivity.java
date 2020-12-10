@@ -47,6 +47,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String mail = email.getEditText().getText().toString();
+
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                if(!mail.matches(emailPattern)){
+                    mail = mail+"@mail.com";
+                }
+
                 String pass = password.getEditText().getText().toString();
                 mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

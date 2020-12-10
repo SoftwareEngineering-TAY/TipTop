@@ -1,6 +1,8 @@
 package com.example.tiptop;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,7 +25,7 @@ public class MembersActivity extends AppCompatActivity {
 
     private TextView family_members;
     private ListView circle_members;
-    private Button invite_new_member;
+    private Button create_a_child_account;
 
     private String family_uid;
 
@@ -41,13 +43,14 @@ public class MembersActivity extends AppCompatActivity {
 
         setScreenViewByFamily();
 
-        setInviteNewMemberButton();
+        setCreateAChildAccountButton();
+
     }
 
     private void initializeClassVariables(){
         family_members = (TextView)findViewById(R.id.familyMembers);
         circle_members = (ListView)findViewById(R.id.circleMembers);
-        invite_new_member = (Button)findViewById(R.id.inviteNewMember);
+        create_a_child_account = (Button)findViewById(R.id.inviteNewMember);
 
         root = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -63,6 +66,7 @@ public class MembersActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         family_uid = (String) extras.get("family_uid");
+
 
         reference = root.getReference("Families").child(family_uid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,7 +98,15 @@ public class MembersActivity extends AppCompatActivity {
         });
     }
 
-    private void setInviteNewMemberButton(){
+    private void setCreateAChildAccountButton(){
+        create_a_child_account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent go_to_child_account = new Intent(MembersActivity.this,CreateChildAccountActivity.class);
 
+                go_to_child_account.putExtra("family_uid", family_uid);
+                startActivity(go_to_child_account);
+            }
+        });
     }
 }
