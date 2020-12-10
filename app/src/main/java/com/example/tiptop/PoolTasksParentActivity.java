@@ -2,7 +2,9 @@ package com.example.tiptop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -28,6 +30,8 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private ArrayAdapter adapter;
     private ListView UnassignedTasks;
 
+    private Button addTaskButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,15 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         getExtrasFromIntent();
         getAllUnassignedTasksFromDB();
         showlistUnassignedTasks();
+
+        addTaskButton = (Button)findViewById(R.id.addTaskButton);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(),SettingActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void showlistUnassignedTasks() {
