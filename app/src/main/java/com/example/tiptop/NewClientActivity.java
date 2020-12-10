@@ -137,11 +137,11 @@ public class NewClientActivity extends AppCompatActivity {
     private boolean validateName(){
         String user_name = name.getEditText().getText().toString();
         if(user_name.isEmpty()){
-            email.setError("Field cannot be empty");
+            name.setError("Field cannot be empty");
             return false;
         }
         else{
-            email.setError(null);
+            name.setError(null);
             return true;
         }
     }
