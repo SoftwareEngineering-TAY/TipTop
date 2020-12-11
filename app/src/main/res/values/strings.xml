@@ -34,6 +34,7 @@
     <string name="create_a_child_account">Create a child account</string>
     <string name="username">Username</string>
     <string name="enter_email_or_username">Enter Email or Username</string>
+    <string name="task_assignment">Task assignment:</string>
 
     <string-array name="Route">
         <item>With bonuses</item>

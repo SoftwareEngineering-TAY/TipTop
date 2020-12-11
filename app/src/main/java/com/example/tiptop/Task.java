@@ -21,8 +21,8 @@ public class Task implements Serializable {
     private String nameTask;
     private Long bonusScore;
     private String belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid
-    private LocalDate startDate;
-    private  LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private STATUS status;
     private String comment;
     private StorageReference image;
@@ -40,11 +40,11 @@ public class Task implements Serializable {
         return belongsToUID;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
@@ -73,11 +73,11 @@ public class Task implements Serializable {
         this.belongsToUID = belongsToUID;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

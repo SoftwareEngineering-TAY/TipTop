@@ -7,20 +7,31 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class NewTask extends AppCompatActivity {
 
@@ -32,12 +43,20 @@ public class NewTask extends AppCompatActivity {
     private TextView StartDateTV;
     private TextView EndDateTV;
     private Button SubmitButton;
-    private LocalDate StartDate;
-    private LocalDate EndDate;
+    private ListView ListOfChildren;
+    private String StartDate;
+    private String EndDate;
     private String currFamilyid;
     private DatabaseReference reference;
-    private DatePickerDialog.OnDateSetListener mDateSetListener2;
+    private String keyKid;
 
+    private DatabaseReference databaseReference ;
+    private FirebaseAuth mAuth;
+    private String uid;
+
+    private ArrayList<String> allKeys;
+    private ArrayList<String> allKids;
+    private ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +66,186 @@ public class NewTask extends AppCompatActivity {
         getExtrasFromIntent();
         setSelectStartDateButton();
         setSelectEndDateButton();
+        System.out.println("allKids3333333333333333333333333333333333333!!!@#E$%^&^%%"+allKids);
+        initializationListOfChildren();
+        System.out.println("allKids4444444444444444444444444444444444444444!!!@#E$%^&^%%"+allKids);
         setFinishButton();
     }
 
+    private void initializationListOfChildren() {
+        initializeVariables();
+        createList();
+        crateClickEvent();
+        updateListFromDB();
+
+        System.out.println("allKids222222222222222222222222222!!!@#E$%^&^%%"+allKids);
+
+        //---------------------
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        String uid = mAuth.getCurrentUser().getUid();
+//        ArrayList<String> allKeys = new ArrayList<>();
+//        ArrayList<String> allKids =  new ArrayList<>();
+//        ArrayAdapter adapter;
+
+//        databaseReference.child("Families").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                allKids.clear();
+//                allKeys.clear();
+//                for (DataSnapshot ds : snapshot.getChildren() )
+//                {
+//                    String toAddChildren =(String) ds.getValue();
+//                    System.out.println("  String toAddChildren =(String) ds.getValue();"+toAddChildren);
+//                    String toAddKey =(String) ds.getKey();
+//                    databaseReference.child("Users").child(toAddKey).addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            if(snapshot.child("type").getValue().toString().equals("Child"))
+//                            {
+//                                allKeys.add(toAddKey);
+//                                allKids.add(toAddChildren);
+//                            }
+//
+//                            System.out.println("allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//
+//            }
+//        });
+
+
+//        allKids.add("Not Associated");
+//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allKids);
+//        ListOfChildren.setAdapter(adapter);
+//        System.out.println("allKids222222222222222222222!!!@#E$%^&^%%"+allKids);
+
+//
+//        ListOfChildren.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if(allKids.get(position).equals("Not Associated"))
+//                {
+//                    keyKid=null;
+//                }
+//                else
+//                {
+//                    keyKid = allKeys.get(position);
+//                }
+//
+//            }
+//        });
+
+
+    }
+
+    private void updateListFromDB() {
+        databaseReference.child("Families").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                allKids.clear();
+                allKeys.clear();
+                allKids.add("Not Associated");
+                for (DataSnapshot ds : snapshot.getChildren() )
+                {
+                    String toAddChildren =(String) ds.getValue();
+                    System.out.println("  String toAddChildren =(String) ds.getValue();"+toAddChildren);
+                    String toAddKey =(String) ds.getKey();
+                    databaseReference.child("Users").child(toAddKey).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            if(snapshot.child("type").getValue().toString().equals("Child"))
+                            {
+                                allKeys.add(toAddKey);
+                                allKids.add(toAddChildren);
+                            }
+
+                            adapter.notifyDataSetChanged();
+
+                            System.out.println("allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
+                }
+
+
+
+
+                System.out.println(" adapter.notifyDataSetChanged();allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+
+            }
+        });
+    }
+
+    private void crateClickEvent() {
+        ListOfChildren.setOnItemClickListener((adapterView,view,i,l) -> {
+            System.out.println("ad mty!!!"+allKids);
+            System.out.println("iiiiiiiiiiiiiiiiiiiiiiii"+ i);
+            if(allKids.get(i).equals("Not Associated"))
+            {
+                keyKid=null;
+            }
+            else
+            {
+                System.out.println("allKeys))))))))))))))))))))))))))))))))))"+allKeys);
+                keyKid = allKeys.get(i-1);
+            }
+
+        });
+    }
+
+    private void createList() {
+        allKeys = new ArrayList<>();
+        allKids =  new ArrayList<>();
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allKids);
+        ListOfChildren.setAdapter(adapter);
+    }
+
+    private void initializeVariables() {
+         databaseReference = FirebaseDatabase.getInstance().getReference();
+         mAuth = FirebaseAuth.getInstance();
+         uid = mAuth.getCurrentUser().getUid();
+    }
 
 
     private void initializationTask() {
         toAddTask = new Task();
         toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
-        long bp = Integer.parseInt(BonusPoint.getEditText().getText().toString());
+        long bp = Long.parseLong(BonusPoint.getEditText().getText().toString());
         toAddTask.setBonusScore(bp);
         toAddTask.setStartDate(StartDate);
-//        toAddTask.setEndDate(EndDate);
+        toAddTask.setEndDate(EndDate);
+        toAddTask.setBelongsToUID(keyKid);
+        if(keyKid == null)
+            toAddTask.setStatus(Task.STATUS.NotAssociated);
+        else
+            toAddTask.setStatus(Task.STATUS.Associated);
 
     }
     private void addTaskToDB()
@@ -95,9 +282,9 @@ public class NewTask extends AppCompatActivity {
                             @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                StartDate  = LocalDate.parse(year+"-"+(monthOfYear + 1)+"-"+dayOfMonth);
+                                StartDate  = year+"-"+(monthOfYear + 1)+"-"+dayOfMonth;
                                 System.out.println("StartDate****************************"+StartDate);
-                                StartDateTV.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                StartDateTV.setText(StartDate);
                             }
                         }, year, month, day);
                 datePickerDialog.show();
@@ -121,8 +308,8 @@ public class NewTask extends AppCompatActivity {
                             @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                EndDate = LocalDate.parse(year+"-"+(monthOfYear + 1)+"-"+dayOfMonth);
-                                EndDateTV.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                EndDate = year+"-"+(monthOfYear + 1)+"-"+dayOfMonth;
+                                EndDateTV.setText(EndDate);
                             }
                         }, year, month, day);
                 datePickerDialog.show();
@@ -156,6 +343,7 @@ public class NewTask extends AppCompatActivity {
         StartDateTV = (TextView) findViewById(R.id.StartDateTV);
         EndDateTV = (TextView)findViewById(R.id.EndDateTV);
         SubmitButton = (Button)findViewById(R.id.SubmitButton);
+        ListOfChildren = (ListView)findViewById(R.id.ListOfChildren);
         reference = FirebaseDatabase.getInstance().getReference();
     }
 }
