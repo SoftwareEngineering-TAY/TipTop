@@ -37,8 +37,10 @@ public class HomeActivity extends AppCompatActivity  {
     private Button points;
     private Spinner SpinnerFamily;
 
-    private DatabaseReference databaseReference;
+    private FirebaseDatabase root;
     private FirebaseAuth mAuth;
+    private DatabaseReference reference;
+
     private String uid;
     private String permission;
     private String currFamilyId;
@@ -59,10 +61,11 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void initializationCurrFamilyId() {
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        root = FirebaseDatabase.getInstance();
+        reference = root.getReference();
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid();
-        databaseReference.child("Users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child("Users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren() )
@@ -112,7 +115,7 @@ public class HomeActivity extends AppCompatActivity  {
 
     private void getInfoFromDB() {
         //Updating the spinner
-        databaseReference.child("UserFamilies").child(uid).addValueEventListener(new ValueEventListener() {
+        reference.child("UserFamilies").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 allFamilies.clear();
@@ -162,8 +165,29 @@ public class HomeActivity extends AppCompatActivity  {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),SettingActivity.class);
-                startActivity(i);
+                String uid = mAuth.getCurrentUser().getUid();
+                reference = root.getReference("Users").child(uid).child("type");
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                       String type =  snapshot.getValue().toString();
+                       if(type.equals("Parent")){
+                           Intent go_to_setting = new Intent(v.getContext(),SettingActivity.class);
+                           startActivity(go_to_setting);
+                       }
+                       else if(type.equals("Child")){
+                           Intent go_to_setting_children = new Intent(v.getContext(),SettingChildrenActivity.class);
+                           startActivity(go_to_setting_children);
+                       }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
 

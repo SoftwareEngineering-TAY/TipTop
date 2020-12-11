@@ -111,7 +111,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(!validateUsername() || !validatePassword()  || !validateName()){
+                if(!validateName() || !validateUsername() || !validatePassword()){
                     return;
                 }
 
@@ -203,6 +203,13 @@ public class CreateChildAccountActivity extends AppCompatActivity {
             username.setError("Field cannot be empty");
             return false;
         }
+
+
+        if(mail.contains(" ")){
+            username.setError("Field cannot contains spaces");
+            return false;
+        }
+
         else{
             username.setError(null);
             return true;
