@@ -89,7 +89,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for (DataSnapshot ds1 : snapshot.getChildren() )
                                         {
-                                            if(ds1.child("belongsToUID").getValue().equals(ds.getKey()) && ds1.child("status").getValue().equals("Associated")){
+                                            if(ds1.child("belongsToUID").getValue()!=null&&ds1.child("belongsToUID").getValue().equals(ds.getKey()) && ds1.child("status").getValue().equals("Associated")){
                                                 Task taskToAdd = ds1.getValue(Task.class);
                                                 toAdd.add(taskToAdd);
                                             }

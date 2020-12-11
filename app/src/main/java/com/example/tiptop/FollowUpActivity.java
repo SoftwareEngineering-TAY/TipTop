@@ -85,7 +85,7 @@ public class FollowUpActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
                 for (DataSnapshot Snapshot : snapshot.getChildren()){
-                    if (Snapshot.child("belongsToUID").getValue().equals(uid)&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
+                    if (Snapshot.child("belongsToUID").getValue()!=null&&Snapshot.child("belongsToUID").getValue().equals(uid)&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
                         Task toAdd = Snapshot.getValue(Task.class);
                         list.add(toAdd);
                         Log.v("Add to list",toAdd.getNameTask());

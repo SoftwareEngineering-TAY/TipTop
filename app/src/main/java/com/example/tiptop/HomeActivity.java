@@ -103,6 +103,8 @@ public class HomeActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currFamilyId = allKeys.get(position);
                 spinnerTitle = allFamilies.get(position);
+                System.out.println(" currFamilyId = allKeys.get(position);"+ allKeys.get(position)+"position: "+position);
+                System.out.println(allKeys);
                 Log.v("currFamilyId666666", currFamilyId);
             }
 
@@ -123,11 +125,12 @@ public class HomeActivity extends AppCompatActivity  {
                 for (DataSnapshot ds : snapshot.getChildren() )
                 {
                     String toAddFamiliy =(String) ds.getValue();
-                    String toAddKey =(String) ds.getKey();
+                    String toAddKey =ds.getKey();
+                    System.out.println("ds.getKey()!!!!!!!!!!"+ds.getKey());
                     allFamilies.add(toAddFamiliy);
                     allKeys.add(toAddKey);
                 }
-
+                adapter.notifyDataSetChanged();
                 System.out.println(allFamilies);
             }
 
