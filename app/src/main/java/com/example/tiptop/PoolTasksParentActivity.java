@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,18 +22,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PoolTasksParentActivity extends AppCompatActivity {
 
     private ListView UnassignedTasks;
+    private ExpandableListView AssociatedTasks;
     private FirebaseAuth mAuth;
     private FirebaseDatabase root;
     private DatabaseReference reference;
     private String currFamilyid;
     private String uid;
+
     private ArrayList<Task> ListUnassignedTasks;
+    private ArrayList<String> ListChildForTask;
+    private HashMap<String,ArrayList<Task>> ListTaskGroups;
+
     private TaskAdapter adapter;
+    private TaskToChildAdapter childAdapter;
 
     private Button addTaskButton;
 
@@ -44,6 +52,9 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         initializeClassVariables();
         getExtrasFromIntent();
         createListOfTask();
+
+        createExpandableListOfTask();
+
         crateClickEvent();
         updateListFromDB();
 
@@ -52,8 +63,65 @@ public class PoolTasksParentActivity extends AppCompatActivity {
 
     }
 
+    private void createExpandableListOfTask() {
+        ListChildForTask = new ArrayList<>();
+        ListTaskGroups = new HashMap<>();
+        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups);
+        AssociatedTasks.setAdapter(childAdapter);
+
+
+        reference.child("Families").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ListChildForTask.clear();
+                for (DataSnapshot ds : snapshot.getChildren() )
+                {
+                    String toAddChildren =(String) ds.getValue();
+                    reference.child("Users").child(ds.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.child("type").getValue()!=null && snapshot.child("type").getValue().toString().equals("Child"))
+                            {
+                                ListChildForTask.add(toAddChildren);
+                                ArrayList<Task> toAdd = new ArrayList<>();
+                                reference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot ds1 : snapshot.getChildren() )
+                                        {
+                                            if(ds1.child("belongsToUID").getValue().equals(ds.getKey()) && ds1.child("status").getValue().equals("Associated")){
+                                                Task taskToAdd = ds1.getValue(Task.class);
+                                                toAdd.add(taskToAdd);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                                ListTaskGroups.put(toAddChildren,toAdd);
+                            }
+                            childAdapter.notifyDataSetChanged();
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void initializeClassVariables() {
         UnassignedTasks = (ListView) findViewById(R.id.ListUnassignedTasks);
+        AssociatedTasks = (ExpandableListView) findViewById(R.id.ListAssociatedTasks);
 
         mAuth = FirebaseAuth.getInstance();
         root = FirebaseDatabase.getInstance();

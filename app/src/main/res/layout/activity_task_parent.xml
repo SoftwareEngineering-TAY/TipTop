@@ -47,7 +47,7 @@
             android:textSize="32dp"
             android:textStyle="bold|italic"
             />
-        <ListView
+        <ExpandableListView
             android:id="@+id/ListAssociatedTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
