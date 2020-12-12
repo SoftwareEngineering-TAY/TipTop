@@ -67,6 +67,7 @@ public class PoolTaskChildActivity extends AppCompatActivity {
         followList.setOnItemClickListener((adapterView,view,i,l) -> {
             Intent intent = new Intent(view.getContext(), TaskInfoActivity.class);
             intent.putExtra("task",list.get(i));
+            intent.putExtra("currFamilyId",currFamilyId);
             startActivity(intent);
         });
     }

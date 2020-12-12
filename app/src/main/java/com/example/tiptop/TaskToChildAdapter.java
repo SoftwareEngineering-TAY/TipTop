@@ -20,10 +20,12 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
 
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
+    private String currFamilyId;
 
-    public TaskToChildAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups){
+    public TaskToChildAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups, String currFamilyId){
         this.ListChildForTask = ListChildForTask;
         this.ListTaskGroups = ListTaskGroups;
+        this.currFamilyId =currFamilyId;
     }
 
     @Override
@@ -97,8 +99,11 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(row.getContext(), TaskInfoActivity.class);
+
+                intent.putExtra("currFamilyId", currFamilyId);
                 intent.putExtra("task",task);
                 startActivity(row.getContext(),intent,EMPTY);
+
             }
         });
 

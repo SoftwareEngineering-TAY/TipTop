@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class PoolTasksParentActivity extends AppCompatActivity {
 
@@ -32,13 +29,13 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase root;
     private DatabaseReference reference;
-    private String currFamilyid;
+    private String currFamilyId;
     private String uid;
 
     private ArrayList<Task> ListUnassignedTasks;
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
-
+    private static final String TAG = "PoolTasksParentActivity";
     private TaskAdapter adapter;
     private TaskToChildAdapter childAdapter;
 
@@ -66,10 +63,10 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private void createExpandableListOfTask() {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
-        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups);
+        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups,currFamilyId);
         AssociatedTasks.setAdapter(childAdapter);
 
-        reference.child("Families").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+        reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ListChildForTask.clear();
@@ -83,9 +80,10 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                             {
                                 ListChildForTask.add(toAddChildren);
                                 ArrayList<Task> toAdd = new ArrayList<>();
-                                reference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+                                reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        toAdd.clear();
                                         for (DataSnapshot ds1 : snapshot.getChildren() )
                                         {
                                             if(ds1.child("belongsToUID").getValue()!=null&&ds1.child("belongsToUID").getValue().equals(ds.getKey()) && ds1.child("status").getValue().equals("Associated")){
@@ -97,7 +95,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                                         System.out.println("ListChildForTask1"+ListChildForTask);
                                         System.out.println("ListTaskGroups1"+ListTaskGroups);
 
-                                        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups);
+                                        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups,currFamilyId);
                                         AssociatedTasks.setAdapter(childAdapter);
                                         childAdapter.notifyDataSetChanged();
                                     }
@@ -144,7 +142,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
             String currFamilyidTemp = extras.getString("currFamilyId");
             if(currFamilyidTemp!=null)
             {
-                currFamilyid=currFamilyidTemp;
+                currFamilyId =currFamilyidTemp;
             }
             else
             {
@@ -160,17 +158,21 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     }
 
     private void crateClickEvent() {
+
         UnassignedTasks.setOnItemClickListener((adapterView,view,i,l) -> {
             Intent intent =new Intent(view.getContext(), TaskInfoActivity.class);
             ////Chang destination!!
             intent.putExtra("task",ListUnassignedTasks.get(i));
-            intent.putExtra("currFamilyId", currFamilyid);
+            intent.putExtra("currFamilyId", currFamilyId);
+            Log.d(TAG, "crateClickEvent:task: " + ListUnassignedTasks.get(i));
+            Log.d(TAG, "crateClickEvent: currFamily" + currFamilyId);
             startActivity(intent);
         });
+
     }
 
     private void updateListFromDB() {
-        reference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
+        reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ListUnassignedTasks.clear();
@@ -197,7 +199,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(),NewTask.class);
-                i.putExtra("currFamilyid",currFamilyid);
+                i.putExtra("currFamilyid", currFamilyId);
                 startActivity(i);
             }
         });
