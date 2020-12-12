@@ -3,6 +3,7 @@ package com.example.tiptop;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,16 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.os.Bundle.EMPTY;
 import static androidx.core.content.ContextCompat.startActivity;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class TaskToChildAdapter extends BaseExpandableListAdapter {
 
@@ -78,6 +82,7 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View row;
@@ -97,7 +102,11 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
         nameView.setText(task.getNameTask());
         bonusView.setText("Bonus: " + task.getBonusScore());
         statusView.setText("Status: " + task.getStatus().toString());
-        timeView.setText("day left : inf");
+        if (task.getEndDate()!=null){
+            long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
+            timeView.setText("day left : "+ Days);
+        }
+        else timeView.setText("day left : inf");
 
         row.setOnClickListener(new View.OnClickListener() {
             @Override

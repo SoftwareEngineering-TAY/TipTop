@@ -1,6 +1,7 @@
 package com.example.tiptop;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -8,7 +9,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class TaskAdapter extends ArrayAdapter<Task> {
 
@@ -28,6 +34,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         return super.getItem(position);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -49,7 +56,11 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         nameView.setText(task.getNameTask());
         bonusView.setText("Bonus: " + task.getBonusScore());
         statusView.setText("Status: " + task.getStatus().toString());
-        timeView.setText("day left : inf");
+        if (task.getEndDate()!=null){
+            long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
+            timeView.setText("day left : "+ Days);
+        }
+        else timeView.setText("day left : inf");
 
         //returning the row view (because this is called getView after all)
         return row;
