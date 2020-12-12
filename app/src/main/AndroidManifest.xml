@@ -24,6 +24,7 @@
         <activity android:name=".HomeActivity"/>
         <activity android:name=".ChatActivity"/>
         <activity android:name=".FollowUpActivity"/>
+        <activity android:name=".FollowUpParentActivity"/>
         <activity android:name=".HistoryActivity"/>
         <activity android:name=".ImageActivity"/>
         <activity android:name=".PointsActivity"/>

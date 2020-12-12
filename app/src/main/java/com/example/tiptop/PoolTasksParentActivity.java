@@ -63,7 +63,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private void createExpandableListOfTask() {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
-        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups,currFamilyId);
+        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups,currFamilyId,TaskInfoActivity.class);
         AssociatedTasks.setAdapter(childAdapter);
 
         reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
@@ -95,7 +95,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                                         System.out.println("ListChildForTask1"+ListChildForTask);
                                         System.out.println("ListTaskGroups1"+ListTaskGroups);
 
-                                        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups,currFamilyId);
+                                        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups,currFamilyId,TaskInfoActivity.class);
                                         AssociatedTasks.setAdapter(childAdapter);
                                         childAdapter.notifyDataSetChanged();
                                     }

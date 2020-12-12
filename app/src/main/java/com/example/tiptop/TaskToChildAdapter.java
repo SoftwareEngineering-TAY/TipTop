@@ -10,6 +10,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,11 +23,13 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
     private String currFamilyId;
+    private Class dest;
 
-    public TaskToChildAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups, String currFamilyId){
+    public TaskToChildAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups, String currFamilyId, Class dest){
         this.ListChildForTask = ListChildForTask;
         this.ListTaskGroups = ListTaskGroups;
         this.currFamilyId =currFamilyId;
+        this.dest = dest;
     }
 
     @Override
@@ -98,7 +102,7 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(row.getContext(), TaskInfoActivity.class);
+                Intent intent = new Intent(row.getContext(),dest );
 
                 intent.putExtra("currFamilyId", currFamilyId);
                 intent.putExtra("task",task);
