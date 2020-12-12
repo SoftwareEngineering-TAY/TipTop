@@ -52,6 +52,28 @@
             android:textSize="30dp"
             android:textStyle="bold|italic"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/Description"
+            android:gravity="center_horizontal"
+            android:text="Description:"
+            android:textColor="#070707"
+            android:textSize="20dp"
+            android:textStyle="bold|italic"
+            android:layout_marginTop="30dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/DescriptionShow"
+            android:gravity="center_horizontal"
+            android:text="DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription"
+            android:textColor="#070707"
+            android:textSize="15dp"
+            android:textStyle="bold|italic"
+            android:layout_margin="15dp"
+            />
 
         <Button
             android:id="@+id/SwapTask"
@@ -59,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Swap Task"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="5dp"
             />
         <Button
             android:id="@+id/SetReminder"
@@ -67,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Set a reminder"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             />
 
         <Button
@@ -76,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Add a Picture"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             />
         <Button
             android:id="@+id/AddComment"
@@ -84,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Add a Comment"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             />
         <Button
             android:id="@+id/TaskDone"
@@ -92,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Done"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             />
     </LinearLayout>
 </RelativeLayout>

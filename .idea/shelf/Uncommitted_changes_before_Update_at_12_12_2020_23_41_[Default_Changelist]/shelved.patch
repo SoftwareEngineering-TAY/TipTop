@@ -1,0 +1,569 @@
+Index: app/src/main/java/com/example/tiptop/FollowUpActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiptop;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.widget.ArrayAdapter;\r\nimport android.widget.ListView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class FollowUpActivity extends AppCompatActivity {\r\n\r\n    private ListView followList;\r\n    private FirebaseAuth mAuth;\r\n    private FirebaseDatabase root;\r\n    private DatabaseReference reference;\r\n    private String currFamilyId;\r\n    private String uid;\r\n    private String permission;\r\n    private TaskAdapter mTaskAdapter;\r\n    private ArrayList<Task> list;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_followup);\r\n\r\n        initializeClassVariables();\r\n\r\n        createListOfTask();\r\n\r\n        crateClickEvent();\r\n\r\n        updateListFromDB();\r\n    }\r\n\r\n    private void initializeClassVariables() {\r\n        followList = (ListView) findViewById(R.id.followList);\r\n\r\n        mAuth = FirebaseAuth.getInstance();\r\n        root = FirebaseDatabase.getInstance();\r\n        reference = root.getReference();\r\n        uid = mAuth.getCurrentUser().getUid();\r\n\r\n        Bundle extras = getIntent().getExtras();\r\n        currFamilyId = extras.getString(\"currFamilyId\");\r\n        permission = extras.getString(\"permission\");\r\n    }\r\n\r\n    private void createListOfTask() {\r\n        list = new ArrayList<>();\r\n        mTaskAdapter = new TaskAdapter(getApplicationContext(),R.layout.row_task,list);\r\n        followList.setAdapter(mTaskAdapter);\r\n    }\r\n\r\n    private void crateClickEvent() {\r\n        followList.setOnItemClickListener((adapterView,view,i,l) -> {\r\n            Intent intent;\r\n            if (permission.equals(\"Parent\")){\r\n                intent = new Intent(view.getContext(), ApproveActivity.class);\r\n            }\r\n\r\n            else if (permission.equals(\"Child\")){\r\n                intent = new Intent(view.getContext(), TaskInfoActivity.class);\r\n            }\r\n            else return;\r\n            intent.putExtra(\"task\",list.get(i));\r\n            startActivity(intent);\r\n        });\r\n    }\r\n\r\n    private void updateListFromDB() {\r\n        reference.child(\"Tasks\").child(currFamilyId).addValueEventListener(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                list.clear();\r\n                for (DataSnapshot Snapshot : snapshot.getChildren()){\r\n                    if (Snapshot.child(\"belongsToUID\").getValue()!=null&&Snapshot.child(\"belongsToUID\").getValue().equals(uid)&& Snapshot.child(\"status\").getValue().equals(\"WaitingForApproval\")){\r\n                        Task toAdd = Snapshot.getValue(Task.class);\r\n                        list.add(toAdd);\r\n                        Log.v(\"Add to list\",toAdd.getNameTask());\r\n                    }\r\n                }\r\n                Log.v(\"Data changed\",\"www\");\r\n                mTaskAdapter.notifyDataSetChanged();\r\n            }\r\n\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n            }\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/FollowUpActivity.java	(revision 09c53279b4ed49c1340fd263e8d287acd580799e)
++++ app/src/main/java/com/example/tiptop/FollowUpActivity.java	(date 1607808602926)
+@@ -71,10 +71,11 @@
+             }
+ 
+             else if (permission.equals("Child")){
+-                intent = new Intent(view.getContext(), TaskInfoActivity.class);
++                intent = new Intent(view.getContext(), TaskInfoChildActivity.class);
+             }
+             else return;
+             intent.putExtra("task",list.get(i));
++            intent.putExtra("currFamilyId",currFamilyId);
+             startActivity(intent);
+         });
+     }
+@@ -85,7 +86,12 @@
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 list.clear();
+                 for (DataSnapshot Snapshot : snapshot.getChildren()){
+-                    if (Snapshot.child("belongsToUID").getValue()!=null&&Snapshot.child("belongsToUID").getValue().equals(uid)&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
++                    if (permission.equals("Parent")&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
++                        Task toAdd = Snapshot.getValue(Task.class);
++                        list.add(toAdd);
++                        Log.v("Add to list",toAdd.getNameTask());
++                    }
++                    else if (permission.equals("Child") && Snapshot.child("belongsToUID").getValue()!=null&&Snapshot.child("belongsToUID").getValue().equals(uid)&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
+                         Task toAdd = Snapshot.getValue(Task.class);
+                         list.add(toAdd);
+                         Log.v("Add to list",toAdd.getNameTask());
+Index: app/src/main/java/com/example/tiptop/ApproveActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\npackage com.example.tiptop;\r\n\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.AdapterView;\r\nimport android.widget.ArrayAdapter;\r\nimport android.widget.Button;\r\nimport android.widget.ImageButton;\r\nimport android.widget.ImageView;\r\nimport android.widget.ListView;\r\nimport android.widget.Spinner;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\n\r\npublic class ApproveActivity extends AppCompatActivity {\r\n\r\n    private Task task_to_show;\r\n\r\n    private TextView task_name;\r\n    private TextView bonus_score;\r\n    private ImageView task_image;\r\n    private TextView task_comment;\r\n    private Button approve_task;\r\n    private Button repeat_task;\r\n\r\n    private FirebaseDatabase root;\r\n    private DatabaseReference reference;\r\n    private FirebaseAuth mAuth;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_task_approve);\r\n\r\n        Bundle extras = getIntent().getExtras();\r\n\r\n        task_to_show = (Task) extras.get(\"task\");\r\n\r\n        initializeClassVariables();\r\n\r\n        setTextInfo();\r\n\r\n        setTaskImage();\r\n\r\n        setApproveButton();\r\n\r\n        setRepeatButton();\r\n\r\n\r\n    }\r\n\r\n    private void setTaskImage() {\r\n      //  task_image.\r\n        //get image!!\r\n    }\r\n\r\n    private void setRepeatButton() {\r\n        repeat_task.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                task_to_show.setStatus(Task.STATUS.Associated);\r\n                //add intent!!!!!\r\n            }\r\n        });\r\n    }\r\n\r\n    private void setApproveButton() {\r\n        approve_task.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                task_to_show.setStatus(Task.STATUS.Confirmed);\r\n                //add intent!!!!!\r\n            }\r\n        });\r\n    }\r\n\r\n\r\n    private void setTextInfo() {\r\n        task_name.setText(task_to_show.getNameTask());\r\n        bonus_score.setText(task_to_show.getBonusScore().toString());\r\n        task_comment.setText(task_to_show.getComment());\r\n    }\r\n\r\n    private void initializeClassVariables(){\r\n        task_name = (TextView)findViewById(R.id.TaskNameShow);\r\n        bonus_score = (TextView)findViewById(R.id.BonusPointShow);\r\n        task_image = (ImageView)findViewById(R.id.taskImage);\r\n        task_comment = (TextView)findViewById(R.id.CommentShow);\r\n        approve_task = (Button)findViewById(R.id.TaskApprove);\r\n        repeat_task = (Button)findViewById(R.id.TaskRepeat);\r\n\r\n        root = FirebaseDatabase.getInstance();\r\n        mAuth = FirebaseAuth.getInstance();\r\n        reference = root.getReference();\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/ApproveActivity.java	(revision 09c53279b4ed49c1340fd263e8d287acd580799e)
++++ app/src/main/java/com/example/tiptop/ApproveActivity.java	(date 1607808364446)
+@@ -2,27 +2,22 @@
+ package com.example.tiptop;
+ 
+ import android.os.Bundle;
+-import android.util.Log;
+ import android.view.View;
+-import android.widget.AdapterView;
+-import android.widget.ArrayAdapter;
+ import android.widget.Button;
+-import android.widget.ImageButton;
+ import android.widget.ImageView;
+-import android.widget.ListView;
+-import android.widget.Spinner;
+ import android.widget.TextView;
++import android.widget.Toast;
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+ import com.google.firebase.auth.FirebaseAuth;
+-import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.database.DatabaseReference;
+ import com.google.firebase.database.FirebaseDatabase;
+ 
+ public class ApproveActivity extends AppCompatActivity {
+ 
+-    private Task task_to_show;
++    private Task taskToShow;
++    private String currFamilyId;
+ 
+     private TextView task_name;
+     private TextView bonus_score;
+@@ -40,9 +35,7 @@
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_task_approve);
+ 
+-        Bundle extras = getIntent().getExtras();
+-
+-        task_to_show = (Task) extras.get("task");
++        getExtrasFromIntent();
+ 
+         initializeClassVariables();
+ 
+@@ -57,6 +50,40 @@
+ 
+     }
+ 
++    private void getExtrasFromIntent() {
++        Bundle extras = getIntent().getExtras();
++        if(extras!=null)
++        {
++            String currFamilyidTemp = extras.getString("currFamilyId");
++            if(extras.get("task")!=null)
++            {
++                taskToShow = (Task) extras.get("task");
++            }
++            if(currFamilyidTemp!=null)
++            {
++                currFamilyId=currFamilyidTemp;
++            }
++            else
++            {
++                Toast.makeText(this, "currFamily didn't pass, currFamily: "+currFamilyId, Toast.LENGTH_SHORT).show();
++            }
++        }
++    }
++
++    private void initializeClassVariables(){
++        task_name = (TextView)findViewById(R.id.TaskNameShow);
++        bonus_score = (TextView)findViewById(R.id.BonusPointShow);
++        task_image = (ImageView)findViewById(R.id.taskImage);
++        task_comment = (TextView)findViewById(R.id.CommentShow);
++        approve_task = (Button)findViewById(R.id.TaskApprove);
++        repeat_task = (Button)findViewById(R.id.TaskRepeat);
++
++        root = FirebaseDatabase.getInstance();
++        mAuth = FirebaseAuth.getInstance();
++        reference = root.getReference();
++
++    }
++
+     private void setTaskImage() {
+       //  task_image.
+         //get image!!
+@@ -66,7 +93,8 @@
+         repeat_task.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                task_to_show.setStatus(Task.STATUS.Associated);
++                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("Associated");
++                taskToShow.setStatus(Task.STATUS.Associated);
+                 //add intent!!!!!
+             }
+         });
+@@ -76,7 +104,8 @@
+         approve_task.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                task_to_show.setStatus(Task.STATUS.Confirmed);
++                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("Confirmed");
++                taskToShow.setStatus(Task.STATUS.Confirmed);
+                 //add intent!!!!!
+             }
+         });
+@@ -84,22 +113,10 @@
+ 
+ 
+     private void setTextInfo() {
+-        task_name.setText(task_to_show.getNameTask());
+-        bonus_score.setText(task_to_show.getBonusScore().toString());
+-        task_comment.setText(task_to_show.getComment());
++        task_name.setText(taskToShow.getNameTask());
++        bonus_score.setText(taskToShow.getBonusScore().toString());
++        task_comment.setText(taskToShow.getComment());
+     }
+ 
+-    private void initializeClassVariables(){
+-        task_name = (TextView)findViewById(R.id.TaskNameShow);
+-        bonus_score = (TextView)findViewById(R.id.BonusPointShow);
+-        task_image = (ImageView)findViewById(R.id.taskImage);
+-        task_comment = (TextView)findViewById(R.id.CommentShow);
+-        approve_task = (Button)findViewById(R.id.TaskApprove);
+-        repeat_task = (Button)findViewById(R.id.TaskRepeat);
+-
+-        root = FirebaseDatabase.getInstance();
+-        mAuth = FirebaseAuth.getInstance();
+-        reference = root.getReference();
+ 
+-    }
+ }
+Index: app/src/main/java/com/example/tiptop/Task.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiptop;\r\n\r\nimport java.io.Serializable;\r\nimport java.time.LocalDate;\r\nimport java.time.LocalDateTime; // import the LocalDateTime class\r\nimport com.google.firebase.storage.StorageReference;\r\n\r\npublic class Task implements Serializable {\r\n\r\n    //Default constructor\r\n    public Task() {\r\n    }\r\n\r\n    enum STATUS {\r\n        NotAssociated,\r\n        Associated,\r\n        WaitingForApproval,\r\n        Confirmed,\r\n        NotConfirmed\r\n    }\r\n\r\n\r\n\r\n    private String taskId;\r\n    private String nameTask;\r\n    private Long bonusScore;\r\n    private String belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid\r\n    private String startDate;\r\n    private String endDate;\r\n    private STATUS status;\r\n    private String comment;\r\n    private StorageReference image;\r\n\r\n    //Getter\r\n    public String getTaskId() {\r\n        return taskId;\r\n    }\r\n\r\n    public String getNameTask() {\r\n        return nameTask;\r\n    }\r\n\r\n    public Long getBonusScore() {\r\n        return bonusScore;\r\n    }\r\n\r\n    public String getBelongsToUID() {\r\n        return belongsToUID;\r\n    }\r\n\r\n    public String getStartDate() {\r\n        return startDate;\r\n    }\r\n\r\n    public String getEndDate() {\r\n        return endDate;\r\n    }\r\n\r\n    public STATUS getStatus() {\r\n        return status;\r\n    }\r\n\r\n    public String getComment() {\r\n        return comment;\r\n    }\r\n\r\n    public StorageReference getImage() {\r\n        return image;\r\n    }\r\n\r\n    //Setter\r\n    public void setTaskId(String taskId) {\r\n        this.taskId = taskId;\r\n    }\r\n\r\n    public void setNameTask(String nameTask) {\r\n        this.nameTask = nameTask;\r\n    }\r\n\r\n    public void setBonusScore(Long bonusScore) {\r\n        this.bonusScore = bonusScore;\r\n    }\r\n\r\n    public void setBelongsToUID(String belongsToUID) {\r\n        this.belongsToUID = belongsToUID;\r\n    }\r\n\r\n    public void setStartDate(String startDate) {\r\n        this.startDate = startDate;\r\n    }\r\n\r\n    public void setEndDate(String endDate) {\r\n        this.endDate = endDate;\r\n    }\r\n\r\n    public void setStatus(STATUS status) {\r\n        this.status = status;\r\n    }\r\n\r\n    public void setComment(String comment) {\r\n        this.comment = comment;\r\n    }\r\n\r\n    public void setImage(StorageReference image) {\r\n        this.image = image;\r\n    }\r\n\r\n\r\n    //methods\r\n    @Override\r\n    public String toString() {\r\n        return \"Task{\"+\"Name: \"+nameTask+'\\'' +\r\n                \"Bonus Score: \"+bonusScore+'\\'' +\r\n                \"Start date and hour: \"+startDate+'\\'' +\r\n                \"End date and hour: \"+endDate+'\\'' +\r\n                \"Status\"+status+'\\'' +\r\n                \"Comment\"+comment+'\\''+\r\n                \"}\";\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/Task.java	(revision 09c53279b4ed49c1340fd263e8d287acd580799e)
++++ app/src/main/java/com/example/tiptop/Task.java	(date 1607808364442)
+@@ -15,8 +15,7 @@
+         NotAssociated,
+         Associated,
+         WaitingForApproval,
+-        Confirmed,
+-        NotConfirmed
++        Confirmed
+     }
+ 
+ 
+Index: app/src/main/java/com/example/tiptop/PoolTaskChildActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiptop;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.AdapterView;\r\nimport android.widget.ArrayAdapter;\r\nimport android.widget.ListView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class PoolTaskChildActivity extends AppCompatActivity {\r\n    private ListView followList;\r\n    private FirebaseAuth mAuth;\r\n    private FirebaseDatabase root;\r\n    private DatabaseReference reference;\r\n    private String currFamilyId;\r\n    private String uid;\r\n    private TaskAdapter mTaskAdapter;\r\n    private ArrayList<Task> list;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_task_child);\r\n\r\n        initializeClassVariables();\r\n\r\n        createListOfTask();\r\n\r\n        crateClickEvent();\r\n\r\n        updateListFromDB();\r\n    }\r\n\r\n    private void initializeClassVariables() {\r\n        followList = (ListView) findViewById(R.id.followList);\r\n\r\n        mAuth = FirebaseAuth.getInstance();\r\n        root = FirebaseDatabase.getInstance();\r\n        reference = root.getReference();\r\n        uid = mAuth.getCurrentUser().getUid();\r\n\r\n        Bundle extras = getIntent().getExtras();\r\n        currFamilyId = extras.getString(\"currFamilyId\");\r\n    }\r\n\r\n    private void createListOfTask() {\r\n        list = new ArrayList<>();\r\n        mTaskAdapter = new TaskAdapter(getApplicationContext(),R.layout.row_task,list);\r\n        followList.setAdapter(mTaskAdapter);\r\n    }\r\n\r\n    private void crateClickEvent() {\r\n        followList.setOnItemClickListener((adapterView,view,i,l) -> {\r\n            Intent intent = new Intent(view.getContext(), TaskInfoActivity.class);\r\n            intent.putExtra(\"task\",list.get(i));\r\n            startActivity(intent);\r\n        });\r\n    }\r\n\r\n    private void updateListFromDB() {\r\n        reference.child(\"Tasks\").child(currFamilyId).addValueEventListener(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                list.clear();\r\n                for (DataSnapshot Snapshot : snapshot.getChildren()){\r\n                    if (Snapshot.child(\"belongsToUID\").getValue()!=null&&Snapshot.child(\"belongsToUID\").getValue().equals(uid) && Snapshot.child(\"status\").getValue().equals(\"Associated\")){\r\n                        Task toAdd = Snapshot.getValue(Task.class);\r\n                        list.add(toAdd);\r\n                        Log.v(\"Add to list\",toAdd.getNameTask());\r\n                    }\r\n                }\r\n                Log.v(\"Data changed\",\"www\");\r\n                mTaskAdapter.notifyDataSetChanged();\r\n            }\r\n\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n            }\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/PoolTaskChildActivity.java	(revision 09c53279b4ed49c1340fd263e8d287acd580799e)
++++ app/src/main/java/com/example/tiptop/PoolTaskChildActivity.java	(date 1607806364839)
+@@ -65,8 +65,9 @@
+ 
+     private void crateClickEvent() {
+         followList.setOnItemClickListener((adapterView,view,i,l) -> {
+-            Intent intent = new Intent(view.getContext(), TaskInfoActivity.class);
++            Intent intent = new Intent(view.getContext(), TaskInfoChildActivity.class);
+             intent.putExtra("task",list.get(i));
++            intent.putExtra("currFamilyId",currFamilyId);
+             startActivity(intent);
+         });
+     }
+Index: app/src/main/res/layout/activity_task_info_child.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\">\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:layout_margin=\"15dp\"\r\n        android:orientation=\"vertical\">\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:id=\"@+id/TaskName\"\r\n            android:gravity=\"center_horizontal\"\r\n            android:text=\"Task Name:\"\r\n            android:textColor=\"#070707\"\r\n            android:textSize=\"40dp\"\r\n            android:textStyle=\"bold|italic\"\r\n            />\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:id=\"@+id/TaskNameShow\"\r\n            android:gravity=\"center_horizontal\"\r\n            android:text=\"Name\"\r\n            android:textColor=\"#070707\"\r\n            android:textSize=\"50dp\"\r\n            android:textStyle=\"bold|italic\"\r\n            />\r\n\r\n\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:id=\"@+id/BonusPoint\"\r\n            android:gravity=\"center_horizontal\"\r\n            android:text=\"Bonus Points:\"\r\n            android:textColor=\"#070707\"\r\n            android:textSize=\"20dp\"\r\n            android:textStyle=\"bold|italic\"\r\n            android:layout_marginTop=\"30dp\"\r\n            />\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:id=\"@+id/BonusPointShow\"\r\n            android:gravity=\"center_horizontal\"\r\n            android:text=\"100\"\r\n            android:textColor=\"#070707\"\r\n            android:textSize=\"30dp\"\r\n            android:textStyle=\"bold|italic\"\r\n            />\r\n\r\n        <Button\r\n            android:id=\"@+id/SwapTask\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center_horizontal\"\r\n            android:text=\"Swap Task\"\r\n            android:layout_marginTop=\"30dp\"\r\n            />\r\n        <Button\r\n            android:id=\"@+id/SetReminder\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center_horizontal\"\r\n            android:text=\"Set a reminder\"\r\n            android:layout_marginTop=\"30dp\"\r\n            />\r\n\r\n        <Button\r\n            android:id=\"@+id/AddPic\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center_horizontal\"\r\n            android:text=\"Add a Picture\"\r\n            android:layout_marginTop=\"30dp\"\r\n            />\r\n        <Button\r\n            android:id=\"@+id/AddComment\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center_horizontal\"\r\n            android:text=\"Add a Comment\"\r\n            android:layout_marginTop=\"30dp\"\r\n            />\r\n        <Button\r\n            android:id=\"@+id/TaskDone\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_gravity=\"center_horizontal\"\r\n            android:text=\"Done\"\r\n            android:layout_marginTop=\"30dp\"\r\n            />\r\n    </LinearLayout>\r\n</RelativeLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_task_info_child.xml	(revision 09c53279b4ed49c1340fd263e8d287acd580799e)
++++ app/src/main/res/layout/activity_task_info_child.xml	(date 1607806364846)
+@@ -52,6 +52,28 @@
+             android:textSize="30dp"
+             android:textStyle="bold|italic"
+             />
++        <TextView
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:id="@+id/Description"
++            android:gravity="center_horizontal"
++            android:text="Description:"
++            android:textColor="#070707"
++            android:textSize="20dp"
++            android:textStyle="bold|italic"
++            android:layout_marginTop="30dp"
++            />
++        <TextView
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:id="@+id/DescriptionShow"
++            android:gravity="center_horizontal"
++            android:text="DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription"
++            android:textColor="#070707"
++            android:textSize="15dp"
++            android:textStyle="bold|italic"
++            android:layout_margin="15dp"
++            />
+ 
+         <Button
+             android:id="@+id/SwapTask"
+@@ -59,7 +81,7 @@
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:text="Swap Task"
+-            android:layout_marginTop="30dp"
++            android:layout_marginTop="5dp"
+             />
+         <Button
+             android:id="@+id/SetReminder"
+@@ -67,7 +89,7 @@
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:text="Set a reminder"
+-            android:layout_marginTop="30dp"
++            android:layout_marginTop="20dp"
+             />
+ 
+         <Button
+@@ -76,7 +98,7 @@
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:text="Add a Picture"
+-            android:layout_marginTop="30dp"
++            android:layout_marginTop="20dp"
+             />
+         <Button
+             android:id="@+id/AddComment"
+@@ -84,7 +106,7 @@
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:text="Add a Comment"
+-            android:layout_marginTop="30dp"
++            android:layout_marginTop="20dp"
+             />
+         <Button
+             android:id="@+id/TaskDone"
+@@ -92,7 +114,7 @@
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:text="Done"
+-            android:layout_marginTop="30dp"
++            android:layout_marginTop="20dp"
+             />
+     </LinearLayout>
+ </RelativeLayout>
+Index: app/src/main/java/com/example/tiptop/PoolTasksParentActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiptop;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.ArrayAdapter;\r\nimport android.widget.Button;\r\nimport android.widget.ExpandableListView;\r\nimport android.widget.ListView;\r\nimport android.widget.Spinner;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\nimport java.util.List;\r\n\r\npublic class PoolTasksParentActivity extends AppCompatActivity {\r\n\r\n    private ListView UnassignedTasks;\r\n    private ExpandableListView AssociatedTasks;\r\n    private FirebaseAuth mAuth;\r\n    private FirebaseDatabase root;\r\n    private DatabaseReference reference;\r\n    private String currFamilyid;\r\n    private String uid;\r\n\r\n    private ArrayList<Task> ListUnassignedTasks;\r\n    private ArrayList<String> ListChildForTask;\r\n    private HashMap<String,ArrayList<Task>> ListTaskGroups;\r\n\r\n    private TaskAdapter adapter;\r\n    private TaskToChildAdapter childAdapter;\r\n\r\n    private Button addTaskButton;\r\n\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_task_parent);\r\n        initializeClassVariables();\r\n        getExtrasFromIntent();\r\n        createListOfTask();\r\n\r\n        createExpandableListOfTask();\r\n\r\n        crateClickEvent();\r\n        updateListFromDB();\r\n\r\n        addButtonFunc();\r\n\r\n\r\n    }\r\n\r\n    private void createExpandableListOfTask() {\r\n        ListChildForTask = new ArrayList<>(); //list group\r\n        ListTaskGroups = new HashMap<>(); //list child\r\n        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups);\r\n        AssociatedTasks.setAdapter(childAdapter);\r\n\r\n        reference.child(\"Families\").child(currFamilyid).addValueEventListener(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                ListChildForTask.clear();\r\n                for (DataSnapshot ds : snapshot.getChildren() )\r\n                {\r\n                    String toAddChildren =(String) ds.getValue();\r\n                    reference.child(\"Users\").child(ds.getKey()).addValueEventListener(new ValueEventListener() {\r\n                        @Override\r\n                        public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                            if(snapshot.child(\"type\").getValue()!=null && snapshot.child(\"type\").getValue().toString().equals(\"Child\"))\r\n                            {\r\n                                ListChildForTask.add(toAddChildren);\r\n                                ArrayList<Task> toAdd = new ArrayList<>();\r\n                                reference.child(\"Tasks\").child(currFamilyid).addValueEventListener(new ValueEventListener() {\r\n                                    @Override\r\n                                    public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                                        for (DataSnapshot ds1 : snapshot.getChildren() )\r\n                                        {\r\n                                            if(ds1.child(\"belongsToUID\").getValue()!=null&&ds1.child(\"belongsToUID\").getValue().equals(ds.getKey()) && ds1.child(\"status\").getValue().equals(\"Associated\")){\r\n                                                Task taskToAdd = ds1.getValue(Task.class);\r\n                                                toAdd.add(taskToAdd);\r\n                                            }\r\n                                        }\r\n                                        ListTaskGroups.put(toAddChildren,toAdd);\r\n                                        System.out.println(\"ListChildForTask1\"+ListChildForTask);\r\n                                        System.out.println(\"ListTaskGroups1\"+ListTaskGroups);\r\n\r\n                                        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups);\r\n                                        AssociatedTasks.setAdapter(childAdapter);\r\n                                        childAdapter.notifyDataSetChanged();\r\n                                    }\r\n                                    @Override\r\n                                    public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n                                    }\r\n                                });\r\n                            }\r\n\r\n                        }\r\n                        @Override\r\n                        public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n                        }\r\n                    });\r\n                }\r\n\r\n\r\n            }\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n    private void initializeClassVariables() {\r\n        UnassignedTasks = (ListView) findViewById(R.id.ListUnassignedTasks);\r\n        AssociatedTasks = (ExpandableListView) findViewById(R.id.ListAssociatedTasks);\r\n\r\n        mAuth = FirebaseAuth.getInstance();\r\n        root = FirebaseDatabase.getInstance();\r\n        reference = root.getReference();\r\n        uid = mAuth.getCurrentUser().getUid();\r\n\r\n\r\n    }\r\n\r\n    private void getExtrasFromIntent() {\r\n        Bundle extras = getIntent().getExtras();\r\n        if(extras!=null)\r\n        {\r\n            String currFamilyidTemp = extras.getString(\"currFamilyId\");\r\n            if(currFamilyidTemp!=null)\r\n            {\r\n                currFamilyid=currFamilyidTemp;\r\n            }\r\n            else\r\n            {\r\n                Toast.makeText(this, \"currFamily didn't pass\", Toast.LENGTH_SHORT).show();\r\n            }\r\n        }\r\n    }\r\n\r\n    private void createListOfTask() {\r\n        ListUnassignedTasks = new ArrayList<>();\r\n        adapter = new TaskAdapter(getApplicationContext(),R.layout.row_task,ListUnassignedTasks);\r\n        UnassignedTasks.setAdapter(adapter);\r\n    }\r\n\r\n    private void crateClickEvent() {\r\n        UnassignedTasks.setOnItemClickListener((adapterView,view,i,l) -> {\r\n            Intent intent =new Intent(view.getContext(), TaskInfoActivity.class);\r\n            ////Chang destination!!\r\n            intent.putExtra(\"task\",ListUnassignedTasks.get(i));\r\n            intent.putExtra(\"currFamilyId\", currFamilyid);\r\n            startActivity(intent);\r\n        });\r\n    }\r\n\r\n    private void updateListFromDB() {\r\n        reference.child(\"Tasks\").child(currFamilyid).addValueEventListener(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                ListUnassignedTasks.clear();\r\n                for (DataSnapshot Snapshot : snapshot.getChildren()){\r\n                    if (Snapshot.child(\"status\").getValue().equals(\"NotAssociated\")){\r\n                        Task toAdd = Snapshot.getValue(Task.class);\r\n                        ListUnassignedTasks.add(toAdd);\r\n                        Log.v(\"Add to list\",toAdd.getNameTask());\r\n                    }\r\n                }\r\n                Log.v(\"Data changed\",\"www\");\r\n                adapter.notifyDataSetChanged();\r\n            }\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n    private void addButtonFunc() {\r\n        addTaskButton = (Button)findViewById(R.id.addTaskButton);\r\n        addTaskButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                Intent i = new Intent(v.getContext(),NewTask.class);\r\n                i.putExtra(\"currFamilyid\",currFamilyid);\r\n                startActivity(i);\r\n            }\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/PoolTasksParentActivity.java	(revision 09c53279b4ed49c1340fd263e8d287acd580799e)
++++ app/src/main/java/com/example/tiptop/PoolTasksParentActivity.java	(date 1607806364853)
+@@ -4,11 +4,9 @@
+ import android.os.Bundle;
+ import android.util.Log;
+ import android.view.View;
+-import android.widget.ArrayAdapter;
+ import android.widget.Button;
+ import android.widget.ExpandableListView;
+ import android.widget.ListView;
+-import android.widget.Spinner;
+ import android.widget.Toast;
+ 
+ import androidx.annotation.NonNull;
+@@ -23,7 +21,6 @@
+ 
+ import java.util.ArrayList;
+ import java.util.HashMap;
+-import java.util.List;
+ 
+ public class PoolTasksParentActivity extends AppCompatActivity {
+ 
+@@ -32,7 +29,7 @@
+     private FirebaseAuth mAuth;
+     private FirebaseDatabase root;
+     private DatabaseReference reference;
+-    private String currFamilyid;
++    private String currFamilyId;
+     private String uid;
+ 
+     private ArrayList<Task> ListUnassignedTasks;
+@@ -69,7 +66,7 @@
+         childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups);
+         AssociatedTasks.setAdapter(childAdapter);
+ 
+-        reference.child("Families").child(currFamilyid).addValueEventListener(new ValueEventListener() {
++        reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 ListChildForTask.clear();
+@@ -83,7 +80,7 @@
+                             {
+                                 ListChildForTask.add(toAddChildren);
+                                 ArrayList<Task> toAdd = new ArrayList<>();
+-                                reference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
++                                reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
+                                     @Override
+                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                         for (DataSnapshot ds1 : snapshot.getChildren() )
+@@ -144,7 +141,7 @@
+             String currFamilyidTemp = extras.getString("currFamilyId");
+             if(currFamilyidTemp!=null)
+             {
+-                currFamilyid=currFamilyidTemp;
++                currFamilyId =currFamilyidTemp;
+             }
+             else
+             {
+@@ -164,13 +161,13 @@
+             Intent intent =new Intent(view.getContext(), TaskInfoActivity.class);
+             ////Chang destination!!
+             intent.putExtra("task",ListUnassignedTasks.get(i));
+-            intent.putExtra("currFamilyId", currFamilyid);
++            intent.putExtra("currFamilyId", currFamilyId);
+             startActivity(intent);
+         });
+     }
+ 
+     private void updateListFromDB() {
+-        reference.child("Tasks").child(currFamilyid).addValueEventListener(new ValueEventListener() {
++        reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 ListUnassignedTasks.clear();
+@@ -197,7 +194,7 @@
+             @Override
+             public void onClick(View v) {
+                 Intent i = new Intent(v.getContext(),NewTask.class);
+-                i.putExtra("currFamilyid",currFamilyid);
++                i.putExtra("currFamilyid", currFamilyId);
+                 startActivity(i);
+             }
+         });
+Index: app/src/main/java/com/example/tiptop/TaskInfoChildActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/TaskInfoChildActivity.java	(date 1607806364864)
++++ app/src/main/java/com/example/tiptop/TaskInfoChildActivity.java	(date 1607806364864)
+@@ -0,0 +1,98 @@
++package com.example.tiptop;
++
++import android.os.Bundle;
++import android.util.Log;
++import android.view.View;
++import android.widget.Button;
++import android.widget.TextView;
++import android.widget.Toast;
++
++import androidx.appcompat.app.AppCompatActivity;
++
++import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.auth.FirebaseUser;
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++
++public class TaskInfoChildActivity  extends AppCompatActivity {
++
++    private Task taskToShow;
++    private String currFamilyId;
++
++    private TextView task_name;
++    private TextView bonus_score;
++    private TextView description;
++    private Button done_task;
++
++    private FirebaseDatabase root;
++    private DatabaseReference reference;
++    private FirebaseAuth mAuth;
++
++    @Override
++    protected void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++        setContentView(R.layout.activity_task_info_child);
++
++        getExtraFromIntent();
++
++        initializeClassVariables();
++
++        setTextInfo();
++
++        setDoneButton();
++    }
++
++    private void getExtraFromIntent() {
++        Bundle extras = getIntent().getExtras();
++        if(extras!=null)
++        {
++            String currFamilyidTemp = extras.getString("currFamilyId");
++            if(extras.get("task")!=null)
++            {
++                taskToShow = (Task) extras.get("task");
++            }
++            if(currFamilyidTemp!=null)
++            {
++                currFamilyId=currFamilyidTemp;
++            }
++            else
++            {
++                Toast.makeText(this, "currFamily didn't pass, currFamily: "+currFamilyId, Toast.LENGTH_SHORT).show();
++            }
++        }
++    }
++
++    private void initializeClassVariables(){
++        task_name = (TextView)findViewById(R.id.TaskNameShow);
++        bonus_score = (TextView)findViewById(R.id.BonusPointShow);
++        description = (TextView)findViewById(R.id.DescriptionShow);
++        done_task = (Button)findViewById(R.id.TaskDone);
++
++        root = FirebaseDatabase.getInstance();
++        mAuth = FirebaseAuth.getInstance();
++        reference = root.getReference();
++
++    }
++    private void setTextInfo() {
++        task_name.setText(taskToShow.getNameTask());
++        bonus_score.setText(taskToShow.getBonusScore().toString());
++        description.setText(taskToShow.getComment());
++    }
++
++    private void setDoneButton() {
++        done_task.setOnClickListener(new View.OnClickListener(){
++            @Override
++            public void onClick(View v) {
++                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("WaitingForApproval");
++                taskToShow.setStatus(Task.STATUS.WaitingForApproval);
++                Log.v("currFamilyId: ",currFamilyId);
++                //add intent!!!!!
++            }
++        });
++
++    }
++
++
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/tiptop/TaskInfoActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiptop;\r\n\r\n        import android.os.Bundle;\r\n        import android.view.View;\r\n        import android.widget.Button;\r\n        import android.widget.ImageButton;\r\n        import android.widget.Spinner;\r\n        import android.widget.TextView;\r\n        import android.widget.Toast;\r\n\r\n        import androidx.annotation.NonNull;\r\n        import androidx.appcompat.app.AppCompatActivity;\r\n\r\n        import com.google.firebase.auth.FirebaseAuth;\r\n        import com.google.firebase.database.DataSnapshot;\r\n        import com.google.firebase.database.DatabaseError;\r\n        import com.google.firebase.database.DatabaseReference;\r\n        import com.google.firebase.database.FirebaseDatabase;\r\n        import com.google.firebase.database.ValueEventListener;\r\n\r\npublic class TaskInfoActivity extends AppCompatActivity {\r\n\r\n    private Task taskToShow;\r\n    private String currFamilyId;\r\n\r\n    private String infoParentSpinner;\r\n\r\n    private com.google.android.material.textfield.TextInputLayout taskName;\r\n    private Button updateTaskName;\r\n    private com.google.android.material.textfield.TextInputLayout bonusScore;\r\n    private Button updateBonusScore;\r\n    private ImageButton taskImage;\r\n    private Spinner chooseChild;\r\n    private com.google.android.material.textfield.TextInputLayout Description;\r\n    private Button updateDescription;\r\n\r\n    private FirebaseDatabase root;\r\n    private DatabaseReference reference;\r\n    private FirebaseAuth mAuth;\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_task_info_parent);\r\n\r\n        getExtraFromIntent();\r\n\r\n        initializeClassVariables();\r\n\r\n        updateInfo();\r\n\r\n        updateNameOfTask();\r\n\r\n\r\n    }\r\n\r\n    private void getExtraFromIntent() {\r\n        Bundle extras = getIntent().getExtras();\r\n        if(extras!=null)\r\n        {\r\n            String currFamilyidTemp = extras.getString(\"currFamilyId\");\r\n            if(extras.get(\"task\")!=null)\r\n            {\r\n                taskToShow = (Task) extras.get(\"task\");\r\n            }\r\n\r\n            if(currFamilyidTemp!=null)\r\n            {\r\n                currFamilyId=currFamilyidTemp;\r\n            }\r\n            else\r\n            {\r\n                Toast.makeText(this, \"currFamily didn't pass\", Toast.LENGTH_SHORT).show();\r\n            }\r\n        }\r\n    }\r\n\r\n    private void updateNameOfTask() {\r\n        updateTaskName.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n               String nameToUpdate = taskName.getEditText().getText().toString();\r\n                System.out.println(\"currFamilyId: \"+ currFamilyId );\r\n               reference.child(\"Tasks\").child(currFamilyId).child(taskToShow.getTaskId()).child(\"nameTask\").setValue(nameToUpdate);\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    private void updateInfo() {\r\n        taskName.setHint(taskToShow.getNameTask());\r\n        bonusScore.setHint(taskToShow.getBonusScore().toString());\r\n        //Update Current Child Spinner\r\n        reference.child(\"Users\").child(taskToShow.getBelongsToUID()).addValueEventListener(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                for (DataSnapshot ds : snapshot.getChildren() )\r\n                {\r\n                    if(ds.getValue().equals(\"name\") && ds.getValue()!=null){\r\n                        infoParentSpinner = ds.getValue().toString();\r\n                    }\r\n                }\r\n            }\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n            }\r\n        });\r\n        // need to update image!!\r\n        Description.setHint(taskToShow.getComment());\r\n    }\r\n\r\n\r\n    private void initializeClassVariables(){\r\n        taskName = findViewById(R.id.NameOfTask);\r\n        updateTaskName = (Button) findViewById(R.id.UpdateName);\r\n        bonusScore = findViewById(R.id.BonusPoints);\r\n        updateBonusScore = (Button) findViewById(R.id.UpdateBonus);\r\n        taskImage = (ImageButton) findViewById(R.id.AddPic);\r\n        chooseChild = (Spinner) findViewById(R.id.SpinnerChooseChild);\r\n        Description = findViewById(R.id.Description);\r\n        updateDescription = (Button) findViewById(R.id.DescriptionUpdate);\r\n\r\n        root = FirebaseDatabase.getInstance();\r\n        mAuth = FirebaseAuth.getInstance();\r\n        reference = root.getReference();\r\n\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/tiptop/TaskInfoActivity.java	(revision 09c53279b4ed49c1340fd263e8d287acd580799e)
++++ app/src/main/java/com/example/tiptop/TaskInfoActivity.java	(date 1607806364861)
+@@ -1,22 +1,22 @@
+ package com.example.tiptop;
+ 
+-        import android.os.Bundle;
+-        import android.view.View;
+-        import android.widget.Button;
+-        import android.widget.ImageButton;
+-        import android.widget.Spinner;
+-        import android.widget.TextView;
+-        import android.widget.Toast;
++import android.os.Bundle;
++import android.view.View;
++import android.widget.Button;
++import android.widget.ImageButton;
++import android.widget.Spinner;
++import android.widget.TextView;
++import android.widget.Toast;
+ 
+-        import androidx.annotation.NonNull;
+-        import androidx.appcompat.app.AppCompatActivity;
++import androidx.annotation.NonNull;
++import androidx.appcompat.app.AppCompatActivity;
+ 
+-        import com.google.firebase.auth.FirebaseAuth;
+-        import com.google.firebase.database.DataSnapshot;
+-        import com.google.firebase.database.DatabaseError;
+-        import com.google.firebase.database.DatabaseReference;
+-        import com.google.firebase.database.FirebaseDatabase;
+-        import com.google.firebase.database.ValueEventListener;
++import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.database.DataSnapshot;
++import com.google.firebase.database.DatabaseError;
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++import com.google.firebase.database.ValueEventListener;
+ 
+ public class TaskInfoActivity extends AppCompatActivity {
+ 
+@@ -79,9 +79,9 @@
+         updateTaskName.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-               String nameToUpdate = taskName.getEditText().getText().toString();
++                String nameToUpdate = taskName.getEditText().getText().toString();
+                 System.out.println("currFamilyId: "+ currFamilyId );
+-               reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("nameTask").setValue(nameToUpdate);
++                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("nameTask").setValue(nameToUpdate);
+             }
+         });
+ 
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.tiptop\">\r\n\r\n    <application\r\n\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.TipTop\">\r\n\r\n        <activity android:name=\".LogoActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n        <activity android:name=\".NewTask\"/>\r\n        <activity android:name=\".LoginActivity\"/>\r\n        <activity android:name=\".NewClientActivity\"/>\r\n        <activity android:name=\".NewFamilyIDActivity\"/>\r\n        <activity android:name=\".HomeActivity\"/>\r\n        <activity android:name=\".ChatActivity\"/>\r\n        <activity android:name=\".FollowUpActivity\"/>\r\n        <activity android:name=\".HistoryActivity\"/>\r\n        <activity android:name=\".ImageActivity\"/>\r\n        <activity android:name=\".PointsActivity\"/>\r\n        <activity android:name=\".ProfileActivity\"/>\r\n        <activity android:name=\".SettingActivity\"/>\r\n        <activity android:name=\".StatisticsActivity\"/>\r\n        <activity android:name=\".PoolTasksParentActivity\"/>\r\n        <activity android:name=\".PoolTaskChildActivity\"/>\r\n        <activity android:name=\".TaskInfoActivity\"/>\r\n        <activity android:name=\".ManageCirclesActivity\"/>\r\n        <activity android:name=\".CreateChildAccountActivity\"/>\r\n        <activity android:name=\".CurrentCircleActivity\"/>\r\n        <activity android:name=\".MembersActivity\"/>\r\n        <activity android:name=\".ApproveActivity\"/>\r\n        <activity android:name=\".SettingChildrenActivity\"/>\r\n        <activity android:name=\".ParentRightsActivity\"/>\r\n\r\n\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 09c53279b4ed49c1340fd263e8d287acd580799e)
++++ app/src/main/AndroidManifest.xml	(date 1607806364867)
+@@ -33,6 +33,7 @@
+         <activity android:name=".PoolTasksParentActivity"/>
+         <activity android:name=".PoolTaskChildActivity"/>
+         <activity android:name=".TaskInfoActivity"/>
++        <activity android:name=".TaskInfoChildActivity"/>
+         <activity android:name=".ManageCirclesActivity"/>
+         <activity android:name=".CreateChildAccountActivity"/>
+         <activity android:name=".CurrentCircleActivity"/>

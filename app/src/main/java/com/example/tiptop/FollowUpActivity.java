@@ -71,10 +71,11 @@ public class FollowUpActivity extends AppCompatActivity {
             }
 
             else if (permission.equals("Child")){
-                intent = new Intent(view.getContext(), TaskInfoActivity.class);
+                intent = new Intent(view.getContext(), TaskInfoChildActivity.class);
             }
             else return;
             intent.putExtra("task",list.get(i));
+            intent.putExtra("currFamilyId",currFamilyId);
             startActivity(intent);
         });
     }
@@ -85,7 +86,12 @@ public class FollowUpActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
                 for (DataSnapshot Snapshot : snapshot.getChildren()){
-                    if (Snapshot.child("belongsToUID").getValue()!=null&&Snapshot.child("belongsToUID").getValue().equals(uid)&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
+                    if (permission.equals("Parent")&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
+                        Task toAdd = Snapshot.getValue(Task.class);
+                        list.add(toAdd);
+                        Log.v("Add to list",toAdd.getNameTask());
+                    }
+                    else if (permission.equals("Child") && Snapshot.child("belongsToUID").getValue()!=null&&Snapshot.child("belongsToUID").getValue().equals(uid)&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
                         Task toAdd = Snapshot.getValue(Task.class);
                         list.add(toAdd);
                         Log.v("Add to list",toAdd.getNameTask());

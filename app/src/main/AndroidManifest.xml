@@ -33,6 +33,7 @@
         <activity android:name=".PoolTasksParentActivity"/>
         <activity android:name=".PoolTaskChildActivity"/>
         <activity android:name=".TaskInfoActivity"/>
+        <activity android:name=".TaskInfoChildActivity"/>
         <activity android:name=".ManageCirclesActivity"/>
         <activity android:name=".CreateChildAccountActivity"/>
         <activity android:name=".CurrentCircleActivity"/>

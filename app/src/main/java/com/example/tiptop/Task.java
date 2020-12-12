@@ -15,8 +15,7 @@ public class Task implements Serializable {
         NotAssociated,
         Associated,
         WaitingForApproval,
-        Confirmed,
-        NotConfirmed
+        Confirmed
     }
 
 

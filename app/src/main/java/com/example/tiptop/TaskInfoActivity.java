@@ -8,6 +8,13 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,9 +52,12 @@ public class TaskInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_info_parent);
 
+        getExtraFromIntent();
+
         initializeClassVariables();
         getExtraFromIntent();
         updateInfo();
+
         updateNameOfTask();
 
 
@@ -64,6 +74,7 @@ public class TaskInfoActivity extends AppCompatActivity {
                 Log.d(TAG, "getExtraFromIntent:task to show: " + extras.get("task"));
                 taskToShow = (Task) extras.get("task");
             }
+
             if(currFamilyidTemp!=null)
             {
                 Log.d(TAG, "getExtraFromIntent: currfamilyid" + currFamilyidTemp);
