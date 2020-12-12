@@ -49,6 +49,7 @@ public class NewTask extends AppCompatActivity {
     private String currFamilyid;
     private DatabaseReference reference;
     private String keyKid;
+    private String key;
 
     private DatabaseReference databaseReference ;
     private FirebaseAuth mAuth;
@@ -165,6 +166,8 @@ public class NewTask extends AppCompatActivity {
 
     private void initializationTask() {
         toAddTask = new Task();
+        key = reference.child("Tasks").child(currFamilyid).push().getKey();
+        toAddTask.setTaskId(key);
         toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
         long bp = Long.parseLong(BonusPoint.getEditText().getText().toString());
         toAddTask.setBonusScore(bp);
@@ -179,7 +182,6 @@ public class NewTask extends AppCompatActivity {
     }
     private void addTaskToDB()
     {
-        String key = reference.child("Tasks").child(currFamilyid).push().getKey();
         System.out.println("key!!!!!!!!!!!!!!!!!!!!!!!"+key);
         System.out.println("fid))))))))))  " + currFamilyid);
         reference.child("Tasks").child(currFamilyid).child(key).setValue(toAddTask);

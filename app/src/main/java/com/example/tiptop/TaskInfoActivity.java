@@ -6,6 +6,7 @@ package com.example.tiptop;
         import android.widget.ImageButton;
         import android.widget.Spinner;
         import android.widget.TextView;
+        import android.widget.Toast;
 
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ package com.example.tiptop;
 public class TaskInfoActivity extends AppCompatActivity {
 
     private Task taskToShow;
+    private String currFamilyId;
 
     private String infoParentSpinner;
 
@@ -41,9 +43,7 @@ public class TaskInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_info_parent);
 
-        Bundle extras = getIntent().getExtras();
-
-        taskToShow = (Task) extras.get("task");
+        getExtraFromIntent();
 
         initializeClassVariables();
 
@@ -54,12 +54,34 @@ public class TaskInfoActivity extends AppCompatActivity {
 
     }
 
+    private void getExtraFromIntent() {
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null)
+        {
+            String currFamilyidTemp = extras.getString("currFamilyId");
+            if(extras.get("task")!=null)
+            {
+                taskToShow = (Task) extras.get("task");
+            }
+
+            if(currFamilyidTemp!=null)
+            {
+                currFamilyId=currFamilyidTemp;
+            }
+            else
+            {
+                Toast.makeText(this, "currFamily didn't pass", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private void updateNameOfTask() {
         updateTaskName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                String nameToUpdate = taskName.getEditText().getText().toString();
-               //reference.child("Tasks").child()
+                System.out.println("currFamilyId: "+ currFamilyId );
+               reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("nameTask").setValue(nameToUpdate);
             }
         });
 

@@ -164,6 +164,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
             Intent intent =new Intent(view.getContext(), TaskInfoActivity.class);
             ////Chang destination!!
             intent.putExtra("task",ListUnassignedTasks.get(i));
+            intent.putExtra("currFamilyId", currFamilyid);
             startActivity(intent);
         });
     }

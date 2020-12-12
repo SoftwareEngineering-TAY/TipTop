@@ -18,6 +18,10 @@ public class Task implements Serializable {
         Confirmed,
         NotConfirmed
     }
+
+
+
+    private String taskId;
     private String nameTask;
     private Long bonusScore;
     private String belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid
@@ -28,6 +32,10 @@ public class Task implements Serializable {
     private StorageReference image;
 
     //Getter
+    public String getTaskId() {
+        return taskId;
+    }
+
     public String getNameTask() {
         return nameTask;
     }
@@ -61,6 +69,10 @@ public class Task implements Serializable {
     }
 
     //Setter
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
     public void setNameTask(String nameTask) {
         this.nameTask = nameTask;
     }
