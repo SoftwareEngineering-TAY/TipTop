@@ -80,75 +80,6 @@ public class NewTask extends AppCompatActivity {
 
         System.out.println("allKids222222222222222222222222222!!!@#E$%^&^%%"+allKids);
 
-        //---------------------
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        String uid = mAuth.getCurrentUser().getUid();
-//        ArrayList<String> allKeys = new ArrayList<>();
-//        ArrayList<String> allKids =  new ArrayList<>();
-//        ArrayAdapter adapter;
-
-//        databaseReference.child("Families").child(currFamilyid).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                allKids.clear();
-//                allKeys.clear();
-//                for (DataSnapshot ds : snapshot.getChildren() )
-//                {
-//                    String toAddChildren =(String) ds.getValue();
-//                    System.out.println("  String toAddChildren =(String) ds.getValue();"+toAddChildren);
-//                    String toAddKey =(String) ds.getKey();
-//                    databaseReference.child("Users").child(toAddKey).addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            if(snapshot.child("type").getValue().toString().equals("Child"))
-//                            {
-//                                allKeys.add(toAddKey);
-//                                allKids.add(toAddChildren);
-//                            }
-//
-//                            System.out.println("allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//
-//            }
-//        });
-
-
-//        allKids.add("Not Associated");
-//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allKids);
-//        ListOfChildren.setAdapter(adapter);
-//        System.out.println("allKids222222222222222222222!!!@#E$%^&^%%"+allKids);
-
-//
-//        ListOfChildren.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if(allKids.get(position).equals("Not Associated"))
-//                {
-//                    keyKid=null;
-//                }
-//                else
-//                {
-//                    keyKid = allKeys.get(position);
-//                }
-//
-//            }
-//        });
-
-
     }
 
     private void updateListFromDB() {
@@ -187,9 +118,6 @@ public class NewTask extends AppCompatActivity {
 
 
                 }
-
-
-
 
                 System.out.println(" adapter.notifyDataSetChanged();allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
 

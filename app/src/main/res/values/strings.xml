@@ -35,6 +35,7 @@
     <string name="username">Username</string>
     <string name="enter_email_or_username">Enter Email or Username</string>
     <string name="task_assignment">Task assignment:</string>
+    <string name="infoParentSpinner">infoParentSpinner</string>
 
     <string-array name="Route">
         <item>With bonuses</item>

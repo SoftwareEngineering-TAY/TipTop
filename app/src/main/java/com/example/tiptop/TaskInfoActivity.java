@@ -1,30 +1,36 @@
 package com.example.tiptop;
 
         import android.os.Bundle;
-        import android.util.Log;
         import android.view.View;
-        import android.widget.AdapterView;
-        import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.ImageButton;
-        import android.widget.ListView;
         import android.widget.Spinner;
         import android.widget.TextView;
 
+        import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
 
         import com.google.firebase.auth.FirebaseAuth;
-        import com.google.firebase.auth.FirebaseUser;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
+        import com.google.firebase.database.ValueEventListener;
 
 public class TaskInfoActivity extends AppCompatActivity {
 
-    private Task task_to_show;
+    private Task taskToShow;
 
-    private TextView task_name;
-    private TextView bonus_score;
-    private Button done_task;
+    private String infoParentSpinner;
+
+    private com.google.android.material.textfield.TextInputLayout taskName;
+    private Button updateTaskName;
+    private com.google.android.material.textfield.TextInputLayout bonusScore;
+    private Button updateBonusScore;
+    private ImageButton taskImage;
+    private Spinner chooseChild;
+    private com.google.android.material.textfield.TextInputLayout Description;
+    private Button updateDescription;
 
     private FirebaseDatabase root;
     private DatabaseReference reference;
@@ -33,43 +39,70 @@ public class TaskInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_info);
+        setContentView(R.layout.activity_task_info_parent);
 
         Bundle extras = getIntent().getExtras();
 
-        task_to_show = (Task) extras.get("task");
+        taskToShow = (Task) extras.get("task");
 
         initializeClassVariables();
 
-        setTextInfo();
+        updateInfo();
 
-        setDoneButton();
+        updateNameOfTask();
+
+
     }
 
-    private void setDoneButton() {
-        done_task.setOnClickListener(new View.OnClickListener(){
+    private void updateNameOfTask() {
+        updateTaskName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                task_to_show.setStatus(Task.STATUS.WaitingForApproval);
-                //add intent!!!!!
+               String nameToUpdate = taskName.getEditText().getText().toString();
+               //reference.child("Tasks").child()
             }
         });
 
     }
 
-    private void setTextInfo() {
-        task_name.setText(task_to_show.getNameTask());
-        bonus_score.setText(task_to_show.getBonusScore().toString());
+    private void updateInfo() {
+        taskName.setHint(taskToShow.getNameTask());
+        bonusScore.setHint(taskToShow.getBonusScore().toString());
+        //Update Current Child Spinner
+        reference.child("Users").child(taskToShow.getBelongsToUID()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren() )
+                {
+                    if(ds.getValue().equals("name") && ds.getValue()!=null){
+                        infoParentSpinner = ds.getValue().toString();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        // need to update image!!
+        Description.setHint(taskToShow.getComment());
     }
 
+
     private void initializeClassVariables(){
-        task_name = (TextView)findViewById(R.id.TaskNameShow);
-        bonus_score = (TextView)findViewById(R.id.BonusPointShow);
-        done_task = (Button)findViewById(R.id.TaskDone);
+        taskName = findViewById(R.id.NameOfTask);
+        updateTaskName = (Button) findViewById(R.id.UpdateName);
+        bonusScore = findViewById(R.id.BonusPoints);
+        updateBonusScore = (Button) findViewById(R.id.UpdateBonus);
+        taskImage = (ImageButton) findViewById(R.id.AddPic);
+        chooseChild = (Spinner) findViewById(R.id.SpinnerChooseChild);
+        Description = findViewById(R.id.Description);
+        updateDescription = (Button) findViewById(R.id.DescriptionUpdate);
 
         root = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         reference = root.getReference();
+
 
     }
 }
