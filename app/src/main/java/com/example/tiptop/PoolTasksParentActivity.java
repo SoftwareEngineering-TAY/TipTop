@@ -64,11 +64,10 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     }
 
     private void createExpandableListOfTask() {
-        ListChildForTask = new ArrayList<>();
-        ListTaskGroups = new HashMap<>();
+        ListChildForTask = new ArrayList<>(); //list group
+        ListTaskGroups = new HashMap<>(); //list child
         childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups);
         AssociatedTasks.setAdapter(childAdapter);
-
 
         reference.child("Families").child(currFamilyid).addValueEventListener(new ValueEventListener() {
             @Override
@@ -94,16 +93,21 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                                                 toAdd.add(taskToAdd);
                                             }
                                         }
-                                    }
+                                        ListTaskGroups.put(toAddChildren,toAdd);
+                                        System.out.println("ListChildForTask1"+ListChildForTask);
+                                        System.out.println("ListTaskGroups1"+ListTaskGroups);
 
+                                        childAdapter = new TaskToChildAdapter(ListChildForTask,ListTaskGroups);
+                                        AssociatedTasks.setAdapter(childAdapter);
+                                        childAdapter.notifyDataSetChanged();
+                                    }
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
 
                                     }
                                 });
-                                ListTaskGroups.put(toAddChildren,toAdd);
                             }
-                            childAdapter.notifyDataSetChanged();
+
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
@@ -111,6 +115,8 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                         }
                     });
                 }
+
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

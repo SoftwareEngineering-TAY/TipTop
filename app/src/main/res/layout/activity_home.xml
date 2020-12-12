@@ -46,7 +46,7 @@
         android:layout_height="200dp"
         android:layout_below="@+id/SpinnerFamily"
         android:layout_marginTop="30dp"
-        android:background="#ff9999"/>
+       />
 
     <!--All bottom buttons-->
     <GridLayout

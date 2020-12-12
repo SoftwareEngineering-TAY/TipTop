@@ -1,5 +1,6 @@
 package com.example.tiptop;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -7,9 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static android.os.Bundle.EMPTY;
+import static androidx.core.content.ContextCompat.startActivity;
 
 public class TaskToChildAdapter extends BaseExpandableListAdapter {
 
@@ -61,6 +66,7 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
         convertView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_expandable_list_item_1,parent,false);
         TextView textView = convertView.findViewById(android.R.id.text1);
         String sGroup = String.valueOf(getGroup(groupPosition));
+        textView.setText(sGroup);
         textView.setTypeface(null, Typeface.BOLD);
         textView.setTextColor(Color.BLUE);
         return convertView;
@@ -68,17 +74,15 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        View row = convertView;
+        View row;
         //inflate the layout for a single row
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        row = inflater.inflate(android.R.layout.simple_selectable_list_item,parent,false);
+        row = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_task,parent,false);
 
         //get a reference to the different view elements we wish to update
         TextView nameView = (TextView) row.findViewById(R.id.TaskNameRow);
         TextView bonusView = (TextView) row.findViewById(R.id.BonusPointRow);
         TextView statusView = (TextView) row.findViewById(R.id.StatusTaskRow);
         TextView timeView = (TextView) row.findViewById(R.id.TimeLeftRow);
-
 
         //get the data from the data array
         Task task = getChild(groupPosition,childPosition);
@@ -88,6 +92,15 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
         bonusView.setText("Bonus: " + task.getBonusScore());
         statusView.setText("Status: " + task.getStatus().toString());
         timeView.setText("day left : inf");
+
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(row.getContext(), TaskInfoActivity.class);
+                intent.putExtra("task",task);
+                startActivity(row.getContext(),intent,EMPTY);
+            }
+        });
 
 
         //returning the row view (because this is called getView after all)

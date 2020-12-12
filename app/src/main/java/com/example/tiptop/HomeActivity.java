@@ -1,7 +1,12 @@
 package com.example.tiptop;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,13 +18,19 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +39,7 @@ public class HomeActivity extends AppCompatActivity  {
     //Variables that will contain all the buttons
     private Button setting;
     private Button profile;
-    private ImageButton  imageButton;
+    private ImageButton imageButton;
     private Button followUp;
     private Button Statistics;
     private Button chat ;
@@ -53,15 +64,20 @@ public class HomeActivity extends AppCompatActivity  {
     private ArrayAdapter adapter;
     public String spinnerTitle;
 
+    private Bitmap bitmapImage =null;
+    private Uri uriImage = null;
+    private static final int CAMERA_PHOTO = 1;
+    private static final int GALLERY_PHOTO = 2;
+    private static final String TAG = "HomeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         initializationFromXML();
         initializationCurrFamilyIdAndPermission();
         spinerActive();
+        initializationImage();
         ActivateAllButtons();
     }
 
@@ -301,9 +317,109 @@ public class HomeActivity extends AppCompatActivity  {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), ImageActivity.class);
-                startActivity(i);
+                setNewImagwButton();
+                uploadImage(currFamilyId);
             }
         });
     }
+
+    private void setNewImagwButton(){
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] options = {"Take photo from camera", "Choose photo from Gallery", "Cancel"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle("Attach a photo");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals(options[0]))
+                        {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, CAMERA_PHOTO);
+                        }
+                        else if (options[item].equals(options[1]))
+                        {
+                            Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(intent, GALLERY_PHOTO);
+                        }
+                        else if (options[item].equals(options[2])) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_PHOTO) {
+                Bundle extras = data.getExtras();
+                bitmapImage = (Bitmap)extras.get("data");
+                imageButton.setImageBitmap(bitmapImage);
+            }
+            else if (requestCode == GALLERY_PHOTO) {
+                uriImage = data.getData();
+                imageButton.setImageURI(uriImage);
+            }
+        }
+    }
+
+    private void uploadImage(String family_key){
+        String path = "Families/" + family_key;
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference mStorageRef = storage.getReference(path);
+        if(uriImage != null){
+            mStorageRef.putFile(uriImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "onComplete: uri upload went good");
+                    }
+                    else{
+                        Log.d(TAG, "onComplete: uri upload failed.");
+                    }
+                }
+            });
+        }
+        else if(bitmapImage != null){
+            ByteArrayOutputStream to_stream = new ByteArrayOutputStream();
+            bitmapImage.compress(Bitmap.CompressFormat.JPEG,100, to_stream);
+            byte bytes[] = to_stream.toByteArray();
+            mStorageRef.putBytes(bytes).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "onComplete: bitmap upload went good");
+                    }
+                    else{
+                        Log.d(TAG, "onComplete: bitmap upload failed.");
+                    }
+                }
+            });
+        }
+    }
+
+    //need to ask yirat
+    private void initializationImage() {
+        String path = "Families/" + currFamilyId;
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference mStorageRef = storage.getReference(path);
+        if (mStorageRef != null)
+        {
+
+        }
+
+        else
+        {
+            imageButton.setImageResource(R.drawable.new_family);
+        }
+
+    }
+
+
 }
