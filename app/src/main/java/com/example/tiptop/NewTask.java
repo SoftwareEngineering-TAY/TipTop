@@ -167,12 +167,12 @@ public class NewTask extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            if(snapshot.child("type").getValue().toString().equals("Child"))
+                            if(snapshot.child("type").getValue()!=null&&snapshot.child("type").getValue().toString().equals("Child"))
                             {
                                 allKeys.add(toAddKey);
                                 allKids.add(toAddChildren);
                             }
-
+                            System.out.println("allKids.isEmpty())))))"+allKids.isEmpty());
                             adapter.notifyDataSetChanged();
 
                             System.out.println("allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
@@ -223,6 +223,7 @@ public class NewTask extends AppCompatActivity {
     private void createList() {
         allKeys = new ArrayList<>();
         allKids =  new ArrayList<>();
+        allKids.add("Not Associated");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allKids);
         ListOfChildren.setAdapter(adapter);
     }

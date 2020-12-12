@@ -46,6 +46,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +62,6 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     private void initializeClassVariables(){
         Bundle extras = getIntent().getExtras();
         family_uid = (String) extras.get("family_uid");
-
         root = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         reference = root.getReference();

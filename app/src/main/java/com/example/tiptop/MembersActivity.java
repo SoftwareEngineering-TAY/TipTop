@@ -2,6 +2,7 @@ package com.example.tiptop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -105,6 +106,7 @@ public class MembersActivity extends AppCompatActivity {
                 Intent go_to_child_account = new Intent(MembersActivity.this,CreateChildAccountActivity.class);
 
                 go_to_child_account.putExtra("family_uid", family_uid);
+                Log.v("****family_uid1****",family_uid);
                 startActivity(go_to_child_account);
             }
         });

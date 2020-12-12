@@ -37,13 +37,17 @@ public class HomeActivity extends AppCompatActivity  {
     private Button points;
     private Spinner SpinnerFamily;
 
+    //Variables that will be used to link with the database
     private FirebaseDatabase root;
     private FirebaseAuth mAuth;
     private DatabaseReference reference;
-
     private String uid;
+
+    //Variables that will be used to store information coming from the Internet
     private String permission;
     private String currFamilyId;
+
+    //Variables to be used for the spinner
     private List <String> allKeys;
     private ArrayList <String> allFamilies;
     private ArrayAdapter adapter;
@@ -54,13 +58,18 @@ public class HomeActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         initializationFromXML();
-        initializationCurrFamilyId();
+        initializationCurrFamilyIdAndPermission();
         spinerActive();
         ActivateAllButtons();
     }
 
-    private void initializationCurrFamilyId() {
+    /**
+     * The function retrieves from the database the family he selected and his permission.
+     * This information is needed for almost all pages in the application and therefore we will pass the information in intent.
+     */
+    private void initializationCurrFamilyIdAndPermission() {
         root = FirebaseDatabase.getInstance();
         reference = root.getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -78,8 +87,8 @@ public class HomeActivity extends AppCompatActivity  {
                         permission = (String) ds.getValue();
                     }
                 }
-                Log.v("permissionnnnnn!!!!!!!", permission);
-                Log.v("currFamilyId!!!!!!!", currFamilyId);
+                Log.v("****permissionnnnnn****", permission);
+                Log.v("****currFamilyId****", currFamilyId);
             }
 
             @Override
@@ -87,30 +96,40 @@ public class HomeActivity extends AppCompatActivity  {
 
             }
         });
-
     }
 
+    /**
+     * The function activates the spinner component, meaning it fills in the spinner all
+     * the families to which the user belongs by retrieving what DB. And when you click on another last
+     * name the currFamilyId changes in the title and in DB and this is what is transmitted on the Internet.
+     */
     private void spinerActive() {
         //Set the SpinnerFamily Spinner
         SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
+
+        //Initialize the 2 lists that will save all the last names and all the keys respectively.
         allKeys = new ArrayList<>();
         allFamilies = new ArrayList<>();
+
+        //A function that retrieves all information from the database
         getInfoFromDB();
+
+        //Connecting the list to the view
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, allFamilies);
         SpinnerFamily.setAdapter(adapter);
+
+        //Defines the functionality of a last name click
         SpinnerFamily.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currFamilyId = allKeys.get(position);
                 spinnerTitle = allFamilies.get(position);
-                System.out.println(" currFamilyId = allKeys.get(position);"+ allKeys.get(position)+"position: "+position);
-                System.out.println(allKeys);
-                Log.v("currFamilyId666666", currFamilyId);
+                reference.child("Users").child(uid).child("currFamilyId").setValue(currFamilyId);
+                Log.v("****currFamilyId****", currFamilyId);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -129,6 +148,16 @@ public class HomeActivity extends AppCompatActivity  {
                     System.out.println("ds.getKey()!!!!!!!!!!"+ds.getKey());
                     allFamilies.add(toAddFamiliy);
                     allKeys.add(toAddKey);
+                }
+                int pos=allKeys.indexOf(currFamilyId);
+                if(pos>0)
+                {
+                    String Family=allFamilies.get(pos);
+                    allFamilies.remove(Family);
+                    allFamilies.add(0,Family);
+
+                    allKeys.remove(currFamilyId);
+                    allKeys.add(0,currFamilyId);
                 }
                 adapter.notifyDataSetChanged();
                 System.out.println(allFamilies);
