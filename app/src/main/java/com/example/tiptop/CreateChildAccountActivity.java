@@ -1,6 +1,8 @@
 package com.example.tiptop;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     private String family_uid;
     private String family_name;
     private User user;
+    private User current_user;
 
     private FirebaseDatabase root;
     private DatabaseReference reference;
@@ -54,9 +57,12 @@ public class CreateChildAccountActivity extends AppCompatActivity {
 
         initializeClassVariables();
 
+        setCurrentUser();
+
         setSelectDateButton();
 
         setContinueButton();
+
     }
 
     private void initializeClassVariables(){
@@ -75,11 +81,27 @@ public class CreateChildAccountActivity extends AppCompatActivity {
         birthday = (TextView) findViewById(R.id.birthday);
         select_date = (Button) findViewById(R.id.selectDate);
 
-
         user = new User();
+        current_user = new User();
 
+    }
 
+    private void setCurrentUser(){
+        String uid = mAuth.getCurrentUser().getUid();
+        reference = root.getReference().child("Users").child(uid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                current_user = snapshot.getValue(User.class);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void setSelectDateButton(){
@@ -127,8 +149,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
 
                 createUserInFireBase();
 
-                Intent go_to_home = new Intent(CreateChildAccountActivity.this,HomeActivity.class);
-                startActivity(go_to_home);
+                signInCurrentUser();
 
             }
         });
@@ -161,6 +182,24 @@ public class CreateChildAccountActivity extends AppCompatActivity {
 
                 }
 
+            }
+        });
+    }
+
+    private void signInCurrentUser(){
+
+        mAuth.signOut();
+
+        mAuth.signInWithEmailAndPassword(current_user.getEmail(),current_user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    Intent go_to_home = new Intent(CreateChildAccountActivity.this, HomeActivity.class);
+                    startActivity(go_to_home);
+                }
+                else {
+
+                }
             }
         });
     }

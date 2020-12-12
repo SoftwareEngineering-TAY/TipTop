@@ -214,7 +214,7 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 String uid = mAuth.getCurrentUser().getUid();
-                reference = root.getReference("Users").child(uid).child("type");
+                reference = root.getReference().child("Users").child(uid).child("type");
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

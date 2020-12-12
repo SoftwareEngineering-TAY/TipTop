@@ -18,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 public class SettingChildrenActivity extends AppCompatActivity {
 
     private TextView name;
-    private TextView email;
 
     private FirebaseDatabase root;
     private FirebaseAuth mAuth;
@@ -38,7 +37,6 @@ public class SettingChildrenActivity extends AppCompatActivity {
     private void initializeClassVariables(){
 
         name = (TextView)findViewById(R.id.name);
-        email = (TextView)findViewById(R.id.email);
 
         root = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -46,26 +44,12 @@ public class SettingChildrenActivity extends AppCompatActivity {
 
     private void setScreenViewByUser(){
         String uid = mAuth.getCurrentUser().getUid();
-        reference = root.getReference("Users").child(uid);
+        reference = root.getReference("Users").child(uid).child("name");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String key;
-                String value;
 
-                for(DataSnapshot ds : snapshot.getChildren()){
-
-                    key = ds.getKey();
-                    value = (String) ds.getValue();
-
-                    if(key.equals("name")){
-                        name.setText(value);
-                    }
-
-                    else if(key.equals("email")){
-                        email.setText(value);
-                    }
-                }
+                name.setText(snapshot.getValue().toString());
             }
 
             @Override
