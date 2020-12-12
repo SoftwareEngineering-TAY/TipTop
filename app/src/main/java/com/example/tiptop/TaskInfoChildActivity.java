@@ -1,5 +1,6 @@
 package com.example.tiptop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -87,6 +88,9 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
                 taskToShow.setStatus(Task.STATUS.WaitingForApproval);
                 Log.v("currFamilyId: ",currFamilyId);
                 //add intent!!!!!
+                Intent i = new Intent(v.getContext(), PoolTaskChildActivity.class);
+                i.putExtra("currFamilyId", currFamilyId);
+                startActivity(i);
             }
         });
 

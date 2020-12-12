@@ -1,6 +1,7 @@
 
 package com.example.tiptop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -96,6 +97,9 @@ public class ApproveActivity extends AppCompatActivity {
                 reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("Associated");
                 taskToShow.setStatus(Task.STATUS.Associated);
                 //add intent!!!!!
+                Intent i = new Intent(v.getContext(), FollowUpParentActivity.class);
+                i.putExtra("currFamilyId", currFamilyId);
+                startActivity(i);
             }
         });
     }
@@ -107,6 +111,9 @@ public class ApproveActivity extends AppCompatActivity {
                 reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("Confirmed");
                 taskToShow.setStatus(Task.STATUS.Confirmed);
                 //add intent!!!!!
+                Intent i = new Intent(v.getContext(), FollowUpParentActivity.class);
+                i.putExtra("currFamilyId", currFamilyId);
+                startActivity(i);
             }
         });
     }
