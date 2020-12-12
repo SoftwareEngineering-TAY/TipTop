@@ -193,6 +193,9 @@ public class NewTask extends AppCompatActivity {
             public void onClick(View v) {
                 initializationTask();
                 addTaskToDB();
+                Intent i = new Intent(v.getContext(), PoolTasksParentActivity.class);
+                i.putExtra("currFamilyId", currFamilyid);
+                startActivity(i);
             }
         });
     }

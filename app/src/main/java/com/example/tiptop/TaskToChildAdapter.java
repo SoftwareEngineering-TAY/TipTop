@@ -104,9 +104,9 @@ public class TaskToChildAdapter extends BaseExpandableListAdapter {
         statusView.setText("Status: " + task.getStatus().toString());
         if (task.getEndDate()!=null){
             long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
-            timeView.setText("day left : "+ Days);
+            timeView.setText("days left : "+ Days);
         }
-        else timeView.setText("day left : inf");
+        else timeView.setText("days left : inf");
 
         row.setOnClickListener(new View.OnClickListener() {
             @Override
