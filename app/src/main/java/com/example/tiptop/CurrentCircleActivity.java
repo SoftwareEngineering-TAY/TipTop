@@ -51,17 +51,12 @@ public class CurrentCircleActivity extends AppCompatActivity {
     private void setScreenViewByFamily(){
         Bundle extras = getIntent().getExtras();
         family_uid = (String) extras.get("family_uid");
-        reference = root.getReference("Families").child(family_uid);
+        reference = root.getReference("Families").child(family_uid).child("Family name");
         reference.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot ds : snapshot.getChildren()){
-
-                    if(ds.getKey().equals("Family name")){
-                        family_name.setText(ds.getValue()+" Circle");
-                    }
-                }
+                family_name.setText(snapshot.getValue()+" Circle");
             }
 
             @Override
@@ -84,6 +79,13 @@ public class CurrentCircleActivity extends AppCompatActivity {
 
                 go_to_members.putExtra("family_uid", family_uid);
                 startActivity(go_to_members);
+            }
+
+            else if(i==1){
+                Intent go_to_parent_rights = new Intent(CurrentCircleActivity.this, ParentRightsActivity.class);
+
+                go_to_parent_rights.putExtra("family_uid", family_uid);
+                startActivity(go_to_parent_rights);
             }
 
         });

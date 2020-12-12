@@ -35,6 +35,9 @@
     <string name="username">Username</string>
     <string name="enter_email_or_username">Enter Email or Username</string>
     <string name="task_assignment">Task assignment:</string>
+    <string name="parent_members">Parent members</string>
+    <string name="parents_have_full_control_of_the_aplication_and_can_manage_the_members_of_the_circle">Parents have full control of the aplication and can manage the members of the circle</string>
+    <string name="child_members">Child members</string>
     <string name="infoParentSpinner">infoParentSpinner</string>
 
     <string-array name="Route">
