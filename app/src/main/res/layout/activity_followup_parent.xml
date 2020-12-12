@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/FollowUpText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Follow Up:"
+            android:textColor="#070707"
+            android:textSize="50dp"
+            android:textStyle="bold|italic"
+            />
+        <TextView
+            android:id="@+id/TasksToApprove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Waiting for approval:"
+            android:textColor="#070707"
+            android:textSize="32dp"
+            android:textStyle="bold|italic"
+            />
+        <ExpandableListView
+            android:id="@+id/followExpandableList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50dp"
+
+            />
+    </LinearLayout>
+
+</RelativeLayout>

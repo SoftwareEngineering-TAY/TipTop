@@ -252,7 +252,14 @@ public class HomeActivity extends AppCompatActivity  {
         followUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),FollowUpActivity.class);
+                Intent i;
+                if(permission.equals("Parent")){
+                    i = new Intent(v.getContext(),FollowUpParentActivity.class);
+                }
+                else if (permission.equals("Child")) {
+                    i = new Intent(v.getContext(), FollowUpActivity.class);
+                }
+                else return;
                 i.putExtra("currFamilyId", currFamilyId);
                 i.putExtra("permission",permission);
                 startActivity(i);
