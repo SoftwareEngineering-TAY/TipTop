@@ -116,7 +116,7 @@
                 android:layout_marginLeft="10dp"
 
                 android:gravity="center_horizontal"
-                android:prompt="@string/infoParentSpinner"
+                android:prompt="@string/titleParentSpinner"
                 android:spinnerMode="dropdown" />
 
         </LinearLayout>
