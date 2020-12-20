@@ -30,6 +30,7 @@ public class PoolTasksChildActivity extends AppCompatActivity {
     private String uid;
     private TaskListAdapter mTaskListAdapter;
     private ArrayList<Task> list;
+    private ArrayList<String> listID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class PoolTasksChildActivity extends AppCompatActivity {
 
     private void createListOfTask() {
         list = new ArrayList<>();
+        listID = new ArrayList<>();
         mTaskListAdapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task,list);
         followList.setAdapter(mTaskListAdapter);
     }
@@ -67,6 +69,7 @@ public class PoolTasksChildActivity extends AppCompatActivity {
         followList.setOnItemClickListener((adapterView,view,i,l) -> {
             Intent intent = new Intent(view.getContext(), TaskInfoChildActivity.class);
             intent.putExtra("task",list.get(i));
+            intent.putExtra("taskID",listID.get(i));
             intent.putExtra("currFamilyId",currFamilyId);
             startActivity(intent);
         });
@@ -77,10 +80,12 @@ public class PoolTasksChildActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
+                listID.clear();
                 for (DataSnapshot Snapshot : snapshot.getChildren()){
                     if (Snapshot.child("belongsToUID").getValue()!=null&&Snapshot.child("belongsToUID").getValue().equals(uid) && Snapshot.child("status").getValue().equals("Associated")){
                         Task toAdd = Snapshot.getValue(Task.class);
                         list.add(toAdd);
+                        listID.add(snapshot.getKey());
                         Log.v("Add to list",toAdd.getNameTask());
                     }
                 }

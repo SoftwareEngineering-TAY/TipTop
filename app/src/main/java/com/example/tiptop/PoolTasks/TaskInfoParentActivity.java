@@ -29,9 +29,8 @@ import java.util.List;
 public class TaskInfoParentActivity extends AppCompatActivity {
 
     private Task taskToShow;
+    private String taskID;
     private String currFamilyId;
-
-
 
     private com.google.android.material.textfield.TextInputLayout taskName;
     private Button taskNameButton;
@@ -82,16 +81,17 @@ public class TaskInfoParentActivity extends AppCompatActivity {
         if(extras!=null)
         {
             String currFamilyidTemp = extras.getString("currFamilyId");
-            Log.d(TAG, "getExtraFromIntent: currfamilyid" + currFamilyidTemp);
             if(extras.get("task")!=null)
             {
-                Log.d(TAG, "getExtraFromIntent:task to show: " + extras.get("task"));
                 taskToShow = (Task) extras.get("task");
             }
-
+            if(extras.get("taskID")!=null)
+            {
+                taskID = extras.getString("taskID");
+            }
             if(currFamilyidTemp!=null)
             {
-                Log.d(TAG, "getExtraFromIntent: currfamilyid" + currFamilyidTemp);
+
                 currFamilyId=currFamilyidTemp;
             }
             else
@@ -120,14 +120,14 @@ public class TaskInfoParentActivity extends AppCompatActivity {
                 titleParentSpinner = allKids.get(position);
                 if(position == 0)
                 {
-                    reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("belongsToUID").removeValue();
-                    reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("NotAssociated");
+                    reference.child("Tasks").child(currFamilyId).child(taskID).child("belongsToUID").removeValue();
+                    reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue("NotAssociated");
 
                 }
                 else
                 {
-                    reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("belongsToUID").setValue(allKeys.get(position-1));
-                    reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("Associated");
+                    reference.child("Tasks").child(currFamilyId).child(taskID).child("belongsToUID").setValue(allKeys.get(position-1));
+                    reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue("Associated");
                 }
 
             }
@@ -149,7 +149,6 @@ public class TaskInfoParentActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren() )
                 {
                     String toAddChildren =(String) ds.getValue();
-                    System.out.println("  String toAddChildren =(String) ds.getValue();"+toAddChildren);
                     String toAddKey =(String) ds.getKey();
                     reference.child("Users").child(toAddKey).addValueEventListener(new ValueEventListener() {
                         @Override
@@ -162,8 +161,6 @@ public class TaskInfoParentActivity extends AppCompatActivity {
                             }
                             System.out.println("allKids.isEmpty())))))"+allKids.isEmpty());
                             adapter.notifyDataSetChanged();
-
-                            System.out.println("allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
                         }
 
 
@@ -175,8 +172,6 @@ public class TaskInfoParentActivity extends AppCompatActivity {
 
 
                 }
-                System.out.println(" adapter.notifyDataSetChanged();allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
-
             }
 
             @Override
@@ -193,7 +188,7 @@ public class TaskInfoParentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String descriptionToUpdate = description.getEditText().getText().toString();
-                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("nameTask").setValue(descriptionToUpdate);
+                reference.child("Tasks").child(currFamilyId).child(taskID).child("nameTask").setValue(descriptionToUpdate);
 
             }
         });
@@ -205,7 +200,7 @@ public class TaskInfoParentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String nameToUpdate = taskName.getEditText().getText().toString();
                 System.out.println("currFamilyId: "+ currFamilyId );
-                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("nameTask").setValue(nameToUpdate);
+                reference.child("Tasks").child(currFamilyId).child(taskID).child("nameTask").setValue(nameToUpdate);
 
             }
         });
@@ -217,7 +212,7 @@ public class TaskInfoParentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int bonusToUpdate =  Integer.parseInt(bonusScore.getEditText().getText().toString());
-                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("bonusScore").setValue(bonusToUpdate);
+                reference.child("Tasks").child(currFamilyId).child(taskID).child("bonusScore").setValue(bonusToUpdate);
 
             }
         });
@@ -251,7 +246,7 @@ public class TaskInfoParentActivity extends AppCompatActivity {
             });
         }
         // need to update image!!
-        description.setHint(taskToShow.getComment());
+        description.setHint(taskToShow.getDescription());
     }
 
 

@@ -19,11 +19,12 @@ import com.google.firebase.database.FirebaseDatabase;
 public class TaskInfoChildActivity  extends AppCompatActivity {
 
     private Task taskToShow;
+    private String taskID;
     private String currFamilyId;
 
     private TextView task_name;
     private TextView bonus_score;
-    private TextView description;
+    private TextView comment;
     private Button done_task;
 
     private FirebaseDatabase root;
@@ -53,6 +54,10 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
             {
                 taskToShow = (Task) extras.get("task");
             }
+            if(extras.get("taskID")!=null)
+            {
+                taskID = extras.getString("taskID");
+            }
             if(currFamilyidTemp!=null)
             {
                 currFamilyId=currFamilyidTemp;
@@ -67,7 +72,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
     private void initializeClassVariables(){
         task_name = (TextView)findViewById(R.id.TaskNameShow);
         bonus_score = (TextView)findViewById(R.id.BonusPointShow);
-        description = (TextView)findViewById(R.id.DescriptionShow);
+        comment = (TextView)findViewById(R.id.DescriptionShow);
         done_task = (Button)findViewById(R.id.TaskDone);
 
         root = FirebaseDatabase.getInstance();
@@ -78,14 +83,14 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
     private void setTextInfo() {
         task_name.setText(taskToShow.getNameTask());
         bonus_score.setText(taskToShow.getBonusScore().toString());
-        description.setText(taskToShow.getComment());
+        comment.setText(taskToShow.getComment());
     }
 
     private void setDoneButton() {
         done_task.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("WaitingForApproval");
+                reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue("WaitingForApproval");
                 taskToShow.setStatus(Task.STATUS.WaitingForApproval);
                 Log.v("currFamilyId: ",currFamilyId);
                 //add intent!!!!!

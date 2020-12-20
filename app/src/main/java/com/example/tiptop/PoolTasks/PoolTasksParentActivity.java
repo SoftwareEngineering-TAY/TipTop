@@ -37,6 +37,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private String uid;
 
     private ArrayList<Task> ListUnassignedTasks;
+    private ArrayList<String> ListUnassignedTaskId;
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
     private HashMap<String,ArrayList<String>> ListTaskID;
@@ -162,6 +163,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
 
     private void createListOfTask() {
         ListUnassignedTasks = new ArrayList<>();
+        ListUnassignedTaskId = new ArrayList<>();
         adapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task,ListUnassignedTasks);
         UnassignedTasks.setAdapter(adapter);
     }
@@ -172,9 +174,8 @@ public class PoolTasksParentActivity extends AppCompatActivity {
             Intent intent =new Intent(view.getContext(), TaskInfoParentActivity.class);
             ////Chang destination!!
             intent.putExtra("task",ListUnassignedTasks.get(i));
+            intent.putExtra("taskID", ListUnassignedTaskId.get(i));
             intent.putExtra("currFamilyId", currFamilyId);
-            Log.d(TAG, "crateClickEvent:task: " + ListUnassignedTasks.get(i));
-            Log.d(TAG, "crateClickEvent: currFamily" + currFamilyId);
             startActivity(intent);
         });
 
@@ -185,10 +186,12 @@ public class PoolTasksParentActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ListUnassignedTasks.clear();
+                ListUnassignedTaskId.clear();
                 for (DataSnapshot Snapshot : snapshot.getChildren()){
                     if (Snapshot.child("status").getValue().equals("NotAssociated")){
                         Task toAdd = Snapshot.getValue(Task.class);
                         ListUnassignedTasks.add(toAdd);
+                        ListUnassignedTaskId.add(Snapshot.getKey());
                         Log.v("Add to list",toAdd.getNameTask());
                     }
                 }

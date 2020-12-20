@@ -169,7 +169,6 @@ public class NewTaskActivity extends AppCompatActivity {
     private void initializationTask() {
         toAddTask = new Task();
         key = reference.child("Tasks").child(currFamilyid).push().getKey();
-        toAddTask.setTaskId(key);
         toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
         long bp = Long.parseLong(BonusPoint.getEditText().getText().toString());
         toAddTask.setBonusScore(bp);
