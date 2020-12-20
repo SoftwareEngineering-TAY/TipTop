@@ -307,6 +307,7 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(),HistoryActivity.class);
+                i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);
             }
         });

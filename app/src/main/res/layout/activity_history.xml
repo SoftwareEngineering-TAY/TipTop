@@ -1,7 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
 
-</RelativeLayout>
+    <Spinner
+        android:id="@+id/filterSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:spinnerMode="dropdown"
+        android:layout_centerHorizontal="true"
+        android:prompt="@string/spinnerChildTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="History"
+        android:textSize="40dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Search"
+        android:drawableLeft="@drawable/ic_baseline_search_24"/>
+
+    <ExpandableListView
+        android:id="@+id/ListHistoryTasks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <!--        <GridLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_marginTop="30dp">-->
+
+    <!--            <ListView-->
+    <!--                android:id="@+id/taskNameList"-->
+    <!--                android:layout_width="260dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_row="1"-->
+    <!--                android:layout_column="1"/>-->
+
+    <!--            <ListView-->
+    <!--                android:id="@+id/taskDateList"-->
+    <!--                android:layout_width="112dp"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:layout_row="1"-->
+    <!--                android:layout_column="2" />-->
+
+    <!--        </GridLayout>-->
+
+    <!--        <TableLayout-->
+    <!--            android:id="@+id/tasksTable"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_marginTop="20dp">-->
+
+    <!--        </TableLayout>-->
+
+</LinearLayout>
+
+

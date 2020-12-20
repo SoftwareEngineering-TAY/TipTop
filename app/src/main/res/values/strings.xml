@@ -23,6 +23,7 @@
     <string name="name">Name</string>
     <string name="family_name">Family name</string>
     <string name="spinnerTitle">TipTop</string>
+    <string name="spinnerChildTitle">TipTop</string>
     <string name="circle_information">Circle information</string>
     <string name="circle_s_you_belong_to">circle(s) you belong to</string>
     <string name="edit_my_profile">EDIT MY PROFILE</string>
