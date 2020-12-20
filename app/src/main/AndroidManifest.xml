@@ -11,37 +11,69 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TipTop">
 
-        <activity android:name=".LogoActivity">
+        //LogInAndSignUp
+        <activity android:name=".LogInAndSignUp.LogoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewTask"/>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".NewClientActivity"/>
-        <activity android:name=".NewFamilyIDActivity"/>
-        <activity android:name=".HomeActivity"/>
+
+        <activity android:name=".LogInAndSignUp.LoginActivity"/>
+
+        <activity android:name=".LogInAndSignUp.RegistrationActivity"/>
+
+        <activity android:name=".LogInAndSignUp.CreateFamilyActivity"/>
+
+        <activity android:name=".LogInAndSignUp.HomeActivity"/>
+
+        //FollowUp
+        <activity android:name=".FollowUp.FollowUpChildActivity"/>
+
+        <activity android:name=".FollowUp.FollowUpParentActivity"/>
+
+        <activity android:name=".FollowUp.ApproveTaskActivity"/>
+
+        //History
+        <activity android:name=".History.HistoryParentActivity"/>
+
+        //PoolTasks
+        <activity android:name=".PoolTasks.NewTaskActivity"/>
+
+        <activity android:name=".PoolTasks.PoolTasksChildActivity"/>
+
+        <activity android:name=".PoolTasks.PoolTasksParentActivity"/>
+
+        <activity android:name=".PoolTasks.TaskInfoChildActivity"/>
+
+        <activity android:name=".PoolTasks.TaskInfoParentActivity"/>
+
+        //Settings
+        <activity android:name=".Settings.ManageCirclesActivity"/>
+
+        <activity android:name=".Settings.CreateChildAccountActivity"/>
+
+        <activity android:name=".Settings.CurrentCircleActivity"/>
+
+        <activity android:name=".Settings.MembersActivity"/>
+
+        <activity android:name=".Settings.SettingChildActivity"/>
+
+        <activity android:name=".Settings.ParentRightsActivity"/>
+
+        <activity android:name=".Settings.SettingParentActivity"/>
+
+        //Without Packages
         <activity android:name=".ChatActivity"/>
-        <activity android:name=".FollowUpActivity"/>
-        <activity android:name=".FollowUpParentActivity"/>
-        <activity android:name=".HistoryActivity"/>
+
         <activity android:name=".ImageActivity"/>
+
         <activity android:name=".PointsActivity"/>
+
         <activity android:name=".ProfileActivity"/>
-        <activity android:name=".SettingActivity"/>
+
         <activity android:name=".StatisticsActivity"/>
-        <activity android:name=".PoolTasksParentActivity"/>
-        <activity android:name=".PoolTaskChildActivity"/>
-        <activity android:name=".TaskInfoActivity"/>
-        <activity android:name=".TaskInfoChildActivity"/>
-        <activity android:name=".ManageCirclesActivity"/>
-        <activity android:name=".CreateChildAccountActivity"/>
-        <activity android:name=".CurrentCircleActivity"/>
-        <activity android:name=".MembersActivity"/>
-        <activity android:name=".ApproveActivity"/>
-        <activity android:name=".SettingChildrenActivity"/>
-        <activity android:name=".ParentRightsActivity"/>
+
 
 
     </application>
