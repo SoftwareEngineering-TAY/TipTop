@@ -10,9 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import static com.example.tiptop.Database.Database.setStatus;
 
 public class ApproveTaskActivity extends AppCompatActivity {
 
@@ -26,10 +24,6 @@ public class ApproveTaskActivity extends AppCompatActivity {
     private TextView task_comment;
     private Button approve_task;
     private Button repeat_task;
-
-    private FirebaseDatabase root;
-    private DatabaseReference reference;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +75,6 @@ public class ApproveTaskActivity extends AppCompatActivity {
         approve_task = (Button)findViewById(R.id.TaskApprove);
         repeat_task = (Button)findViewById(R.id.TaskRepeat);
 
-        root = FirebaseDatabase.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        reference = root.getReference();
-
     }
 
     private void setTaskImage() {
@@ -96,7 +86,7 @@ public class ApproveTaskActivity extends AppCompatActivity {
         repeat_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue("Associated");
+                setStatus(currFamilyId,taskID,"Associated");
                 Intent i = new Intent(v.getContext(), FollowUpParentActivity.class);
                 i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);
@@ -108,7 +98,7 @@ public class ApproveTaskActivity extends AppCompatActivity {
         approve_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue("Confirmed");
+                setStatus(currFamilyId,taskID,"Confirmed");
                 Intent i = new Intent(v.getContext(), FollowUpParentActivity.class);
                 i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);

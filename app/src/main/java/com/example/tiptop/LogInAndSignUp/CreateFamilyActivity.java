@@ -35,6 +35,11 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 
+import static com.example.tiptop.Database.Database.setFamilyName;
+import static com.example.tiptop.Database.Database.setUser;
+import static com.example.tiptop.Database.Database.setUserToFamily;
+import static com.example.tiptop.Database.Database.setUserToUserFamily;
+
 public class CreateFamilyActivity extends AppCompatActivity {
 
     private static final String TAG = "NewFamilyIDActivity";
@@ -223,10 +228,21 @@ public class CreateFamilyActivity extends AppCompatActivity {
                     String uid = firebaseUser.getUid();
                     Log.d(TAG, "onComplete: From auth, Type:" + user_to_add.getType() + ",  uid:" + uid);
 
-                    reference.child("Families").child(key).child("Family name").setValue(family_id.getEditText().getText().toString());
-                    reference.child("Families").child(key).child(uid).setValue(user_to_add.getName());
-                    reference.child("UserFamilies").child(uid).child(key).setValue(family_id.getEditText().getText().toString());
-                    reference.child("Users").child(uid).setValue(user_to_add);
+
+
+
+//                    reference.child("Families").child(key).child("Family name").setValue(family_id.getEditText().getText().toString());
+                    setFamilyName(key,family_id.getEditText().getText().toString());
+
+//                    reference.child("Families").child(key).child(uid).setValue(user_to_add.getName());
+                    setUserToFamily(key,uid,user_to_add.getName());
+
+//                    reference.child("UserFamilies").child(uid).child(key).setValue(family_id.getEditText().getText().toString());
+                    setUserToUserFamily(uid,key,family_id.getEditText().getText().toString());
+
+//                    reference.child("Users").child(uid).setValue(user_to_add);
+                    setUser(uid,user_to_add);
+
                     uploadImage(key);
 
                     Log.d(TAG, "onComplete: user have been auth and saved to database" + user_to_add.toString());

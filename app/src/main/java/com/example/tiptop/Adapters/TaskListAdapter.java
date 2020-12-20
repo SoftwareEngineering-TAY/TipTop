@@ -8,13 +8,9 @@ import android.widget.ImageView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
-
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 
