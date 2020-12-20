@@ -9,19 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import static android.os.Bundle.EMPTY;
 import static androidx.core.content.ContextCompat.startActivity;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -30,12 +23,14 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
 
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
+    private HashMap<String,ArrayList<String>> ListTaskID;
     private String currFamilyId;
     private Class dest;
 
-    public TaskToChildExtendListAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups, String currFamilyId, Class dest){
+    public TaskToChildExtendListAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups,HashMap<String,ArrayList<String>> ListTaskID ,String currFamilyId, Class dest){
         this.ListChildForTask = ListChildForTask;
         this.ListTaskGroups = ListTaskGroups;
+        this.ListTaskID = ListTaskID;
         this.currFamilyId =currFamilyId;
         this.dest = dest;
     }
@@ -58,6 +53,10 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
     @Override
     public Task getChild(int groupPosition, int childPosition) {
         return ListTaskGroups.get(ListChildForTask.get(groupPosition)).get(childPosition);
+    }
+
+    public String getTaskID(int groupPosition, int childPosition) {
+        return ListTaskID.get(ListChildForTask.get(groupPosition)).get(childPosition);
     }
 
     @Override
@@ -119,6 +118,7 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
 
                 intent.putExtra("currFamilyId", currFamilyId);
                 intent.putExtra("task",task);
+                intent.putExtra("taskID",getTaskID(groupPosition,childPosition));
                 startActivity(row.getContext(),intent,EMPTY);
 
             }

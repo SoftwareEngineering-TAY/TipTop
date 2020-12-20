@@ -1,4 +1,3 @@
-
 package com.example.tiptop.FollowUp;
 
 import android.content.Intent;
@@ -8,13 +7,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ApproveTaskActivity extends AppCompatActivity {
 
     private Task taskToShow;
+    private String taskID;
     private String currFamilyId;
 
     private TextView task_name;
@@ -52,7 +48,6 @@ public class ApproveTaskActivity extends AppCompatActivity {
 
         setRepeatButton();
 
-
     }
 
     private void getExtrasFromIntent() {
@@ -60,9 +55,12 @@ public class ApproveTaskActivity extends AppCompatActivity {
         if(extras!=null)
         {
             String currFamilyidTemp = extras.getString("currFamilyId");
-            if(extras.get("task")!=null)
-            {
+            if(extras.get("task")!=null){
                 taskToShow = (Task) extras.get("task");
+            }
+            if(extras.get("taskID")!=null)
+            {
+                taskID = extras.getString("taskID");
             }
             if(currFamilyidTemp!=null)
             {
@@ -98,9 +96,7 @@ public class ApproveTaskActivity extends AppCompatActivity {
         repeat_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("Associated");
-                taskToShow.setStatus(Task.STATUS.Associated);
-                //add intent!!!!!
+                reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue("Associated");
                 Intent i = new Intent(v.getContext(), FollowUpParentActivity.class);
                 i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);
@@ -112,9 +108,7 @@ public class ApproveTaskActivity extends AppCompatActivity {
         approve_task.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reference.child("Tasks").child(currFamilyId).child(taskToShow.getTaskId()).child("status").setValue("Confirmed");
-                taskToShow.setStatus(Task.STATUS.Confirmed);
-                //add intent!!!!!
+                reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue("Confirmed");
                 Intent i = new Intent(v.getContext(), FollowUpParentActivity.class);
                 i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);

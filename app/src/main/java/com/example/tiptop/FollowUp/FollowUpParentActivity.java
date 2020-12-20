@@ -33,6 +33,8 @@ public class FollowUpParentActivity extends AppCompatActivity {
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
 
+    private HashMap<String,ArrayList<String>> ListTaskID;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase root;
     private DatabaseReference reference;
@@ -52,11 +54,6 @@ public class FollowUpParentActivity extends AppCompatActivity {
 
         createExpandableListOfTask();
 
-       // createListOfTask();
-
-        //crateClickEvent();
-
-       // updateListFromDB();
     }
 
     private void initializeClassVariables() {
@@ -76,7 +73,8 @@ public class FollowUpParentActivity extends AppCompatActivity {
     private void createExpandableListOfTask() {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
-        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,currFamilyId, ApproveTaskActivity.class);
+        ListTaskID = new HashMap<>();//list of ID'S Tasks
+        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,currFamilyId, ApproveTaskActivity.class);
         AssociatedTasks.setAdapter(childAdapter);
 
         reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
@@ -93,22 +91,26 @@ public class FollowUpParentActivity extends AppCompatActivity {
                             {
                                 ListChildForTask.add(toAddChildren);
                                 ArrayList<Task> toAdd = new ArrayList<>();
+                                ArrayList<String> toAddID = new ArrayList<>();
                                 reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         toAdd.clear();
+                                        toAddID.clear();
                                         for (DataSnapshot ds1 : snapshot.getChildren() )
                                         {
                                             if(ds1.child("belongsToUID").getValue()!=null&&ds1.child("belongsToUID").getValue().equals(ds.getKey()) && ds1.child("status").getValue().equals("WaitingForApproval")){
                                                 Task taskToAdd = ds1.getValue(Task.class);
                                                 toAdd.add(taskToAdd);
+                                                toAddID.add(ds1.getKey());
                                             }
                                         }
                                         ListTaskGroups.put(toAddChildren,toAdd);
+                                        ListTaskID.put(toAddChildren,toAddID);
                                         System.out.println("ListChildForTask1"+ListChildForTask);
                                         System.out.println("ListTaskGroups1"+ListTaskGroups);
 
-                                        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,currFamilyId, ApproveTaskActivity.class);
+                                        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,currFamilyId, ApproveTaskActivity.class);
                                         AssociatedTasks.setAdapter(childAdapter);
                                         childAdapter.notifyDataSetChanged();
                                     }
@@ -136,54 +138,4 @@ public class FollowUpParentActivity extends AppCompatActivity {
         });
     }
 
-    private void createListOfTask() {
-        list = new ArrayList<>();
-        mTaskListAdapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task,list);
-        followList.setAdapter(mTaskListAdapter);
-    }
-
-    private void crateClickEvent() {
-        followList.setOnItemClickListener((adapterView,view,i,l) -> {
-            Intent intent;
-            if (permission.equals("Parent")){
-                intent = new Intent(view.getContext(), ApproveTaskActivity.class);
-            }
-
-            else if (permission.equals("Child")){
-                intent = new Intent(view.getContext(), TaskInfoChildActivity.class);
-            }
-            else return;
-            intent.putExtra("task",list.get(i));
-            intent.putExtra("currFamilyId",currFamilyId);
-            startActivity(intent);
-        });
-    }
-
-    private void updateListFromDB() {
-        reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for (DataSnapshot Snapshot : snapshot.getChildren()){
-                    if (permission.equals("Parent")&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
-                        Task toAdd = Snapshot.getValue(Task.class);
-                        list.add(toAdd);
-                        Log.v("Add to list",toAdd.getNameTask());
-                    }
-                    else if (permission.equals("Child") && Snapshot.child("belongsToUID").getValue()!=null&&Snapshot.child("belongsToUID").getValue().equals(uid)&& Snapshot.child("status").getValue().equals("WaitingForApproval")){
-                        Task toAdd = Snapshot.getValue(Task.class);
-                        list.add(toAdd);
-                        Log.v("Add to list",toAdd.getNameTask());
-                    }
-                }
-                Log.v("Data changed","www");
-                mTaskListAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 }

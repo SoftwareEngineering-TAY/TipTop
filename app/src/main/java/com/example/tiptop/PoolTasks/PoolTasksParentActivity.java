@@ -39,6 +39,8 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private ArrayList<Task> ListUnassignedTasks;
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
+    private HashMap<String,ArrayList<String>> ListTaskID;
+
     private static final String TAG = "PoolTasksParentActivity";
     private TaskListAdapter adapter;
     private TaskToChildExtendListAdapter childAdapter;
@@ -67,7 +69,9 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private void createExpandableListOfTask() {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
-        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,currFamilyId, TaskInfoParentActivity.class);
+        ListTaskID = new HashMap<>();//list of ID'S Tasks
+
+        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,currFamilyId, TaskInfoParentActivity.class);
         AssociatedTasks.setAdapter(childAdapter);
 
         reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
@@ -84,22 +88,26 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                             {
                                 ListChildForTask.add(toAddChildren);
                                 ArrayList<Task> toAdd = new ArrayList<>();
+                                ArrayList<String> toAddID = new ArrayList<>();
                                 reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         toAdd.clear();
+                                        toAddID.clear();
                                         for (DataSnapshot ds1 : snapshot.getChildren() )
                                         {
                                             if(ds1.child("belongsToUID").getValue()!=null&&ds1.child("belongsToUID").getValue().equals(ds.getKey()) && ds1.child("status").getValue().equals("Associated")){
                                                 Task taskToAdd = ds1.getValue(Task.class);
                                                 toAdd.add(taskToAdd);
+                                                toAddID.add(ds1.getKey());
                                             }
                                         }
                                         ListTaskGroups.put(toAddChildren,toAdd);
+                                        ListTaskID.put(toAddChildren,toAddID);
                                         System.out.println("ListChildForTask1"+ListChildForTask);
                                         System.out.println("ListTaskGroups1"+ListTaskGroups);
 
-                                        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,currFamilyId, TaskInfoParentActivity.class);
+                                        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,currFamilyId, TaskInfoParentActivity.class);
                                         AssociatedTasks.setAdapter(childAdapter);
                                         childAdapter.notifyDataSetChanged();
                                     }
@@ -109,7 +117,6 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
@@ -117,8 +124,6 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                         }
                     });
                 }
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
