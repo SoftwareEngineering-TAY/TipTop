@@ -235,13 +235,13 @@ public class CreateFamilyActivity extends AppCompatActivity {
                     setFamilyName(key,family_id.getEditText().getText().toString());
 
 //                    reference.child("Families").child(key).child(uid).setValue(user_to_add.getName());
-                    setUserToFamily(key,uid,user_to_add.getName());
+                    setUserToFamily(key,user_to_add.getName());
 
 //                    reference.child("UserFamilies").child(uid).child(key).setValue(family_id.getEditText().getText().toString());
-                    setUserToUserFamily(uid,key,family_id.getEditText().getText().toString());
+                    setUserToUserFamily(key,family_id.getEditText().getText().toString());
 
 //                    reference.child("Users").child(uid).setValue(user_to_add);
-                    setUser(uid,user_to_add);
+                    setUser(user_to_add);
 
                     uploadImage(key);
 

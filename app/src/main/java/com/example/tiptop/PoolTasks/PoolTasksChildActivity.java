@@ -85,7 +85,7 @@ public class PoolTasksChildActivity extends AppCompatActivity {
                     if (Snapshot.child("belongsToUID").getValue()!=null&&Snapshot.child("belongsToUID").getValue().equals(uid) && Snapshot.child("status").getValue().equals("Associated")){
                         Task toAdd = Snapshot.getValue(Task.class);
                         list.add(toAdd);
-                        listID.add(snapshot.getKey());
+                        listID.add(Snapshot.getKey());
                         Log.v("Add to list",toAdd.getNameTask());
                     }
                 }

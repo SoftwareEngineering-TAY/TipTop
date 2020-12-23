@@ -2,19 +2,14 @@ package com.example.tiptop.PoolTasks;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import static com.example.tiptop.Database.Database.setStatus;
 
 public class TaskInfoChildActivity  extends AppCompatActivity {
 
@@ -27,9 +22,6 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
     private TextView comment;
     private Button done_task;
 
-    private FirebaseDatabase root;
-    private DatabaseReference reference;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +67,6 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
         comment = (TextView)findViewById(R.id.DescriptionShow);
         done_task = (Button)findViewById(R.id.TaskDone);
 
-        root = FirebaseDatabase.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        reference = root.getReference();
-
     }
     private void setTextInfo() {
         task_name.setText(taskToShow.getNameTask());
@@ -90,10 +78,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
         done_task.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue("WaitingForApproval");
-                taskToShow.setStatus(Task.STATUS.WaitingForApproval);
-                Log.v("currFamilyId: ",currFamilyId);
-                //add intent!!!!!
+                setStatus(currFamilyId,taskID,"WaitingForApproval");
                 Intent i = new Intent(v.getContext(), PoolTasksChildActivity.class);
                 i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);
