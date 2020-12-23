@@ -1,6 +1,7 @@
 package com.example.tiptop.Database;
 
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
@@ -10,14 +11,19 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.PoolTasks.TaskInfoParentActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,12 +34,25 @@ public class Database {
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static DatabaseReference reference = db.getReference();
     private static String userID = mAuth.getCurrentUser().getUid();
+    private static String currFamilyId;
+    private static String permission;
 
     public static final String USERS_ROOT = "Users", FAMILIES_ROOT= "Families" , TASKS_ROOT= "Tasks",USERRFAMILIES_ROOT = "UserFamilies";
 
-    public static boolean setStatus(String currFamilyId, String taskID, String Status){
+    public static boolean setStatus(String taskID, String Status){
         try{
             reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue(Status);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean setbelongsToUID(String taskID, String uid){
+        try{
+            if (uid!=null) reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue(uid);
+            else reference.child("Tasks").child(currFamilyId).child(taskID).child("belongsToUID").removeValue();
         }
         catch (Exception e){
             return false;
@@ -82,7 +101,7 @@ public class Database {
     }
 
 
-    public static boolean updateTaskListFromDB(ArrayList<Task> toUpdate,ArrayList<String>idToUpdate, String currFamilyId, String permission, String status, ArrayAdapter<Task> mTaskListAdapter ) {
+    public static boolean updateTaskListFromDB(ArrayList<Task> toUpdate,ArrayList<String>idToUpdate, String status, ArrayAdapter<Task> mTaskListAdapter ) {
         try{
             reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -117,7 +136,7 @@ public class Database {
     }
 
 
-    public static boolean updateExpandableTaskListFromDB(ArrayList<String> ListChildForTask, HashMap<String,ArrayList<Task>> ListTaskGroups,HashMap<String,ArrayList<String>> ListTaskID, String currFamilyId, String status, TaskToChildExtendListAdapter childAdapter) {
+    public static boolean updateExpandableTaskListFromDB(ArrayList<String> ListChildForTask, HashMap<String,ArrayList<Task>> ListTaskGroups,HashMap<String,ArrayList<String>> ListTaskID, String status, TaskToChildExtendListAdapter childAdapter) {
         try{
             reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -179,35 +198,190 @@ public class Database {
         return true;
     }
 
-//    public static boolean initializationCurrFamilyIdAndPermission() {
-//        try{
-//            String currFamilyId;
-//            reference.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    for (DataSnapshot ds : snapshot.getChildren() )
-//                    {
-//                        if(ds.getKey().equals("currFamilyId")){
-//                            currFamilyId = (String) ds.getValue();
-//                            spinnerTitle =  (String) ds.getValue();
-//                        }
-//                        if (ds.getKey().equals("type")){
-//                            permission = (String) ds.getValue();
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
-//        }
-//        catch (Exception e){
-//            return false;
-//        }
-//        return true;
-//
-//    }
+    public static boolean initializationCurrFamilyIdAndPermission() {
+        try{
+            reference.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot ds : snapshot.getChildren() )
+                    {
+                        if(ds.getKey().equals("currFamilyId")){
+                            currFamilyId = (String) ds.getValue();
+                        }
+                        if (ds.getKey().equals("type")){
+                            permission = (String) ds.getValue();
+                        }
+                    }
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+
+    }
+
+    public static boolean setCurrFamilyId(String CurrFamilyId){
+        try{
+            currFamilyId = CurrFamilyId;
+            reference.child("Users").child(userID).child("currFamilyId").setValue(CurrFamilyId);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    public static String getCurrFamilyId() {
+        return currFamilyId;
+    }
+
+    public static String getPermission() {
+        return permission;
+    }
+
+    public static void createUserInFireBase(User user_to_add, String familyId , Uri uri, Bitmap bitmap){
+        String key = reference.child("Families").push().getKey();
+        user_to_add.setCurrFamilyId(key);
+        mAuth.createUserWithEmailAndPassword(user_to_add.getEmail(),user_to_add.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
+                if(task.isSuccessful()){
+
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    String uid = firebaseUser.getUid();
+
+                    setFamilyName(key, familyId);
+
+                    setUserToFamily(key,user_to_add.getName());
+
+                    setUserToUserFamily(key, familyId);
+
+                    setUser(user_to_add);
+
+                    uploadImage(key, uri, bitmap);
+                }
+                else{
+
+                }
+            }
+        });
+    }
+
+    public static void uploadImage(String family_key, Uri uri_image, Bitmap bitmap_image){
+        String path = "Families/" + family_key;
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference mStorageRef = storage.getReference(path);
+        if(uri_image != null){
+            mStorageRef.putFile(uri_image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()){
+                    }
+                    else{
+                    }
+                }
+            });
+        }
+        else if(bitmap_image != null){
+            ByteArrayOutputStream to_stream = new ByteArrayOutputStream();
+            bitmap_image.compress(Bitmap.CompressFormat.JPEG,100, to_stream);
+            byte bytes[] = to_stream.toByteArray();
+            mStorageRef.putBytes(bytes).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()){
+                    }
+                    else{
+
+                    }
+                }
+            });
+        }
+    }
+
+
+    public static void updateListOfChildFromDB(ArrayList<String> allKeys,ArrayList<String> allKids,ArrayAdapter adapter) {
+        reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                allKids.clear();
+                allKeys.clear();
+                allKids.add("Not Associated");
+                for (DataSnapshot ds : snapshot.getChildren() )
+                {
+                    String toAddChildren =(String) ds.getValue();
+                    String toAddKey =(String) ds.getKey();
+                    reference.child("Users").child(toAddKey).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            if(snapshot.child("type").getValue()!=null&&snapshot.child("type").getValue().toString().equals("Child"))
+                            {
+                                allKeys.add(toAddKey);
+                                allKids.add(toAddChildren);
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public static void addTaskToDB(String key, Task toAddTask)
+    {
+        reference.child("Tasks").child(currFamilyId).child(key).setValue(toAddTask);
+    }
+
+    public static String getKeyForNewTask(){
+        return reference.child("Tasks").child(currFamilyId).push().getKey();
+    }
+
+    public static boolean setTaskDesctiption(String taskID, String descriptionToUpdate){
+        try{
+            reference.child("Tasks").child(currFamilyId).child(taskID).child("description").setValue(descriptionToUpdate);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean setTaskName(String taskID, String nameToUpdate){
+        try{
+            reference.child("Tasks").child(currFamilyId).child(taskID).child("nameTask").setValue(nameToUpdate);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+    public static boolean setTaskBonus(String taskID, int bonusToUpdate){
+        try{
+            reference.child("Tasks").child(currFamilyId).child(taskID).child("bonusScore").setValue(bonusToUpdate);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    public static void setTitleSpinnerOfBelongChild(String titleToSet, String BelongsToUID){
+
+    }
 }

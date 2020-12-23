@@ -1,21 +1,16 @@
 package com.example.tiptop.Settings;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.LogInAndSignUp.HomeActivity;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.R;
@@ -23,13 +18,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.Calendar;
 
 public class CreateChildAccountActivity extends AppCompatActivity {
@@ -37,7 +30,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     private static final String TAG = "CreateChildAccountActiv";
 
     private Button next;
-    private Button select_date;
+    private Button selectDate;
     private TextView birthday;
     private com.google.android.material.textfield.TextInputLayout name;
     private com.google.android.material.textfield.TextInputLayout username;
@@ -57,15 +50,10 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_child_account);
-
         initializeClassVariables();
-
         setCurrentUser();
-
         setSelectDateButton();
-
         setContinueButton();
-
     }
 
     private void initializeClassVariables(){
@@ -82,7 +70,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.newPassword);
         birthday = (TextView) findViewById(R.id.birthday);
-        select_date = (Button) findViewById(R.id.selectDate);
+        selectDate = (Button) findViewById(R.id.selectDate);
 
         user = new User();
         current_user = new User();
@@ -108,7 +96,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     }
 
     private void setSelectDateButton(){
-        select_date.setOnClickListener(new View.OnClickListener() {
+        selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -168,7 +156,6 @@ public class CreateChildAccountActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
 
                     String uid = task.getResult().getUser().getUid();
-                    Log.d(TAG, "onComplete:uid: " + uid);
 
                     reference = root.getReference();
 
@@ -210,7 +197,6 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     private void foundFamilyById(){
 
         reference = root.getReference("Families").child(family_uid).child("Family name");
-        Log.d(TAG, "foundFamilyById: family uid:" + family_uid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

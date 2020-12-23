@@ -7,17 +7,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.ChatActivity;
 import com.example.tiptop.FollowUp.FollowUpChildActivity;
 import com.example.tiptop.FollowUp.FollowUpParentActivity;
@@ -30,21 +26,13 @@ import com.example.tiptop.R;
 import com.example.tiptop.Settings.SettingChildActivity;
 import com.example.tiptop.Settings.SettingParentActivity;
 import com.example.tiptop.StatisticsActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import static com.example.tiptop.Database.Database.getCurrFamilyId;
+import static com.example.tiptop.Database.Database.getPermission;
+import static com.example.tiptop.Database.Database.initializationCurrFamilyIdAndPermission;
+import static com.example.tiptop.Database.Database.setCurrFamilyId;
+import static com.example.tiptop.Database.Database.uploadImage;
 
 public class HomeActivity extends AppCompatActivity  {
 
@@ -60,15 +48,6 @@ public class HomeActivity extends AppCompatActivity  {
     private Button points;
     private Spinner SpinnerFamily;
 
-    //Variables that will be used to link with the database
-    private FirebaseDatabase root;
-    private FirebaseAuth mAuth;
-    private DatabaseReference reference;
-    private String uid;
-
-    //Variables that will be used to store information coming from the Internet
-    private String permission;
-    private String currFamilyId;
 
     //Variables to be used for the spinner
     private List <String> allKeys;
@@ -88,114 +67,9 @@ public class HomeActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_home);
         initializationFromXML();
         initializationCurrFamilyIdAndPermission();
+        initializeClassVariables();
         spinerActive();
-        initializationImage();
         ActivateAllButtons();
-    }
-
-    /**
-     * The function retrieves from the database the family he selected and his permission.
-     * This information is needed for almost all pages in the application and therefore we will pass the information in intent.
-     */
-    private void initializationCurrFamilyIdAndPermission() {
-        root = FirebaseDatabase.getInstance();
-        reference = root.getReference();
-        mAuth = FirebaseAuth.getInstance();
-        uid = mAuth.getCurrentUser().getUid();
-        reference.child("Users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren() )
-                {
-                    if(ds.getKey().equals("currFamilyId")){
-                        currFamilyId = (String) ds.getValue();
-                        spinnerTitle =  (String) ds.getValue();
-                    }
-                    if (ds.getKey().equals("type")){
-                        permission = (String) ds.getValue();
-                    }
-                }
-                Log.v("****permissionnnnnn****", permission);
-                Log.v("****currFamilyId****", currFamilyId);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    /**
-     * The function activates the spinner component, meaning it fills in the spinner all
-     * the families to which the user belongs by retrieving what DB. And when you click on another last
-     * name the currFamilyId changes in the title and in DB and this is what is transmitted on the Internet.
-     */
-    private void spinerActive() {
-        //Set the SpinnerFamily Spinner
-        SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
-
-        //Initialize the 2 lists that will save all the last names and all the keys respectively.
-        allKeys = new ArrayList<>();
-        allFamilies = new ArrayList<>();
-
-        //A function that retrieves all information from the database
-        getInfoFromDB();
-
-        //Connecting the list to the view
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, allFamilies);
-        SpinnerFamily.setAdapter(adapter);
-
-        //Defines the functionality of a last name click
-        SpinnerFamily.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                currFamilyId = allKeys.get(position);
-                spinnerTitle = allFamilies.get(position);
-                reference.child("Users").child(uid).child("currFamilyId").setValue(currFamilyId);
-                Log.v("****currFamilyId****", currFamilyId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    private void getInfoFromDB() {
-        //Updating the spinner
-        reference.child("UserFamilies").child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                allFamilies.clear();
-                allKeys.clear();
-                for (DataSnapshot ds : snapshot.getChildren() )
-                {
-                    String toAddFamiliy =(String) ds.getValue();
-                    String toAddKey =ds.getKey();
-                    System.out.println("ds.getKey()!!!!!!!!!!"+ds.getKey());
-                    allFamilies.add(toAddFamiliy);
-                    allKeys.add(toAddKey);
-                }
-                int pos=allKeys.indexOf(currFamilyId);
-                if(pos>0)
-                {
-                    String Family=allFamilies.get(pos);
-                    allFamilies.remove(Family);
-                    allFamilies.add(0,Family);
-
-                    allKeys.remove(currFamilyId);
-                    allKeys.add(0,currFamilyId);
-                }
-                adapter.notifyDataSetChanged();
-                System.out.println(allFamilies);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     private void initializationFromXML() {
@@ -217,7 +91,44 @@ public class HomeActivity extends AppCompatActivity  {
         points = (Button)findViewById(R.id.points);
         //Set the ImageButton button
         imageButton = (ImageButton)findViewById(R.id.imageButton);
-      
+
+    }
+
+    private void initializeClassVariables() {
+        spinnerTitle = getCurrFamilyId();
+
+        //Set the SpinnerFamily Spinner
+        SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
+
+        //Initialize the 2 lists that will save all the last names and all the keys respectively.
+        allKeys = new ArrayList<>();
+        allFamilies = new ArrayList<>();
+    }
+
+
+    /**
+     * The function activates the spinner component, meaning it fills in the spinner all
+     * the families to which the user belongs by retrieving what DB. And when you click on another last
+     * name the currFamilyId changes in the title and in DB and this is what is transmitted on the Internet.
+     */
+    private void spinerActive() {
+
+        //Connecting the list to the view
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, allFamilies);
+        SpinnerFamily.setAdapter(adapter);
+
+        //Defines the functionality of a last name click
+        SpinnerFamily.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spinnerTitle = allFamilies.get(position);
+                setCurrFamilyId(allKeys.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     private void ActivateAllButtons() {
@@ -225,29 +136,15 @@ public class HomeActivity extends AppCompatActivity  {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uid = mAuth.getCurrentUser().getUid();
-                reference = root.getReference().child("Users").child(uid).child("type");
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                       String type =  snapshot.getValue().toString();
-                       if(type.equals("Parent")){
-                           Intent go_to_setting = new Intent(v.getContext(), SettingParentActivity.class);
-                           startActivity(go_to_setting);
-                       }
-                       else if(type.equals("Child")){
-                           Intent go_to_setting_children = new Intent(v.getContext(), SettingChildActivity.class);
-                           startActivity(go_to_setting_children);
-                       }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                Intent i;
+                if(getPermission().equals("Parent")){
+                    i = new Intent(v.getContext(), SettingParentActivity.class);
+                }
+                else if (getPermission().equals("Child")) {
+                    i = new Intent(v.getContext(), SettingChildActivity.class);
+                }
+                else return;
+                startActivity(i);
             }
         });
 
@@ -265,15 +162,13 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent i;
-                if(permission.equals("Parent")){
+                if(getPermission().equals("Parent")){
                     i = new Intent(v.getContext(), FollowUpParentActivity.class);
                 }
-                else if (permission.equals("Child")) {
+                else if (getPermission().equals("Child")) {
                     i = new Intent(v.getContext(), FollowUpChildActivity.class);
                 }
                 else return;
-                i.putExtra("currFamilyId", currFamilyId);
-                i.putExtra("permission",permission);
                 startActivity(i);
             }
         });
@@ -301,15 +196,14 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent i;
-                if (permission.equals("Parent")){
+                if (getPermission().equals("Parent")){
                     i = new Intent(v.getContext(), PoolTasksParentActivity.class);
                 }
 
-                else if (permission.equals("Child")){
+                else if (getPermission().equals("Child")){
                     i = new Intent(v.getContext(), PoolTasksChildActivity.class);
                 }
                 else return;
-                i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);
             }
         });
@@ -319,7 +213,6 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), HistoryParentActivity.class);
-                i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);
             }
         });
@@ -338,7 +231,7 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 setNewImagwButton();
-                uploadImage(currFamilyId);
+                uploadImage(getCurrFamilyId(),uriImage,bitmapImage);
             }
         });
     }
@@ -389,57 +282,24 @@ public class HomeActivity extends AppCompatActivity  {
         }
     }
 
-    private void uploadImage(String family_key){
-        String path = "Families/" + family_key;
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference mStorageRef = storage.getReference(path);
-        if(uriImage != null){
-            mStorageRef.putFile(uriImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> task) {
-                    if(task.isSuccessful()){
-                        Log.d(TAG, "onComplete: uri upload went good");
-                    }
-                    else{
-                        Log.d(TAG, "onComplete: uri upload failed.");
-                    }
-                }
-            });
-        }
-        else if(bitmapImage != null){
-            ByteArrayOutputStream to_stream = new ByteArrayOutputStream();
-            bitmapImage.compress(Bitmap.CompressFormat.JPEG,100, to_stream);
-            byte bytes[] = to_stream.toByteArray();
-            mStorageRef.putBytes(bytes).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if(task.isSuccessful()){
-                        Log.d(TAG, "onComplete: bitmap upload went good");
-                    }
-                    else{
-                        Log.d(TAG, "onComplete: bitmap upload failed.");
-                    }
-                }
-            });
-        }
-    }
 
-    //need to ask yirat
-    private void initializationImage() {
-        String path = "Families/" + currFamilyId;
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference mStorageRef = storage.getReference(path);
-        if (mStorageRef != null)
-        {
 
-        }
-
-        else
-        {
-            imageButton.setImageResource(R.drawable.new_family);
-        }
-
-    }
-
+//    //need to ask yirat
+//    private void initializationImage() {
+//        String path = "Families/" + getCurrFamilyId();
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference mStorageRef = storage.getReference(path);
+//        if (mStorageRef != null)
+//        {
+//
+//        }
+//
+//        else
+//        {
+//            imageButton.setImageResource(R.drawable.new_family);
+//        }
+//
+//    }
+//
 
 }

@@ -1,7 +1,6 @@
 package com.example.tiptop.Objects;
 
 import java.io.Serializable;
-import java.util.Vector;
 
 public class User implements Serializable {
 

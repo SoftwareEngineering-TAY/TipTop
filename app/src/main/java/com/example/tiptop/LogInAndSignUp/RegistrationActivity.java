@@ -8,12 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.R;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Calendar;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -36,15 +33,10 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_new_client);
-
         initializeClassVariables();
-
         setSelectDateButton();
-
         setContinueButton();
-
         setLoginButton();
     }
 
@@ -104,9 +96,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 user.setType("Parent");
 
                 Intent go_new_id_family = new Intent(RegistrationActivity.this, CreateFamilyActivity.class);
-
                 go_new_id_family.putExtra("user",user);
-
                 startActivity(go_new_id_family);
             }
         });

@@ -2,38 +2,23 @@ package com.example.tiptop.PoolTasks;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import static com.example.tiptop.Database.Database.addTaskToDB;
+import static com.example.tiptop.Database.Database.getKeyForNewTask;
+import static com.example.tiptop.Database.Database.updateListOfChildFromDB;
 
 public class NewTaskActivity extends AppCompatActivity {
 
@@ -48,14 +33,8 @@ public class NewTaskActivity extends AppCompatActivity {
     private ListView ListOfChildren;
     private String StartDate;
     private String EndDate;
-    private String currFamilyid;
-    private DatabaseReference reference;
     private String keyKid;
     private String key;
-
-    private DatabaseReference databaseReference ;
-    private FirebaseAuth mAuth;
-    private String uid;
 
     private ArrayList<String> allKeys;
     private ArrayList<String> allKids;
@@ -66,73 +45,18 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
         initializationFromXML();
-        getExtrasFromIntent();
         setSelectStartDateButton();
         setSelectEndDateButton();
-        System.out.println("allKids3333333333333333333333333333333333333!!!@#E$%^&^%%"+allKids);
         initializationListOfChildren();
-        System.out.println("allKids4444444444444444444444444444444444444444!!!@#E$%^&^%%"+allKids);
         setFinishButton();
     }
 
     private void initializationListOfChildren() {
-        initializeVariables();
         createList();
         crateClickEvent();
-        updateListFromDB();
-
-        System.out.println("allKids222222222222222222222222222!!!@#E$%^&^%%"+allKids);
-
+        updateListOfChildFromDB(allKeys,allKids, adapter);
     }
 
-    private void updateListFromDB() {
-        databaseReference.child("Families").child(currFamilyid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                allKids.clear();
-                allKeys.clear();
-                allKids.add("Not Associated");
-                for (DataSnapshot ds : snapshot.getChildren() )
-                {
-                    String toAddChildren =(String) ds.getValue();
-                    System.out.println("  String toAddChildren =(String) ds.getValue();"+toAddChildren);
-                    String toAddKey =(String) ds.getKey();
-                    databaseReference.child("Users").child(toAddKey).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                            if(snapshot.child("type").getValue()!=null&&snapshot.child("type").getValue().toString().equals("Child"))
-                            {
-                                allKeys.add(toAddKey);
-                                allKids.add(toAddChildren);
-                            }
-                            System.out.println("allKids.isEmpty())))))"+allKids.isEmpty());
-                            adapter.notifyDataSetChanged();
-
-                            System.out.println("allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
-                        }
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-
-                }
-
-                System.out.println(" adapter.notifyDataSetChanged();allKids1111111111111111111!!!@#E$%^&^%%"+allKids);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-
-            }
-        });
-    }
 
     private void crateClickEvent() {
         ListOfChildren.setOnItemClickListener((adapterView,view,i,l) -> {
@@ -159,16 +83,9 @@ public class NewTaskActivity extends AppCompatActivity {
         ListOfChildren.setAdapter(adapter);
     }
 
-    private void initializeVariables() {
-         databaseReference = FirebaseDatabase.getInstance().getReference();
-         mAuth = FirebaseAuth.getInstance();
-         uid = mAuth.getCurrentUser().getUid();
-    }
-
-
     private void initializationTask() {
         toAddTask = new Task();
-        key = reference.child("Tasks").child(currFamilyid).push().getKey();
+        key = getKeyForNewTask();
         toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
         long bp = Long.parseLong(BonusPoint.getEditText().getText().toString());
         toAddTask.setBonusScore(bp);
@@ -181,21 +98,15 @@ public class NewTaskActivity extends AppCompatActivity {
             toAddTask.setStatus(Task.STATUS.Associated);
 
     }
-    private void addTaskToDB()
-    {
-        System.out.println("key!!!!!!!!!!!!!!!!!!!!!!!"+key);
-        System.out.println("fid))))))))))  " + currFamilyid);
-        reference.child("Tasks").child(currFamilyid).child(key).setValue(toAddTask);
-    }
+
 
     private void setFinishButton() {
         SubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initializationTask();
-                addTaskToDB();
+                addTaskToDB(key,toAddTask);
                 Intent i = new Intent(v.getContext(), PoolTasksParentActivity.class);
-                i.putExtra("currFamilyId", currFamilyid);
                 startActivity(i);
             }
         });
@@ -252,24 +163,6 @@ public class NewTaskActivity extends AppCompatActivity {
         });
     }
 
-    private void getExtrasFromIntent() {
-        Bundle extras = getIntent().getExtras();
-        if(extras!=null)
-        {
-            String currFamilyidTemp = extras.getString("currFamilyid");
-            if(currFamilyidTemp!=null)
-            {
-                currFamilyid=currFamilyidTemp;
-            }
-            else
-            {
-                Toast.makeText(this, "currFamily didn't pass", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-
-
     private void initializationFromXML() {
         NameOfTask = findViewById(R.id.NameOfTask);
         BonusPoint = findViewById(R.id.BonusPoint);
@@ -279,7 +172,6 @@ public class NewTaskActivity extends AppCompatActivity {
         EndDateTV = (TextView)findViewById(R.id.EndDateTV);
         SubmitButton = (Button)findViewById(R.id.SubmitButton);
         ListOfChildren = (ListView)findViewById(R.id.ListOfChildren);
-        reference = FirebaseDatabase.getInstance().getReference();
     }
 }
 

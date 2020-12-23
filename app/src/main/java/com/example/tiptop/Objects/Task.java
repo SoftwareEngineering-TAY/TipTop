@@ -1,8 +1,6 @@
 package com.example.tiptop.Objects;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime; // import the LocalDateTime class
 import com.google.firebase.storage.StorageReference;
 
 public class Task implements Serializable {

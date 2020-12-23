@@ -24,14 +24,14 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
     private HashMap<String,ArrayList<String>> ListTaskID;
-    private String currFamilyId;
     private Class dest;
+    private int mLayoutResourceId;
 
-    public TaskToChildExtendListAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups,HashMap<String,ArrayList<String>> ListTaskID ,String currFamilyId, Class dest){
+    public TaskToChildExtendListAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups,HashMap<String,ArrayList<String>> ListTaskID , int resource , Class dest){
         this.ListChildForTask = ListChildForTask;
         this.ListTaskGroups = ListTaskGroups;
         this.ListTaskID = ListTaskID;
-        this.currFamilyId =currFamilyId;
+        this.mLayoutResourceId = resource;
         this.dest = dest;
     }
 
@@ -90,7 +90,9 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View row;
         //inflate the layout for a single row
-        row = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_task,parent,false);
+        row = LayoutInflater.from(parent.getContext()).inflate(mLayoutResourceId,parent,false);
+
+        //need to add cases for layout types!!!!!!!
 
         //get a reference to the different view elements we wish to update
         TextView nameView = (TextView) row.findViewById(R.id.TaskNameRow);
@@ -116,7 +118,7 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(row.getContext(),dest );
 
-                intent.putExtra("currFamilyId", currFamilyId);
+//                intent.putExtra("currFamilyId", currFamilyId);
                 intent.putExtra("task",task);
                 intent.putExtra("taskID",getTaskID(groupPosition,childPosition));
                 startActivity(row.getContext(),intent,EMPTY);

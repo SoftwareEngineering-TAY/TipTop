@@ -19,36 +19,27 @@ public class HistoryParentActivity extends AppCompatActivity {
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
     private HashMap<String,ArrayList<String>> ListTaskID;
-
     private TaskToChildExtendListAdapter childAdapter;
-    private String currFamilyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
         initializeClassVariables();
-
         createExpandableListOfTask();
-
-        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,currFamilyId,"Confirmed",childAdapter);
+        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Confirmed",childAdapter);
     }
 
     private void initializeClassVariables(){
         search = findViewById(R.id.searchEditText);
         AssociatedTasks = (ExpandableListView) findViewById(R.id.ListHistoryTasks);
-
-        Bundle extras = getIntent().getExtras();
-        currFamilyId = (String) extras.get("currFamilyId");
     }
 
     private void createExpandableListOfTask() {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
         ListTaskID = new HashMap<>();//list of ID'S Tasks
-
-        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,currFamilyId, ApproveTaskActivity.class);
+        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task, ApproveTaskActivity.class);
         AssociatedTasks.setAdapter(childAdapter);
     }
 

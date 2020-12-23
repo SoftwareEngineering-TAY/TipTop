@@ -15,25 +15,18 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
 
     private Task taskToShow;
     private String taskID;
-    private String currFamilyId;
-
-    private TextView task_name;
-    private TextView bonus_score;
+    private TextView taskName;
+    private TextView bonusScore;
     private TextView comment;
-    private Button done_task;
-
+    private Button doneTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_info_child);
-
         getExtraFromIntent();
-
         initializeClassVariables();
-
         setTextInfo();
-
         setDoneButton();
     }
 
@@ -41,53 +34,39 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(extras!=null)
         {
-            String currFamilyidTemp = extras.getString("currFamilyId");
-            if(extras.get("task")!=null)
-            {
+            if(extras.get("task")!=null) {
                 taskToShow = (Task) extras.get("task");
             }
-            if(extras.get("taskID")!=null)
-            {
+            if(extras.get("taskID")!=null) {
                 taskID = extras.getString("taskID");
             }
-            if(currFamilyidTemp!=null)
-            {
-                currFamilyId=currFamilyidTemp;
-            }
-            else
-            {
-                Toast.makeText(this, "currFamily didn't pass, currFamily: "+currFamilyId, Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(this, "currFamily didn't pass, currFamily: ", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void initializeClassVariables(){
-        task_name = (TextView)findViewById(R.id.TaskNameShow);
-        bonus_score = (TextView)findViewById(R.id.BonusPointShow);
+        taskName = (TextView)findViewById(R.id.TaskNameShow);
+        bonusScore = (TextView)findViewById(R.id.BonusPointShow);
         comment = (TextView)findViewById(R.id.DescriptionShow);
-        done_task = (Button)findViewById(R.id.TaskDone);
+        doneTask = (Button)findViewById(R.id.TaskDone);
 
     }
     private void setTextInfo() {
-        task_name.setText(taskToShow.getNameTask());
-        bonus_score.setText(taskToShow.getBonusScore().toString());
+        taskName.setText(taskToShow.getNameTask());
+        bonusScore.setText(taskToShow.getBonusScore().toString());
         comment.setText(taskToShow.getComment());
     }
 
     private void setDoneButton() {
-        done_task.setOnClickListener(new View.OnClickListener(){
+        doneTask.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                setStatus(currFamilyId,taskID,"WaitingForApproval");
+                setStatus(taskID,"WaitingForApproval");
                 Intent i = new Intent(v.getContext(), PoolTasksChildActivity.class);
-                i.putExtra("currFamilyId", currFamilyId);
                 startActivity(i);
             }
         });
-
     }
-
-
-
-
 }
