@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class Database {
 
-    private  static FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static FirebaseStorage storage = FirebaseStorage.getInstance();
     private static FirebaseDatabase db = FirebaseDatabase.getInstance();
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static DatabaseReference reference = db.getReference();
@@ -383,5 +383,39 @@ public class Database {
 
     public static void setTitleSpinnerOfBelongChild(String titleToSet, String BelongsToUID){
 
+    }
+
+    public static void updateListOfFamilyFromDB(ArrayList<String> allKeys,ArrayList<String> allFamilies,ArrayAdapter adapter) {
+        //Updating the spinner
+        reference.child("UserFamilies").child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                allFamilies.clear();
+                allKeys.clear();
+                for (DataSnapshot ds : snapshot.getChildren() )
+                {
+                    String toAddFamiliy =(String) ds.getValue();
+                    String toAddKey =ds.getKey();
+                    allFamilies.add(toAddFamiliy);
+                    allKeys.add(toAddKey);
+                }
+                int pos=allKeys.indexOf(currFamilyId);
+                if(pos>0)
+                {
+                    String Family=allFamilies.get(pos);
+                    allFamilies.remove(Family);
+                    allFamilies.add(0,Family);
+
+                    allKeys.remove(currFamilyId);
+                    allKeys.add(0,currFamilyId);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

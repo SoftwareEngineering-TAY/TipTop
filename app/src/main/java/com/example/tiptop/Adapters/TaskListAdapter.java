@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;

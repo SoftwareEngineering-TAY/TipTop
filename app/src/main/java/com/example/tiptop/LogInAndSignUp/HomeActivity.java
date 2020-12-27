@@ -32,6 +32,7 @@ import static com.example.tiptop.Database.Database.getCurrFamilyId;
 import static com.example.tiptop.Database.Database.getPermission;
 import static com.example.tiptop.Database.Database.initializationCurrFamilyIdAndPermission;
 import static com.example.tiptop.Database.Database.setCurrFamilyId;
+import static com.example.tiptop.Database.Database.updateListOfFamilyFromDB;
 import static com.example.tiptop.Database.Database.uploadImage;
 
 public class HomeActivity extends AppCompatActivity  {
@@ -50,7 +51,7 @@ public class HomeActivity extends AppCompatActivity  {
 
 
     //Variables to be used for the spinner
-    private List <String> allKeys;
+    private ArrayList <String> allKeys;
     private ArrayList <String> allFamilies;
     private ArrayAdapter adapter;
     public String spinnerTitle;
@@ -116,6 +117,8 @@ public class HomeActivity extends AppCompatActivity  {
         //Connecting the list to the view
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, allFamilies);
         SpinnerFamily.setAdapter(adapter);
+
+        updateListOfFamilyFromDB(allKeys,allFamilies,adapter);
 
         //Defines the functionality of a last name click
         SpinnerFamily.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

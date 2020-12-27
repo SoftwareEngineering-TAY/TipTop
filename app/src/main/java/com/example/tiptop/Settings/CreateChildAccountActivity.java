@@ -27,7 +27,7 @@ import java.util.Calendar;
 
 public class CreateChildAccountActivity extends AppCompatActivity {
 
-    private static final String TAG = "CreateChildAccountActiv";
+    private static final String TAG = "CreateChildAccountActivity";
 
     private Button next;
     private Button selectDate;
