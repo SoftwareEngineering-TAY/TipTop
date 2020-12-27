@@ -7,12 +7,18 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.ChatActivity;
 import com.example.tiptop.FollowUp.FollowUpChildActivity;
@@ -38,8 +44,6 @@ import static com.example.tiptop.Database.Database.uploadImage;
 public class HomeActivity extends AppCompatActivity  {
 
     //Variables that will contain all the buttons
-    private Button setting;
-    private Button profile;
     private ImageButton imageButton;
     private Button followUp;
     private Button Statistics;
@@ -73,11 +77,32 @@ public class HomeActivity extends AppCompatActivity  {
         ActivateAllButtons();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id==R.id.settingItem){
+            Intent i;
+            if(getPermission().equals("Parent")){
+                i = new Intent(HomeActivity.this, SettingParentActivity.class);
+            }
+            else {
+                i = new Intent(HomeActivity.this, SettingChildActivity.class);
+            }
+            startActivity(i);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initializationFromXML() {
-        //Set the settings button
-        setting = (Button)findViewById(R.id.setting);
-        //Set the profile button
-        profile = (Button)findViewById(R.id.profile);
         //Set the followUp button
         followUp = (Button)findViewById(R.id.followUp);
         //Set the Statistics button
@@ -135,30 +160,6 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void ActivateAllButtons() {
-        //Moves to the settings activity
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i;
-                if(getPermission().equals("Parent")){
-                    i = new Intent(v.getContext(), SettingParentActivity.class);
-                }
-                else if (getPermission().equals("Child")) {
-                    i = new Intent(v.getContext(), SettingChildActivity.class);
-                }
-                else return;
-                startActivity(i);
-            }
-        });
-
-        //Moves to the profile activity
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), ProfileActivity.class);
-                startActivity(i);
-            }
-        });
 
         //Moves to the followUp activity
         followUp.setOnClickListener(new View.OnClickListener() {
