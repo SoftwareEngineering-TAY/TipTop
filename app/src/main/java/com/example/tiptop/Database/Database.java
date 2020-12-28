@@ -2,6 +2,7 @@ package com.example.tiptop.Database;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
@@ -210,6 +211,7 @@ public class Database {
                         }
                         if (ds.getKey().equals("type")){
                             permission = (String) ds.getValue();
+                            Log.v("permision: ", permission);
                         }
                     }
                 }

@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -45,14 +46,13 @@ public class HomeActivity extends AppCompatActivity  {
 
     //Variables that will contain all the buttons
     private ImageButton imageButton;
-    private Button followUp;
-    private Button Statistics;
-    private Button chat ;
-    private Button Tasks;
-    private Button history;
-    private Button points;
+    private androidx.cardview.widget.CardView followUp;
+    private androidx.cardview.widget.CardView Statistics;
+    private androidx.cardview.widget.CardView chat ;
+    private androidx.cardview.widget.CardView Tasks;
+    private androidx.cardview.widget.CardView history;
+    private androidx.cardview.widget.CardView points;
     private Spinner SpinnerFamily;
-
 
     //Variables to be used for the spinner
     private ArrayList <String> allKeys;
@@ -90,6 +90,7 @@ public class HomeActivity extends AppCompatActivity  {
 
         if(id==R.id.settingItem){
             Intent i;
+
             if(getPermission().equals("Parent")){
                 i = new Intent(HomeActivity.this, SettingParentActivity.class);
             }
@@ -104,17 +105,17 @@ public class HomeActivity extends AppCompatActivity  {
 
     private void initializationFromXML() {
         //Set the followUp button
-        followUp = (Button)findViewById(R.id.followUp);
+        followUp = findViewById(R.id.followUp);
         //Set the Statistics button
-        Statistics = (Button)findViewById(R.id.statistics);
+        Statistics = findViewById(R.id.statistics);
         //Set the chat button
-        chat = (Button)findViewById(R.id.chat);
+        chat = findViewById(R.id.chat);
         //Set the Tasks button
-        Tasks = (Button)findViewById(R.id.tasks);
+        Tasks = findViewById(R.id.tasks);
         //Set the history button
-        history = (Button)findViewById(R.id.history);
+        history = findViewById(R.id.history);
         //Set the points button
-        points = (Button)findViewById(R.id.points);
+        points = findViewById(R.id.points);
         //Set the ImageButton button
         imageButton = (ImageButton)findViewById(R.id.imageButton);
 

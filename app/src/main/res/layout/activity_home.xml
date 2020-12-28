@@ -1,89 +1,333 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="30dp">
+    android:animateLayoutChanges="true"
+    android:fillViewport="true">
 
-    <!--Spinner and Image Button-->
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/SpinnerFamily"
-        android:spinnerMode="dropdown"
-        android:layout_marginTop="55dp"
-        android:layout_marginLeft="140dp"
-        android:gravity="center_horizontal"
-        android:prompt="@string/spinnerTitle"/>
-
-    <ImageButton
-        android:id="@+id/imageButton"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/SpinnerFamily"
-        android:layout_marginTop="30dp"
-        />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
 
-    <!--All bottom buttons-->
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
-        <Button
-            android:layout_row="1"
-            android:layout_column="1"
-            android:id="@+id/followUp"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="320dp"
-            android:text="Follow up"/>
-        <Button
-            android:layout_row="2"
-            android:layout_column="1"
-            android:id="@+id/statistics"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/followUp"
-            android:layout_marginTop="50dp"
-            android:text="Statistics" />
-        <Button
-            android:layout_row="3"
-            android:layout_column="1"
-            android:id="@+id/chat"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/statistics"
-            android:layout_marginTop="50dp"
-            android:text="Chat" />
+        <!--Spinner and Image Button-->
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/SpinnerFamily"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="55dp"
+            android:layout_marginLeft="140dp"
+            android:gravity="center_horizontal"
+            android:prompt="@string/spinnerTitle"/>
 
-        <Button
-            android:layout_row="1"
-            android:layout_column="3"
-            android:id="@+id/tasks"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="320dp"
-            android:text="Pool Tasks"/>
-        <Button
-            android:layout_row="2"
-            android:layout_column="3"
-            android:id="@+id/history"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/tasks"
-            android:layout_marginTop="50dp"
-            android:text="History" />
-        <Button
-            android:layout_row="3"
-            android:layout_column="3"
-            android:id="@+id/points"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/history"
-            android:layout_marginTop="50dp"
-            android:text="Points" />
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/SpinnerFamily"
+            android:layout_marginTop="30dp"
+            />
+
+        <!--All bottom buttons-->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/imageButton"
+            android:rowCount="3"
+            android:columnCount="2">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/followUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_baseline_follow_the_signs_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/coming_soon"
+                        android:text="Follow up"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/statistics_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/coming_soon"
+                        android:text="Statistics"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/chat_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/coming_soon"
+                        android:text="Chat"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_baseline_list_alt_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/coming_soon"
+                        android:text="Pool Tasks"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/history_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/coming_soon"
+                        android:text="History"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:layout_gravity="fill"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/points_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/coming_soon"
+                        android:text="Points"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </GridLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
 
 
-    </GridLayout>
+    <!--            <Button-->
+    <!--                android:layout_row="1"-->
+    <!--                android:layout_column="1"-->
+    <!--                android:id="@+id/followUp"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="50dp"-->
+    <!--                android:layout_marginTop="320dp"-->
+    <!--                android:text="Follow up"/>-->
 
+    <!--            <Button-->
+    <!--                android:layout_row="2"-->
+    <!--                android:layout_column="1"-->
+    <!--                android:id="@+id/statistics"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="50dp"-->
+    <!--                android:layout_below="@+id/followUp"-->
+    <!--                android:layout_marginTop="50dp"-->
+    <!--                android:text="Statistics" />-->
 
-</RelativeLayout>
+    <!--            <Button-->
+    <!--                android:layout_row="3"-->
+    <!--                android:layout_column="1"-->
+    <!--                android:id="@+id/chat"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="50dp"-->
+    <!--                android:layout_below="@+id/statistics"-->
+    <!--                android:layout_marginTop="50dp"-->
+    <!--                android:text="Chat" />-->
+
+    <!--                <Button-->
+    <!--                    android:layout_row="1"-->
+    <!--                    android:layout_column="3"-->
+    <!--                    android:id="@+id/tasks"-->
+    <!--                    android:layout_width="150dp"-->
+    <!--                    android:layout_height="50dp"-->
+    <!--                    android:layout_marginTop="320dp"-->
+    <!--                    android:text="Pool Tasks"/>-->
+
+    <!--            <Button-->
+    <!--                android:layout_row="2"-->
+    <!--                android:layout_column="3"-->
+    <!--                android:id="@+id/history"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="50dp"-->
+    <!--                android:layout_below="@+id/tasks"-->
+    <!--                android:layout_marginTop="50dp"-->
+    <!--                android:text="History" />-->
+
+    <!--            <Button-->
+    <!--                android:layout_row="3"-->
+    <!--                android:layout_column="3"-->
+    <!--                android:id="@+id/points"-->
+    <!--                android:layout_width="150dp"-->
+    <!--                android:layout_height="50dp"-->
+    <!--                android:layout_below="@+id/history"-->
+    <!--                android:layout_marginTop="50dp"-->
+    <!--                android:text="Points" />-->
