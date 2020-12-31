@@ -33,6 +33,13 @@ import com.example.tiptop.R;
 import com.example.tiptop.Settings.SettingChildActivity;
 import com.example.tiptop.Settings.SettingParentActivity;
 import com.example.tiptop.StatisticsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 import static com.example.tiptop.Database.Database.getCurrFamilyId;
@@ -48,7 +55,7 @@ public class HomeActivity extends AppCompatActivity  {
     private ImageButton imageButton;
     private androidx.cardview.widget.CardView followUp;
     private androidx.cardview.widget.CardView Statistics;
-    private androidx.cardview.widget.CardView chat ;
+    private androidx.cardview.widget.CardView chat;
     private androidx.cardview.widget.CardView Tasks;
     private androidx.cardview.widget.CardView history;
     private androidx.cardview.widget.CardView points;
@@ -77,6 +84,32 @@ public class HomeActivity extends AppCompatActivity  {
         ActivateAllButtons();
     }
 
+    private void initializationFromXML() {
+        //Set the followUp button
+        followUp = findViewById(R.id.followUp);
+        //Set the Statistics button
+        Statistics = findViewById(R.id.statistics);
+        //Set the chat button
+        chat = findViewById(R.id.chat);
+        //Set the Tasks button
+        Tasks = findViewById(R.id.tasks);
+        //Set the history button
+        history = findViewById(R.id.history);
+        //Set the points button
+        points = findViewById(R.id.points);
+        //Set the ImageButton button
+        imageButton = (ImageButton)findViewById(R.id.imageButton);
+        //Set the SpinnerFamily Spinner
+        SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
+    }
+
+    private void initializeClassVariables() {
+        spinnerTitle = getCurrFamilyId();
+        //Initialize the 2 lists that will save all the last names and all the keys respectively.
+        allKeys = new ArrayList<>();
+        allFamilies = new ArrayList<>();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
@@ -103,34 +136,9 @@ public class HomeActivity extends AppCompatActivity  {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializationFromXML() {
-        //Set the followUp button
-        followUp = findViewById(R.id.followUp);
-        //Set the Statistics button
-        Statistics = findViewById(R.id.statistics);
-        //Set the chat button
-        chat = findViewById(R.id.chat);
-        //Set the Tasks button
-        Tasks = findViewById(R.id.tasks);
-        //Set the history button
-        history = findViewById(R.id.history);
-        //Set the points button
-        points = findViewById(R.id.points);
-        //Set the ImageButton button
-        imageButton = (ImageButton)findViewById(R.id.imageButton);
 
-    }
 
-    private void initializeClassVariables() {
-        spinnerTitle = getCurrFamilyId();
 
-        //Set the SpinnerFamily Spinner
-        SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
-
-        //Initialize the 2 lists that will save all the last names and all the keys respectively.
-        allKeys = new ArrayList<>();
-        allFamilies = new ArrayList<>();
-    }
 
 
     /**
@@ -286,8 +294,6 @@ public class HomeActivity extends AppCompatActivity  {
             }
         }
     }
-
-
 
 //    //need to ask yirat
 //    private void initializationImage() {

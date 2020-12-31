@@ -200,16 +200,17 @@ public class Database {
     }
 
     public static boolean initializationCurrFamilyIdAndPermission() {
-        try{
+        try {
             reference.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot ds : snapshot.getChildren() )
-                    {
-                        if(ds.getKey().equals("currFamilyId")){
+                    Log.v("onDataChange", "**************");
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        Log.v("onFor", "**************");
+                        if (ds.getKey().equals("currFamilyId")) {
                             currFamilyId = (String) ds.getValue();
                         }
-                        if (ds.getKey().equals("type")){
+                        if (ds.getKey().equals("type")) {
                             permission = (String) ds.getValue();
                             Log.v("permision: ", permission);
                         }
@@ -221,13 +222,12 @@ public class Database {
 
                 }
             });
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         return true;
-
     }
+
 
     public static boolean setCurrFamilyId(String CurrFamilyId){
         try{
