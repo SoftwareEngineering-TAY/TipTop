@@ -11,10 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
+
+import static com.example.tiptop.Database.Database.getAndSetTitleSpinnerOfBelongChild;
 import static com.example.tiptop.Database.Database.setStatus;
 import static com.example.tiptop.Database.Database.setTaskBonus;
 import static com.example.tiptop.Database.Database.setTaskDesctiption;
@@ -146,21 +145,7 @@ public class TaskInfoParentActivity extends AppCompatActivity {
         }
         else
         {
-//            reference.child("Users").child(taskToShow.getBelongsToUID()).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    for (DataSnapshot ds : snapshot.getChildren()) {
-//                        if (ds.getValue().equals("name") && ds.getValue() != null) {
-//                            titleParentSpinner = ds.getValue().toString();
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
+            titleParentSpinner = getAndSetTitleSpinnerOfBelongChild(taskToShow.getBelongsToUID());
         }
         // need to update image!!
         description.setHint(taskToShow.getDescription());

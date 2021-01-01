@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -37,6 +38,7 @@ public class Database {
     private static String userID = mAuth.getCurrentUser().getUid();
     private static String currFamilyId;
     private static String permission;
+    private static String TitleSpinnerOfBelongChild;
 
     public static final String USERS_ROOT = "Users", FAMILIES_ROOT= "Families" , TASKS_ROOT= "Tasks",USERRFAMILIES_ROOT = "UserFamilies";
 
@@ -201,20 +203,10 @@ public class Database {
 
     public static boolean initializationCurrFamilyIdAndPermission() {
         try {
-            reference.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            reference.child("Users").child(userID).child("currFamilyId").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.v("onDataChange", "**************");
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        Log.v("onFor", "**************");
-                        if (ds.getKey().equals("currFamilyId")) {
-                            currFamilyId = (String) ds.getValue();
-                        }
-                        if (ds.getKey().equals("type")) {
-                            permission = (String) ds.getValue();
-                            Log.v("permision: ", permission);
-                        }
-                    }
+                    currFamilyId = (String) snapshot.getValue();
                 }
 
                 @Override
@@ -222,6 +214,38 @@ public class Database {
 
                 }
             });
+            reference.child("Users").child(userID).child("type").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    permission = (String) snapshot.getValue();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+//            reference.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    Log.v("onDataChange", "**************");
+//                    for (DataSnapshot ds : snapshot.getChildren()) {
+//                        Log.v("onFor", "**************");
+//                        if (ds.getKey().equals("currFamilyId")) {
+//                            currFamilyId = (String) ds.getValue();
+//                        }
+//                        if (ds.getKey().equals("type")) {
+//                            permission = (String) ds.getValue();
+//                            Log.v("permision: ", permission);
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
         } catch (Exception e) {
             return false;
         }
@@ -383,8 +407,19 @@ public class Database {
         return true;
     }
 
-    public static void setTitleSpinnerOfBelongChild(String titleToSet, String BelongsToUID){
+    public static String getAndSetTitleSpinnerOfBelongChild(String BelongsToUID){
+        reference.child("Users").child(BelongsToUID).child("name").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    TitleSpinnerOfBelongChild= snapshot.getValue().toString();
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        return TitleSpinnerOfBelongChild;
     }
 
     public static void updateListOfFamilyFromDB(ArrayList<String> allKeys,ArrayList<String> allFamilies,ArrayAdapter adapter) {
@@ -412,6 +447,35 @@ public class Database {
                     allKeys.add(0,currFamilyId);
                 }
                 adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public static void setScreenViewByUser(TextView name, TextView email){
+        reference.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String key;
+                String value;
+
+                for(DataSnapshot ds : snapshot.getChildren()){
+
+                    key = ds.getKey();
+                    value = (String) ds.getValue();
+
+                    if(key.equals("name")){
+                        name.setText(value);
+                    }
+
+                    else if(email != null && key.equals("email")){
+                        email.setText(value);
+                    }
+                }
             }
 
             @Override
