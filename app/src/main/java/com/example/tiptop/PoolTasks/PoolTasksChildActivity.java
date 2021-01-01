@@ -34,7 +34,7 @@ public class PoolTasksChildActivity extends AppCompatActivity {
     private void createListOfTask() {
         list = new ArrayList<>();
         listID = new ArrayList<>();
-        mTaskListAdapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task,list);
+        mTaskListAdapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task_with_bonus,list);
         followList.setAdapter(mTaskListAdapter);
     }
 

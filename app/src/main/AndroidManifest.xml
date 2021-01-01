@@ -63,12 +63,15 @@
 
         <activity android:name=".Settings.SettingParentActivity"/>
 
+        //Points
+        <activity android:name=".Points.PointsChildActivity"/>
+
+        <activity android:name=".Points.PointsParentActivity"/>
+
         //Without Packages
         <activity android:name=".ChatActivity"/>
 
         <activity android:name=".ImageActivity"/>
-
-        <activity android:name=".PointsActivity"/>
 
         <activity android:name=".ProfileActivity"/>
 

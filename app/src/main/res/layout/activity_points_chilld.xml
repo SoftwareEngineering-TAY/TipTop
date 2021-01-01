@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/the_amount_of_points_you_have_earned_is"
+        android:fontFamily="@font/coming_soon"
+        android:textColor="@color/black"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/numOfPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:layout_gravity="center_horizontal"
+        android:text=""
+        android:fontFamily="@font/coming_soon"
+        android:textColor="@color/black"
+        android:textSize="40dp"/>
+
+    <ImageView
+        android:layout_width="410dp"
+        android:layout_height="410dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-245dp"
+        android:background="@drawable/points_icon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/well_done"
+        android:fontFamily="@font/coming_soon"
+        android:textColor="@color/black"
+        android:textSize="40dp"/>
+
+</LinearLayout>

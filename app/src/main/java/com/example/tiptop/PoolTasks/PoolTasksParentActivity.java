@@ -46,7 +46,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
         ListTaskID = new HashMap<>();//list of ID'S Tasks
-        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task, TaskInfoParentActivity.class);
+        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task_with_bonus, TaskInfoParentActivity.class);
         AssociatedTasks.setAdapter(childAdapter);
     }
 
@@ -58,7 +58,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private void createListOfTask() {
         ListUnassignedTasks = new ArrayList<>();
         ListUnassignedTaskId = new ArrayList<>();
-        adapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task,ListUnassignedTasks);
+        adapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task_with_bonus,ListUnassignedTasks);
         UnassignedTasks.setAdapter(adapter);
     }
 

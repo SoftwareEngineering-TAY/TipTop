@@ -7,41 +7,30 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.ChatActivity;
 import com.example.tiptop.FollowUp.FollowUpChildActivity;
 import com.example.tiptop.FollowUp.FollowUpParentActivity;
 import com.example.tiptop.History.HistoryParentActivity;
-import com.example.tiptop.PointsActivity;
+import com.example.tiptop.Points.PointsChildActivity;
+import com.example.tiptop.Points.PointsParentActivity;
 import com.example.tiptop.PoolTasks.PoolTasksChildActivity;
 import com.example.tiptop.PoolTasks.PoolTasksParentActivity;
-import com.example.tiptop.ProfileActivity;
 import com.example.tiptop.R;
 import com.example.tiptop.Settings.SettingChildActivity;
 import com.example.tiptop.Settings.SettingParentActivity;
 import com.example.tiptop.StatisticsActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
+
 import static com.example.tiptop.Database.Database.getCurrFamilyId;
 import static com.example.tiptop.Database.Database.getPermission;
 import static com.example.tiptop.Database.Database.initializationCurrFamilyIdAndPermission;
@@ -234,7 +223,14 @@ public class HomeActivity extends AppCompatActivity  {
         points.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), PointsActivity.class);
+                Intent i;
+                if(getPermission().equals("Parent")){
+                    i = new Intent(v.getContext(), PointsParentActivity.class);
+                }
+                else if (getPermission().equals("Child")) {
+                    i = new Intent(v.getContext(), PointsChildActivity.class);
+                }
+                else return;
                 startActivity(i);
             }
         });

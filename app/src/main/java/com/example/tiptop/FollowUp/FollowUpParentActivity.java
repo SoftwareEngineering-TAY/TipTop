@@ -35,7 +35,7 @@ public class FollowUpParentActivity extends AppCompatActivity {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
         ListTaskID = new HashMap<>();//list of ID'S Tasks
-        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task, ApproveTaskActivity.class);
+        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task_with_bonus, ApproveTaskActivity.class);
         AssociatedTasks.setAdapter(childAdapter);
     }
 

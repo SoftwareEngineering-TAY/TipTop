@@ -2,9 +2,11 @@
 <LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    tools:ignore="VectorDrawableCompat"
     android:padding="20dp">
 
     <LinearLayout
@@ -63,7 +65,7 @@
         </androidx.cardview.widget.CardView>
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:elevation="10dp"
@@ -71,9 +73,11 @@
 
         <Button
             android:id="@+id/login"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login"
+
+            android:background="@drawable/bg_ui"
             android:textAllCaps="false"
             android:layout_marginBottom="5dp"/>
 
