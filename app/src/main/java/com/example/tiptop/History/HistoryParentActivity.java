@@ -31,7 +31,6 @@ public class HistoryParentActivity extends AppCompatActivity {
     }
 
     private void initializeClassVariables(){
-        search = findViewById(R.id.searchEditText);
         AssociatedTasks = (ExpandableListView) findViewById(R.id.ListHistoryTasks);
     }
 

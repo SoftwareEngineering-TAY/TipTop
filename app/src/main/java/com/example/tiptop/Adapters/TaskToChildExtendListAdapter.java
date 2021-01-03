@@ -97,13 +97,12 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         //need to add cases for layout types!!!!!!!
 
         switch (mLayoutResourceId){
+
             case R.layout.row_task_with_bonus:
-                //get a reference to the different view elements we wish to update
                 TextView nameView = (TextView) row.findViewById(R.id.TaskNameRow);
                 TextView bonusView = (TextView) row.findViewById(R.id.BonusPointRow);
                 TextView statusView = (TextView) row.findViewById(R.id.StatusTaskRow);
                 TextView timeView = (TextView) row.findViewById(R.id.TimeLeftRow);
-
 
                 //setting the view to reflect the data we need to display
                 nameView.setText(task.getNameTask());
@@ -114,6 +113,7 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
                     timeView.setText("days left : "+ Days);
                 }
                 else timeView.setText("days left : inf");
+
                 break;
 
             case R.layout.row_task_without_bonus:
@@ -123,32 +123,27 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
 
             case R.layout.row_task_history:
                 //get a reference to the different view elements we wish to update
-                TextView nameView1 = (TextView) row.findViewById(R.id.TaskNameRow);
-                TextView ApprovalDateView = (TextView) row.findViewById(R.id.ApprovalDateRow);
+                TextView taskName = (TextView) row.findViewById(R.id.taskName);
+                TextView ApprovalDate = (TextView) row.findViewById(R.id.taskApproval);
 
-                nameView1.setText(task.getNameTask());
-                ApprovalDateView.setText("Approval Date : " + task.getConfirmedDate());
+                taskName.setText(task.getNameTask());
+                ApprovalDate.setText(task.getConfirmedDate());
 
                 break;
 
-
         }
-
-
 
 
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(row.getContext(),dest );
-
                 intent.putExtra("task",task);
                 intent.putExtra("taskID",getTaskID(groupPosition,childPosition));
                 startActivity(row.getContext(),intent,EMPTY);
 
             }
         });
-
 
         //returning the row view (because this is called getView after all)
         return row;

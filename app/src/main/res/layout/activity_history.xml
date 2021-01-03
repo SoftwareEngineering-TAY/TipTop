@@ -6,15 +6,6 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <Spinner
-        android:id="@+id/filterSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:spinnerMode="dropdown"
-        android:layout_centerHorizontal="true"
-        android:prompt="@string/spinnerChildTitle"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,14 +14,6 @@
         android:textColor="@color/black"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"/>
-
-    <EditText
-        android:id="@+id/searchEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Search"
-        android:drawableLeft="@drawable/ic_baseline_search_24"/>
 
     <ExpandableListView
         android:id="@+id/ListHistoryTasks"

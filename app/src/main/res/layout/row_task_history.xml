@@ -6,36 +6,77 @@
     android:orientation="horizontal">
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_baseline_list_alt_24"
+            android:minWidth="47dp"
+            android:minHeight="47dp">
+        </ImageView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="55dp"
         android:layout_marginRight="15dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:orientation="horizontal">
+
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/TaskNameRow"
-                android:text="Task Name"
-                android:textColor="#070707"
-                android:textSize="25dp"
-                android:textStyle="bold|italic"
-                android:layout_weight="1"
-                />
+                android:gravity="left"
+                android:text="Task Name: "
+                android:textColor="@color/black"
+                android:textStyle="italic|bold"
+                android:textSize="20dp"/>
+
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/taskName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/ApprovalDateRow"
-                android:text="Approval Date: "
-                android:textColor="#070707"
-                android:textSize="25dp"
-                android:textStyle="bold|italic"
-                />
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="18dp"/>
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Approval Date: "
+                android:textColor="@color/black"
+                android:textStyle="italic|bold"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/taskApproval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </RelativeLayout>
