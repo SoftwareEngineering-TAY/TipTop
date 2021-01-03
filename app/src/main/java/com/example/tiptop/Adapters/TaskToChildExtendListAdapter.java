@@ -92,33 +92,56 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         //inflate the layout for a single row
         row = LayoutInflater.from(parent.getContext()).inflate(mLayoutResourceId,parent,false);
 
-        //need to add cases for layout types!!!!!!!
-
-        //get a reference to the different view elements we wish to update
-        TextView nameView = (TextView) row.findViewById(R.id.TaskNameRow);
-        TextView bonusView = (TextView) row.findViewById(R.id.BonusPointRow);
-        TextView statusView = (TextView) row.findViewById(R.id.StatusTaskRow);
-        TextView timeView = (TextView) row.findViewById(R.id.TimeLeftRow);
-
         //get the data from the data array
         Task task = getChild(groupPosition,childPosition);
+        //need to add cases for layout types!!!!!!!
 
-        //setting the view to reflect the data we need to display
-        nameView.setText(task.getNameTask());
-        bonusView.setText("Bonus: " + task.getBonusScore());
-        statusView.setText("Status: " + task.getStatus().toString());
-        if (task.getEndDate()!=null){
-            long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
-            timeView.setText("days left : "+ Days);
+        switch (mLayoutResourceId){
+            case R.layout.row_task_with_bonus:
+                //get a reference to the different view elements we wish to update
+                TextView nameView = (TextView) row.findViewById(R.id.TaskNameRow);
+                TextView bonusView = (TextView) row.findViewById(R.id.BonusPointRow);
+                TextView statusView = (TextView) row.findViewById(R.id.StatusTaskRow);
+                TextView timeView = (TextView) row.findViewById(R.id.TimeLeftRow);
+
+
+                //setting the view to reflect the data we need to display
+                nameView.setText(task.getNameTask());
+                bonusView.setText("Bonus: " + task.getBonusScore());
+                statusView.setText("Status: " + task.getStatus().toString());
+                if (task.getEndDate()!=null){
+                    long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
+                    timeView.setText("days left : "+ Days);
+                }
+                else timeView.setText("days left : inf");
+                break;
+
+            case R.layout.row_task_without_bonus:
+
+
+                break;
+
+            case R.layout.row_task_history:
+                //get a reference to the different view elements we wish to update
+                TextView nameView1 = (TextView) row.findViewById(R.id.TaskNameRow);
+                TextView ApprovalDateView = (TextView) row.findViewById(R.id.ApprovalDateRow);
+
+                nameView1.setText(task.getNameTask());
+                ApprovalDateView.setText("Approval Date : " + task.getConfirmedDate());
+
+                break;
+
+
         }
-        else timeView.setText("days left : inf");
+
+
+
 
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(row.getContext(),dest );
 
-//                intent.putExtra("currFamilyId", currFamilyId);
                 intent.putExtra("task",task);
                 intent.putExtra("taskID",getTaskID(groupPosition,childPosition));
                 startActivity(row.getContext(),intent,EMPTY);
