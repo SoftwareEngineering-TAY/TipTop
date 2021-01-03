@@ -21,6 +21,7 @@ public class Task implements Serializable {
     private String belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid
     private String startDate;
     private String endDate;
+    private String confirmedDate;
     private STATUS status;
     private String comment;
     private String description;
@@ -49,6 +50,10 @@ public class Task implements Serializable {
 
     public String getEndDate() {
         return endDate;
+    }
+
+    public String getConfirmedDate() {
+        return confirmedDate;
     }
 
     public STATUS getStatus() {
@@ -88,6 +93,10 @@ public class Task implements Serializable {
         this.endDate = endDate;
     }
 
+    public void setConfirmedDate(String confirmedDate) {
+        this.confirmedDate = confirmedDate;
+    }
+
     public void setStatus(STATUS status) {
         this.status = status;
     }
@@ -104,12 +113,17 @@ public class Task implements Serializable {
     //methods
     @Override
     public String toString() {
-        return "Task{"+"Name: "+nameTask+'\'' +
-                "Bonus Score: "+bonusScore+'\'' +
-                "Start date and hour: "+startDate+'\'' +
-                "End date and hour: "+endDate+'\'' +
-                "Status"+status+'\'' +
-                "Comment"+comment+'\''+
-                "}";
+        return "Task{" +
+                "nameTask='" + nameTask + '\'' +
+                ", bonusScore=" + bonusScore +
+                ", belongsToUID='" + belongsToUID + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", confirmedDate='" + confirmedDate + '\'' +
+                ", status=" + status +
+                ", comment='" + comment + '\'' +
+                ", description='" + description + '\'' +
+                ", image=" + image +
+                '}';
     }
 }

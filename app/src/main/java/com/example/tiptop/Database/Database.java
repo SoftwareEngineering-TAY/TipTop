@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.Objects.User;
+import com.example.tiptop.Points.PointsParentActivity;
 import com.example.tiptop.PoolTasks.TaskInfoParentActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
@@ -478,10 +481,11 @@ public class Database {
     }
 
     public static void addPointsToChild (Task conformedTask){
+        long currPoint;
         reference.child("Users").child(conformedTask.getBelongsToUID()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                snapshot.child("points").getRef().setValue((long)snapshot.child("points").getValue() + conformedTask.getBonusScore());
+                snapshot.child("points").getRef().setValue(snapshot.child("points").getValue(long.class) + conformedTask.getBonusScore());
             }
 
             @Override
@@ -496,6 +500,44 @@ public class Database {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 sum[0] = snapshot.getValue(long.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public static void setNamesAndScores(PointsParentActivity act){
+
+        reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String key;
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    key = ds.getKey();
+                    if(!key.equals("Family name")){
+                        reference.child("Users").child(key).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User user = snapshot.getValue(User.class);
+                                Log.v("user**********",user.toString());
+                                if(user.getType().equals("Child")){
+                                    act.setChildName(user.getName(), user.getPoints());
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
+                }
+
             }
 
             @Override

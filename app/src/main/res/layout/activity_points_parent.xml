@@ -7,20 +7,43 @@
     android:padding="20dp">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Here is a table of your children's points:"
+        android:layout_gravity="center"
+        android:text="Children's points:"
         android:fontFamily="@font/coming_soon"
         android:textColor="@color/black"
-        android:textSize="20dp"/>
+        android:textSize="30dp"/>
 
 
     <TableLayout
         android:id="@+id/pointsTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:stretchColumns="0,1"
         android:layout_marginTop="20dp">
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Child name"
+                android:textSize="20dp"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Child scores"
+                android:textSize="20dp"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center"/>
+        </TableRow>
+
     </TableLayout>
 
 </LinearLayout>
