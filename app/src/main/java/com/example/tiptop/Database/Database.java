@@ -30,6 +30,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Database {
@@ -38,7 +40,7 @@ public class Database {
     private static FirebaseDatabase db = FirebaseDatabase.getInstance();
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static DatabaseReference reference = db.getReference();
-    private static String userID = mAuth.getCurrentUser().getUid();
+    private static String userID;
     private static String currFamilyId;
     private static String permission;
     private static String TitleSpinnerOfBelongChild;
@@ -48,6 +50,19 @@ public class Database {
     public static boolean setStatus(String taskID, String Status) {
         try {
             reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue(Status);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean setConfirmedDate(String taskID) {
+        try {
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            String currentDate = "" + year + "-" + month + "-" + day;
+            reference.child("Tasks").child(currFamilyId).child(taskID).child("confirmedDate").setValue(currentDate);
         } catch (Exception e) {
             return false;
         }
@@ -199,6 +214,7 @@ public class Database {
     }
 
     public static boolean initializationCurrFamilyIdAndPermission() {
+        userID = mAuth.getCurrentUser().getUid();
         try {
             reference.child("Users").child(userID).child("currFamilyId").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -275,6 +291,7 @@ public class Database {
             @Override
             public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    userID = mAuth.getCurrentUser().getUid();
                     setFamilyName(key, familyId);
                     setUserToFamily(key, user_to_add.getName());
                     setUserToUserFamily(key, familyId);
@@ -403,6 +420,7 @@ public class Database {
 
     public static void updateListOfFamilyFromDB(ArrayList<String> allKeys, ArrayList<String> allFamilies, ArrayAdapter adapter) {
         //Updating the spinner
+        Log.d("user", "updateListOfFamilyFromDB: userID " + userID);
         reference.child("UserFamilies").child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -414,6 +432,9 @@ public class Database {
                     allFamilies.add(toAddFamiliy);
                     allKeys.add(toAddKey);
                 }
+                Log.d("database:", "onDataChange:families: " + allFamilies);
+                Log.d("database:", "onDataChange:families: " + allKeys);
+
                 int pos = allKeys.indexOf(currFamilyId);
                 if (pos > 0) {
                     String Family = allFamilies.get(pos);

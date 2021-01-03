@@ -11,6 +11,7 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 
 import static com.example.tiptop.Database.Database.addPointsToChild;
+import static com.example.tiptop.Database.Database.setConfirmedDate;
 import static com.example.tiptop.Database.Database.setStatus;
 
 public class ApproveTaskActivity extends AppCompatActivity {
@@ -81,6 +82,7 @@ public class ApproveTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setStatus(taskID,"Confirmed");
+                setConfirmedDate(taskID);
                 addPointsToChild(taskToShow);
                 Intent i = new Intent(v.getContext(), FollowUpParentActivity.class);
                 startActivity(i);
