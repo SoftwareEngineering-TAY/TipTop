@@ -108,8 +108,8 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         bonusView.setText("Bonus: " + task.getBonusScore());
         statusView.setText("Status: " + task.getStatus().toString());
         if (task.getEndDate()!=null){
-            long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
-            timeView.setText("days left : "+ Days);
+            //long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
+            timeView.setText("days left : ");//+ Days);
         }
         else timeView.setText("days left : inf");
 

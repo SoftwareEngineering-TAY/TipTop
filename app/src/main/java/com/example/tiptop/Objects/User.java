@@ -10,8 +10,17 @@ public class User implements Serializable {
     private String birthday;
     private String type;
     private String currFamilyId;
+    private long points;
 
     public User() {
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    public void setPoints(long points) {
+        this.points = points;
     }
 
     public String getCurrFamilyId() {

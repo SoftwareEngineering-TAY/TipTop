@@ -272,21 +272,11 @@ public class Database {
             @Override
             public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    String uid = firebaseUser.getUid();
-
                     setFamilyName(key, familyId);
-
                     setUserToFamily(key, user_to_add.getName());
-
                     setUserToUserFamily(key, familyId);
-
                     setUser(user_to_add);
-
                     uploadImage(key, uri, bitmap);
-                } else {
-
                 }
             }
         });
@@ -468,7 +458,7 @@ public class Database {
     }
 
     public static void setNumOfPoints(TextView numOfPoints, ArrayList<Integer>sumOfPoints) {
-        reference.child("Tasks").child(getCurrFamilyId()).addValueEventListener(new ValueEventListener() {
+        reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
@@ -478,6 +468,34 @@ public class Database {
                     }
                 }
                 numOfPoints.setText(String.valueOf(sumOfPoints.get(0)));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public static void addPointsToChild (Task conformedTask){
+        reference.child("Users").child(conformedTask.getBelongsToUID()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                snapshot.child("points").getRef().setValue((long)snapshot.child("points").getValue() + conformedTask.getBonusScore());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public static void getPoints (long []sum ){
+        reference.child("Users").child(userID).child("points").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sum[0] = snapshot.getValue(long.class);
             }
 
             @Override
