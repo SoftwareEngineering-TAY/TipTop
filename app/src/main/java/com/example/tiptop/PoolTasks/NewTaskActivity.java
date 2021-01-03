@@ -128,7 +128,11 @@ public class NewTaskActivity extends AppCompatActivity {
                             @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                StartDate  = year+"-"+(monthOfYear + 1)+"-"+dayOfMonth;
+                                String zeroMonth = "";
+                                String zeroDay = "";
+                                if (month<9) zeroMonth = "0";
+                                if (day < 10) zeroDay = "0";
+                                StartDate  = year+"-"+ zeroMonth +(monthOfYear + 1)+"-"+ zeroDay + dayOfMonth;
                                 System.out.println("StartDate****************************"+StartDate);
                                 StartDateTV.setText(StartDate);
                             }
@@ -154,7 +158,11 @@ public class NewTaskActivity extends AppCompatActivity {
                             @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                EndDate = year+"-"+(monthOfYear + 1)+"-"+dayOfMonth;
+                                String zeroMonth = "";
+                                String zeroDay = "";
+                                if (month<9) zeroMonth = "0";
+                                if (day < 10) zeroDay = "0";
+                                EndDate = year+"-"+ zeroMonth +(monthOfYear + 1)+"-"+ zeroDay + dayOfMonth;
                                 EndDateTV.setText(EndDate);
                             }
                         }, year, month, day);

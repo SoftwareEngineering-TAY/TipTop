@@ -61,7 +61,11 @@ public class Database {
             int year = Calendar.getInstance().get(Calendar.YEAR);
             int month = Calendar.getInstance().get(Calendar.MONTH)+1;
             int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-            String currentDate = "" + year + "-" + month + "-" + day;
+            String zeroMonth = "";
+            String zeroDay = "";
+            if (month<10) zeroMonth = "0";
+            if (day < 10) zeroDay = "0";
+            String currentDate = "" + year + "-" + zeroMonth + month + "-" +zeroDay + day;
             reference.child("Tasks").child(currFamilyId).child(taskID).child("confirmedDate").setValue(currentDate);
         } catch (Exception e) {
             return false;
