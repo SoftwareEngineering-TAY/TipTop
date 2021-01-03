@@ -443,7 +443,7 @@ public class Database {
                 for (DataSnapshot ds : snapshot.getChildren()) {
 
                     key = ds.getKey();
-                    value = (String) ds.getValue();
+                    value = ds.getValue().toString();
 
                     if (key.equals("name")) {
                         name.setText(value);
@@ -495,11 +495,11 @@ public class Database {
         });
     }
 
-    public static void getPoints (long []sum ){
+    public static void getPoints (TextView numOfPoints){
         reference.child("Users").child(userID).child("points").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                sum[0] = snapshot.getValue(long.class);
+                numOfPoints.setText(String.valueOf(snapshot.getValue(long.class)));
             }
 
             @Override
