@@ -32,7 +32,7 @@
         android:layout_height="410dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="-245dp"
-        android:background="@drawable/points_icon"/>
+        android:background="@drawable/point_child_icon"/>
 
     <TextView
         android:layout_width="wrap_content"
