@@ -594,12 +594,9 @@ public class Database {
 
     public static void updateHomePicture(ImageButton imageButton, Context context) {
 
-        Log.v("curfamily********", getCurrFamilyId());
-
         String path = "Families/" + getCurrFamilyId();
-        StorageReference sRef = FirebaseStorage.getInstance().getReference(path);
 
-        sRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+        storage.getReference(path).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull com.google.android.gms.tasks.Task<Uri> task) {
                 if (task.isSuccessful()) {
@@ -616,6 +613,9 @@ public class Database {
                 }
             }
         });
+    }
 
+    public static void logout(){
+        mAuth.signOut();
     }
 }

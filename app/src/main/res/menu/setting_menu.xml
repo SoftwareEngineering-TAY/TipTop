@@ -5,8 +5,8 @@
 
     <item
         android:title="Item1"
-        android:id="@+id/settingItem"
-        android:icon="@drawable/ic_baseline_settings_24"
+        android:id="@+id/logoutItem"
+        android:icon="@drawable/logout_icon"
         app:showAsAction="always"/>
 
 </menu>
