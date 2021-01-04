@@ -66,8 +66,8 @@ public class RegistrationActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String zeroMonth = "";
                                 String zeroDay = "";
-                                if (month<9) zeroMonth = "0";
-                                if (day < 10) zeroDay = "0";
+                                if (monthOfYear<9) zeroMonth = "0";
+                                if (dayOfMonth < 10) zeroDay = "0";
                                 birthday.setText(year + "-" + zeroMonth + (monthOfYear + 1) + "-" +zeroDay + dayOfMonth);
                             }
                         }, year, month, day);

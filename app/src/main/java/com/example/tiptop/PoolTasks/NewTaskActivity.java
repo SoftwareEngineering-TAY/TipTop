@@ -130,8 +130,8 @@ public class NewTaskActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String zeroMonth = "";
                                 String zeroDay = "";
-                                if (month<9) zeroMonth = "0";
-                                if (day < 10) zeroDay = "0";
+                                if (monthOfYear<9) zeroMonth = "0";
+                                if (dayOfMonth < 10) zeroDay = "0";
                                 StartDate  = year+"-"+ zeroMonth +(monthOfYear + 1)+"-"+ zeroDay + dayOfMonth;
                                 System.out.println("StartDate****************************"+StartDate);
                                 StartDateTV.setText(StartDate);
@@ -160,8 +160,8 @@ public class NewTaskActivity extends AppCompatActivity {
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String zeroMonth = "";
                                 String zeroDay = "";
-                                if (month<9) zeroMonth = "0";
-                                if (day < 10) zeroDay = "0";
+                                if (monthOfYear < 9) zeroMonth = "0";
+                                if (dayOfMonth < 10) zeroDay = "0";
                                 EndDate = year+"-"+ zeroMonth +(monthOfYear + 1)+"-"+ zeroDay + dayOfMonth;
                                 EndDateTV.setText(EndDate);
                             }

@@ -36,7 +36,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         initializeClassVariables();
         createListOfTask();
         createExpandableListOfTask();
-        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Associated",childAdapter);
+        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Associated",childAdapter,365,false);
         crateClickEvent();
         updateTaskListFromDB(ListUnassignedTasks,ListUnassignedTaskId,"NotAssociated",adapter);
         addButtonFunc();

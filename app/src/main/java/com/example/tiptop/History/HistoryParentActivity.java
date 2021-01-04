@@ -27,7 +27,7 @@ public class HistoryParentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         initializeClassVariables();
         createExpandableListOfTask();
-        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Confirmed",childAdapter);
+        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Confirmed",childAdapter,10, true);
     }
 
     private void initializeClassVariables(){

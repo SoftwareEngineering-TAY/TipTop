@@ -2,6 +2,7 @@ package com.example.tiptop.Database;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TableLayout;
@@ -9,6 +10,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
 import com.example.tiptop.Objects.Task;
@@ -29,10 +31,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Database {
 
@@ -44,6 +49,7 @@ public class Database {
     private static String currFamilyId;
     private static String permission;
     private static String TitleSpinnerOfBelongChild;
+    private static long currPoint;
 
     public static final String USERS_ROOT = "Users", FAMILIES_ROOT = "Families", TASKS_ROOT = "Tasks", USERRFAMILIES_ROOT = "UserFamilies";
 
@@ -156,7 +162,7 @@ public class Database {
     }
 
 
-    public static boolean updateExpandableTaskListFromDB(ArrayList<String> ListChildForTask, HashMap<String, ArrayList<Task>> ListTaskGroups, HashMap<String, ArrayList<String>> ListTaskID, String status, TaskToChildExtendListAdapter childAdapter) {
+    public static boolean updateExpandableTaskListFromDB(ArrayList<String> ListChildForTask, HashMap<String, ArrayList<Task>> ListTaskGroups, HashMap<String, ArrayList<String>> ListTaskID, String status, TaskToChildExtendListAdapter childAdapter, int days, boolean endOrConfirmed) {
         try {
             reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -172,15 +178,21 @@ public class Database {
                                     ArrayList<Task> toAdd = new ArrayList<>();
                                     ArrayList<String> toAddID = new ArrayList<>();
                                     reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
+                                        @RequiresApi(api = Build.VERSION_CODES.O)
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             toAdd.clear();
                                             toAddID.clear();
                                             for (DataSnapshot ds1 : snapshot.getChildren()) {
                                                 if (ds1.child("belongsToUID").getValue() != null && ds1.child("belongsToUID").getValue().equals(ds.getKey()) && ds1.child("status").getValue().equals(status)) {
-                                                    Task taskToAdd = ds1.getValue(Task.class);
-                                                    toAdd.add(taskToAdd);
-                                                    toAddID.add(ds1.getKey());
+                                                    String toCalc = endOrConfirmed? "confirmedDate" : "endDate";
+                                                    long Days = DAYS.between(LocalDate.now(),LocalDate.parse(ds1.child(toCalc).getValue(String.class)));
+                                                    Log.v("DAYS!!!!!!: ", String.valueOf(Days));
+                                                    if (days >= Math.abs(Days)){
+                                                        Task taskToAdd = ds1.getValue(Task.class);
+                                                        toAdd.add(taskToAdd);
+                                                        toAddID.add(ds1.getKey());
+                                                    }
                                                 }
                                             }
                                             ListTaskGroups.put(toAddChildren, toAdd);
@@ -506,11 +518,10 @@ public class Database {
     }
 
     public static void addPointsToChild (Task conformedTask){
-        long currPoint;
-        reference.child("Users").child(conformedTask.getBelongsToUID()).addValueEventListener(new ValueEventListener() {
+        reference.child("Users").child(conformedTask.getBelongsToUID()).child("points").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                snapshot.child("points").getRef().setValue(snapshot.child("points").getValue(long.class) + conformedTask.getBonusScore());
+                currPoint = snapshot.getValue(long.class);
             }
 
             @Override
@@ -518,6 +529,9 @@ public class Database {
 
             }
         });
+        currPoint+=conformedTask.getBonusScore();
+        reference.child("Users").child(conformedTask.getBelongsToUID()).child("points").setValue(currPoint);
+
     }
 
     public static void getPoints (TextView numOfPoints){

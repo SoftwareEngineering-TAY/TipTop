@@ -24,7 +24,7 @@ public class FollowUpParentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_followup_parent);
         initializeClassVariables();
         createExpandableListOfTask();
-        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"WaitingForApproval",childAdapter);
+        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"WaitingForApproval",childAdapter,365,false);
     }
 
     private void initializeClassVariables() {
