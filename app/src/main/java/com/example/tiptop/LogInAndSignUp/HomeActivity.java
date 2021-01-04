@@ -1,5 +1,7 @@
 package com.example.tiptop.LogInAndSignUp;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -62,14 +64,21 @@ public class HomeActivity extends AppCompatActivity  {
     private static final int GALLERY_PHOTO = 2;
     private static final String TAG = "HomeActivity";
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
+
         initializationFromXML();
-        initializationCurrFamilyIdAndPermission();
+
+        initializationCurrFamilyIdAndPermission(imageButton,getApplicationContext());
+
         initializeClassVariables();
+
         spinerActive();
+
         ActivateAllButtons();
     }
 

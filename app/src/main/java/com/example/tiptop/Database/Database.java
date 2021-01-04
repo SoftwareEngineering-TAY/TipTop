@@ -1,13 +1,16 @@
 package com.example.tiptop.Database;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -17,6 +20,7 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.Points.PointsParentActivity;
 import com.example.tiptop.PoolTasks.TaskInfoParentActivity;
+import com.example.tiptop.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
@@ -229,13 +234,14 @@ public class Database {
         return true;
     }
 
-    public static boolean initializationCurrFamilyIdAndPermission() {
+    public static boolean initializationCurrFamilyIdAndPermission(ImageButton imageButton, Context context) {
         userID = mAuth.getCurrentUser().getUid();
         try {
             reference.child("Users").child(userID).child("currFamilyId").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     currFamilyId = (String) snapshot.getValue();
+                    updateHomePicture(imageButton,context);
                 }
 
                 @Override
@@ -584,5 +590,32 @@ public class Database {
 
             }
         });
+    }
+
+    public static void updateHomePicture(ImageButton imageButton, Context context) {
+
+        Log.v("curfamily********", getCurrFamilyId());
+
+        String path = "Families/" + getCurrFamilyId();
+        StorageReference sRef = FirebaseStorage.getInstance().getReference(path);
+
+        sRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull com.google.android.gms.tasks.Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri imageUri = task.getResult();
+                    Picasso.get()
+                            .load(imageUri)
+                            .fit()
+                            .centerCrop()
+                            .into(imageButton);
+
+                }
+                else {
+                    imageButton.setImageResource(R.drawable.new_family);
+                }
+            }
+        });
+
     }
 }

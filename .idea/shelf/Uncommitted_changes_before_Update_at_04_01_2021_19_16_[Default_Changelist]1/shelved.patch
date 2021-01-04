@@ -1,0 +1,91 @@
+Index: app/src/main/res/layout/activity_new_family_id.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:fresco=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:orientation=\"vertical\"\r\n    android:padding=\"20dp\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"100dp\"\r\n        android:layout_marginBottom=\"20dp\"\r\n        android:orientation=\"vertical\">\r\n\r\n        <com.google.android.material.textfield.TextInputLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:id=\"@+id/familyName\"\r\n            android:hint=\"@string/family_name\"\r\n            style=\"@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox\">\r\n\r\n            <com.google.android.material.textfield.TextInputEditText\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"match_parent\"/>\r\n\r\n        </com.google.android.material.textfield.TextInputLayout>\r\n\r\n        <TextView\r\n            android:id=\"@+id/attach_a_photo\"\r\n            android:layout_width=\"100dp\"\r\n            android:layout_height=\"fill_parent\"\r\n            android:layout_gravity=\"center_horizontal\"\r\n            android:layout_marginTop=\"20dp\"\r\n            android:text=\"@string/attach_a_photo\"\r\n            android:textStyle=\"bold|italic\"/>\r\n\r\n        <ImageButton\r\n            android:id=\"@+id/newImage\"\r\n            android:layout_width=\"200dp\"\r\n            android:layout_height=\"200dp\"\r\n            android:src=\"@drawable/new_family\"\r\n            android:layout_gravity=\"center_horizontal\"\r\n            android:scaleType=\"fitCenter\"/>\r\n\r\n    </LinearLayout>\r\n\r\n    <Spinner\r\n        android:id=\"@+id/route_type_spinner\"\r\n        android:layout_width=\"100dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"450dp\"\r\n        android:layout_centerHorizontal=\"true\"/>\r\n\r\n    <TextView\r\n        android:layout_width=\"80dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"@string/route_type\"\r\n        android:layout_marginTop=\"450dp\"\r\n        android:textStyle=\"bold|italic\"/>\r\n\r\n    <TextView\r\n        android:id=\"@+id/route_information\"\r\n        android:layout_width=\"120dp\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"@string/route_information\"\r\n        android:layout_marginTop=\"480dp\"\r\n        android:layout_centerHorizontal=\"true\" />\r\n\r\n    <Button\r\n        android:id=\"@+id/finish\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Finish\"\r\n        android:layout_centerHorizontal=\"true\"\r\n        android:layout_marginTop=\"550dp\"/>\r\n\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_new_family_id.xml	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
++++ app/src/main/res/layout/activity_new_family_id.xml	(date 1609777377082)
+@@ -50,7 +50,7 @@
+ 
+     <Spinner
+         android:id="@+id/route_type_spinner"
+-        android:layout_width="100dp"
++        android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="450dp"
+         android:layout_centerHorizontal="true"/>
+@@ -64,7 +64,7 @@
+ 
+     <TextView
+         android:id="@+id/route_information"
+-        android:layout_width="120dp"
++        android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/route_information"
+         android:layout_marginTop="480dp"
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_09_48__Default_Changelist_.xml
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_09_48__Default_Changelist_.xml	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_09_48__Default_Changelist_.xml	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_27_12_2020_09_48_[Default_Changelist]" date="1609055334588" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_09_48_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 27/12/2020 09:48 [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_10_46_[Default_Changelist]/shelved.patch
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_10_46_[Default_Changelist]/shelved.patch	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_10_46_[Default_Changelist]/shelved.patch	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
+@@ -1,17 +0,0 @@
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_52__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_52__Default_Changelist_.xml
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_41_[Default_Changelist]/shelved.patch .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_41_[Default_Changelist]/shelved.patch
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_49_[Default_Changelist]/shelved.patch .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_49_[Default_Changelist]/shelved.patch
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_49__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_49__Default_Changelist_.xml
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_40__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_40__Default_Changelist_.xml
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_40_[Default_Changelist]/shelved.patch .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_40_[Default_Changelist]/shelved.patch
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_41__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_41__Default_Changelist_.xml
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_52_[Default_Changelist]/shelved.patch .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_52_[Default_Changelist]/shelved.patch
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_20_12_2020_19_35__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_20_12_2020_19_35__Default_Changelist_.xml
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_09_48_[Default_Changelist]/shelved.patch
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_09_48_[Default_Changelist]/shelved.patch	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_09_48_[Default_Changelist]/shelved.patch	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
+@@ -1,17 +0,0 @@
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_52__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_52__Default_Changelist_.xml
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_41_[Default_Changelist]/shelved.patch .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_41_[Default_Changelist]/shelved.patch
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_49_[Default_Changelist]/shelved.patch .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_49_[Default_Changelist]/shelved.patch
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_49__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_49__Default_Changelist_.xml
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_40__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_40__Default_Changelist_.xml
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_40_[Default_Changelist]/shelved.patch .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_40_[Default_Changelist]/shelved.patch
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_41__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_23_41__Default_Changelist_.xml
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_52_[Default_Changelist]/shelved.patch .idea/shelf/Uncommitted_changes_before_Update_at_12_12_2020_22_52_[Default_Changelist]/shelved.patch
+-deleted file mode 100644
+-diff --git .idea/shelf/Uncommitted_changes_before_Update_at_20_12_2020_19_35__Default_Changelist_.xml .idea/shelf/Uncommitted_changes_before_Update_at_20_12_2020_19_35__Default_Changelist_.xml
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_10_46__Default_Changelist_.xml
+===================================================================
+--- .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_10_46__Default_Changelist_.xml	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
++++ .idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_10_46__Default_Changelist_.xml	(revision 25e1d717659400f0d9c4f54dfd52c054b378d08c)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_27_12_2020_10_46_[Default_Changelist]" date="1609058809530" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27_12_2020_10_46_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 27/12/2020 10:46 [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
