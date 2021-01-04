@@ -39,28 +39,41 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         View row = convertView;
         //inflate the layout for a single row
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        row = inflater.inflate(mLayoutResourceId,parent,false);
-
-        //get a reference to the different view elements we wish to update
-        TextView nameView = (TextView) row.findViewById(R.id.TaskNameRow);
-        TextView bonusView = (TextView) row.findViewById(R.id.BonusPointRow);
-        TextView statusView = (TextView) row.findViewById(R.id.StatusTaskRow);
-        TextView timeView = (TextView) row.findViewById(R.id.TimeLeftRow);
-
+        row = inflater.inflate(mLayoutResourceId, parent, false);
 
         //get the data from the data array
         Task task = mData.get(position);
 
-        //setting the view to reflect the data we need to display
-        nameView.setText(task.getNameTask());
-        bonusView.setText("Bonus: " + task.getBonusScore());
-        statusView.setText("Status: " + task.getStatus().toString());
-        if (task.getEndDate()!=null){
-            long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
-            timeView.setText("days left : "+ Days);
-        }
-        else timeView.setText("days left : inf");
+        switch (mLayoutResourceId) {
 
+            case R.layout.row_task_with_bonus:
+                //get a reference to the different view elements we wish to update
+                TextView nameView = (TextView) row.findViewById(R.id.TaskNameRow);
+                TextView bonusView = (TextView) row.findViewById(R.id.BonusPointRow);
+                TextView statusView = (TextView) row.findViewById(R.id.StatusTaskRow);
+                TextView timeView = (TextView) row.findViewById(R.id.TimeLeftRow);
+
+                //setting the view to reflect the data we need to display
+                nameView.setText(task.getNameTask());
+                bonusView.setText("Bonus: " + task.getBonusScore());
+                statusView.setText("Status: " + task.getStatus().toString());
+                if (task.getEndDate() != null) {
+                    long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()), DAYS);
+                    timeView.setText("days left : " + Days);
+                } else timeView.setText("days left : inf");
+
+                break;
+
+            case R.layout.row_task_history:
+                //get a reference to the different view elements we wish to update
+                TextView taskName = (TextView) row.findViewById(R.id.taskName);
+                TextView ApprovalDate = (TextView) row.findViewById(R.id.taskApproval);
+
+                taskName.setText(task.getNameTask());
+                ApprovalDate.setText(task.getConfirmedDate());
+
+                break;
+        }
         //returning the row view (because this is called getView after all)
         return row;
     }

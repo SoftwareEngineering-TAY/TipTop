@@ -5,7 +5,6 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
-import com.example.tiptop.FollowUp.ApproveTaskActivity;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class HistoryParentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_history_parent);
         initializeClassVariables();
         createExpandableListOfTask();
         updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Confirmed",childAdapter,10, true);

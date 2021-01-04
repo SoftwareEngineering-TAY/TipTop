@@ -37,6 +37,8 @@
         //History
         <activity android:name=".History.HistoryParentActivity"/>
 
+        <activity android:name=".History.HistoryChildActivity"/>
+
         <activity android:name=".History.TaskInfoHistoryActivity"/>
 
         //PoolTasks

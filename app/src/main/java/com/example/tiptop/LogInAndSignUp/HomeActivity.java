@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.ChatActivity;
 import com.example.tiptop.FollowUp.FollowUpChildActivity;
 import com.example.tiptop.FollowUp.FollowUpParentActivity;
+import com.example.tiptop.History.HistoryChildActivity;
 import com.example.tiptop.History.HistoryParentActivity;
 import com.example.tiptop.Points.PointsChildActivity;
 import com.example.tiptop.Points.PointsParentActivity;
@@ -223,7 +224,15 @@ public class HomeActivity extends AppCompatActivity  {
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), HistoryParentActivity.class);
+                Intent i;
+                if (getPermission().equals("Parent")){
+                    i = new Intent(v.getContext(), HistoryParentActivity.class);
+                }
+
+                else if (getPermission().equals("Child")){
+                    i = new Intent(v.getContext(), HistoryChildActivity.class);
+                }
+                else return;
                 startActivity(i);
             }
         });
