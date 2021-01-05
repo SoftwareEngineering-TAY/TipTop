@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import static com.example.tiptop.Database.Database2.getCurrFamilyId;
 import static com.example.tiptop.Database.Database2.getPermission;
 import static com.example.tiptop.Database.Database2.initializationCurrFamilyIdAndPermission;
+import static com.example.tiptop.Database.Database2.initializationRouteType;
 import static com.example.tiptop.Database.Database2.setCurrFamilyId;
 import static com.example.tiptop.Database.Database2.updateHomePicture;
 import static com.example.tiptop.Database.Database2.updateListOfFamilyFromDB;
@@ -78,6 +79,8 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         initializationFromXML();
 
         initializationCurrFamilyIdAndPermission();
+
+        initializationRouteType();
 
         initializeClassVariables();
 

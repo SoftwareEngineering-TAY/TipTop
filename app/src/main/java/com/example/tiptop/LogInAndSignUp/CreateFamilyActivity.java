@@ -159,7 +159,7 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createUserInFireBase(user_to_add, familyId.getEditText().getText().toString(), uri_image , bitmap_image);
+                createUserInFireBase(user_to_add, familyId.getEditText().getText().toString(),route_type_in_firebase, uri_image , bitmap_image);
                 Intent go_login = new Intent(v.getContext(),LoginActivity.class);
                 startActivity(go_login);
             }

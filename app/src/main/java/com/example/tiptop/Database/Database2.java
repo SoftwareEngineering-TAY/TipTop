@@ -56,6 +56,7 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static String userID;
     private static String currFamilyId;
+    private static String routeType;
     private static String permission;
     private static String TitleSpinnerOfBelongChild;
     private static long currPoint;
@@ -134,6 +135,10 @@ Log.v("gggggggggggggggggg: ", "startt");
         return permission;
     }
 
+    public static String getRouteType() {
+        return routeType;
+    }
+
     public static String getKeyForNewTask() {
         return reference.child("Tasks").child(currFamilyId).push().getKey();
     }
@@ -167,6 +172,10 @@ Log.v("gggggggggggggggggg: ", "startt");
 
     public static void setFamilyName(String key, String familyName) {
         reference.child("Families").child(key).child("Family name").setValue(familyName);
+    }
+
+    public static void setRouteType(String key, String routeType) {
+        reference.child("Families").child(key).child("Route Type").setValue(routeType);
     }
 
     public static void setUserToFamily(String familyKey, String userName) {
@@ -224,9 +233,7 @@ Log.v("gggggggggggggggggg: ", "startt");
         for (DataSnapshot User : UsersInFamily) {
             String toAddChildren = (String) User.getValue();
             String toAddKey = (String) User.getKey();
-            if (User.getKey().equals("Family name")) {
-            }
-            else {
+            if (!User.getKey().equals("Family name")) {
                 if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")) {
                     allKeys.add(toAddKey);
                     allKids.add(toAddChildren);
@@ -280,9 +287,7 @@ Log.v("gggggggggggggggggg: ", "startt");
         Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
         for (DataSnapshot User : UsersInFamily) {
             String toAddChildren = (String) User.getValue();
-            if (User.getKey().equals("Family name")) {
-            }
-            else{
+            if (!User.getKey().equals("Family name")) {
                 if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")) {
                     ListChildForTask.add(toAddChildren);
                     ArrayList<Task> toAdd = new ArrayList<>();
@@ -310,9 +315,13 @@ Log.v("gggggggggggggggggg: ", "startt");
 
     public static void initializationCurrFamilyIdAndPermission() {
         userID = mAuth.getCurrentUser().getUid();
-//        Log.v("gggggggggggg: ", dataSnapshot.getKey());
         currFamilyId = dataSnapshot.child("Users").child(userID).child("currFamilyId").getValue(String.class);
         permission = dataSnapshot.child("Users").child(userID).child("type").getValue(String.class);
+
+    }
+
+    public static void initializationRouteType() {
+        routeType = dataSnapshot.child("Families").child(currFamilyId).child("Route Type").getValue(String.class);
     }
 
     public static void uploadImage(String family_key, Uri uri_image, Bitmap bitmap_image, String folder) {
@@ -345,7 +354,7 @@ Log.v("gggggggggggggggggg: ", "startt");
         }
     }
 
-    public static void createUserInFireBase(User user_to_add, String familyId, Uri uri, Bitmap bitmap) {
+    public static void createUserInFireBase(User user_to_add, String familyId,String routeType, Uri uri, Bitmap bitmap) {
         String key = reference.child("Families").push().getKey();
         user_to_add.setCurrFamilyId(key);
         mAuth.createUserWithEmailAndPassword(user_to_add.getEmail(), user_to_add.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -354,6 +363,7 @@ Log.v("gggggggggggggggggg: ", "startt");
                 if (task.isSuccessful()) {
                     userID = mAuth.getCurrentUser().getUid();
                     setFamilyName(key, familyId);
+                    setRouteType(key, routeType);
                     setUserToFamily(key, user_to_add.getName());
                     setUserToUserFamily(key, familyId);
                     setUser(user_to_add);

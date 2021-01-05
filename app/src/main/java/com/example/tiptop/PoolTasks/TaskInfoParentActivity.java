@@ -39,8 +39,6 @@ import static com.example.tiptop.Database.Database2.updateListOfChildFromDB;
 import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class TaskInfoParentActivity extends AppCompatActivity implements DataChangeListener {
-
-    private Task taskToShow;
     private String taskID;
     private com.google.android.material.textfield.TextInputLayout taskName;
     private Button taskNameButton;
@@ -76,9 +74,6 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
     private void getExtraFromIntent() {
         Bundle extras = getIntent().getExtras();
         if(extras!=null) {
-            if(extras.get("task")!=null) {
-                taskToShow = (Task) extras.get("task");
-            }
             if(extras.get("taskID")!=null) {
                 taskID = extras.getString("taskID");
             }
