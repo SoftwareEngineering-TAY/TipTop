@@ -193,6 +193,10 @@ Log.v("gggggggggggggggggg: ", "startt");
         reference.child("Tasks").child(currFamilyId).child(taskID).child("description").setValue(descriptionToUpdate);
     }
 
+    public static void setTaskComment(String taskID, String commentToUpdate) {
+        reference.child("Tasks").child(currFamilyId).child(taskID).child("comment").setValue(commentToUpdate);
+    }
+
     public static void setTaskName(String taskID, String nameToUpdate) {
         reference.child("Tasks").child(currFamilyId).child(taskID).child("nameTask").setValue(nameToUpdate);
     }
