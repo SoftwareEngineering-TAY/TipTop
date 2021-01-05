@@ -159,7 +159,7 @@ Log.v("gggggggggggggggggg: ", "startt");
 
     public static void setbelongsToUID(String taskID, String uid) {
         if (uid != null)
-            reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue(uid);
+            reference.child("Tasks").child(currFamilyId).child(taskID).child("belongsToUID").setValue(uid);
         else
             reference.child("Tasks").child(currFamilyId).child(taskID).child("belongsToUID").removeValue();
     }
@@ -310,8 +310,9 @@ Log.v("gggggggggggggggggg: ", "startt");
         permission = dataSnapshot.child("Users").child(userID).child("type").getValue(String.class);
     }
 
-    public static void uploadImage(String family_key, Uri uri_image, Bitmap bitmap_image) {
-        String path = "Families/" + family_key;
+    public static void uploadImage(String family_key, Uri uri_image, Bitmap bitmap_image, String folder) {
+        //String path = "Families/" + family_key;
+        String path =folder+"/" + family_key;
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference mStorageRef = storage.getReference(path);
         if (uri_image != null) {
@@ -351,7 +352,7 @@ Log.v("gggggggggggggggggg: ", "startt");
                     setUserToFamily(key, user_to_add.getName());
                     setUserToUserFamily(key, familyId);
                     setUser(user_to_add);
-                    uploadImage(key, uri, bitmap);
+                    uploadImage(key, uri, bitmap,"Families");
                 }
             }
         });

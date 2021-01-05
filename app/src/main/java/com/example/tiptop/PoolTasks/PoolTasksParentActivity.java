@@ -18,6 +18,9 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.example.tiptop.Database.Database2.getCurrFamilyId;
+import static com.example.tiptop.Database.Database2.setCurrFamilyId;
 import static com.example.tiptop.Database.Database2.updateExpandableTaskListFromDB;
 import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
@@ -37,6 +40,7 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("we back on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_parent);
         initializeClassVariables();
@@ -90,6 +94,7 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void notifyOnChange() {
+        System.out.println("we back notifyOnChange");
         updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Associated",childAdapter,365,false);
         crateClickEvent();
         updateTaskListFromDB(ListUnassignedTasks,ListUnassignedTaskId,"NotAssociated",adapter);
@@ -98,8 +103,10 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
 
     @Override
     protected void onResume() {
+        System.out.println("We Back!!!");
         super.onResume();
         Database2.addListener(this);
+        setCurrFamilyId(getCurrFamilyId());
     }
 
     @Override

@@ -260,7 +260,7 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
             @Override
             public void onClick(View v) {
                 setNewImagwButton();
-                uploadImage(getCurrFamilyId(),uriImage,bitmapImage);
+                uploadImage(getCurrFamilyId(),uriImage,bitmapImage,"Families");
             }
         });
     }
