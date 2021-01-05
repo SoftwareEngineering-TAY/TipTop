@@ -1,13 +1,19 @@
 package com.example.tiptop.PoolTasks;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.RequiresApi;
@@ -17,11 +23,15 @@ import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import static com.example.tiptop.Database.Database2.addTaskToDB;
 import static com.example.tiptop.Database.Database2.getKeyForNewTask;
+import static com.example.tiptop.Database.Database2.setTaskDesctiption;
 import static com.example.tiptop.Database.Database2.updateListOfChildFromDB;
+import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class NewTaskActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -38,6 +48,12 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
     private String EndDate;
     private String keyKid;
     private String key;
+    private com.google.android.material.textfield.TextInputLayout description;
+    private ImageButton newImage;
+    private Bitmap bitmap_image =null;
+    private Uri uri_image = null;
+    private static final int CAMERA_PHOTO = 1;
+    private static final int GALLERY_PHOTO = 2;
 
     private ArrayList<String> allKeys;
     private ArrayList<String> allKids;
@@ -60,15 +76,12 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
 
     private void crateClickEvent() {
         ListOfChildren.setOnItemClickListener((adapterView,view,i,l) -> {
-            System.out.println("ad mty!!!"+allKids);
-            System.out.println("iiiiiiiiiiiiiiiiiiiiiiii"+ i);
             if(allKids.get(i).equals("Not Associated"))
             {
                 keyKid=null;
             }
             else
             {
-                System.out.println("allKeys))))))))))))))))))))))))))))))))))"+allKeys);
                 keyKid = allKeys.get(i-1);
             }
 
@@ -86,6 +99,7 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
     private void initializationTask() {
         toAddTask = new Task();
         key = getKeyForNewTask();
+        uploadImage( key, uri_image , bitmap_image,"taskImage");
         toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
         long bp = Long.parseLong(BonusPoint.getEditText().getText().toString());
         toAddTask.setBonusScore(bp);
@@ -96,9 +110,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
             toAddTask.setStatus(Task.STATUS.NotAssociated);
         else
             toAddTask.setStatus(Task.STATUS.Associated);
+        toAddTask.setDescription(description.getEditText().getText().toString());
 
     }
-
 
     private void setFinishButton() {
         SubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +147,6 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
                                 if (monthOfYear<9) zeroMonth = "0";
                                 if (dayOfMonth < 10) zeroDay = "0";
                                 StartDate  = year+"-"+ zeroMonth +(monthOfYear + 1)+"-"+ zeroDay + dayOfMonth;
-                                System.out.println("StartDate****************************"+StartDate);
                                 StartDateTV.setText(StartDate);
                             }
                         }, year, month, day);
@@ -171,6 +184,53 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         });
     }
 
+    private void setNewImagwButton(){
+        newImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] options = {"Take photo from camera", "Choose photo from Gallery", "Cancel"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(NewTaskActivity.this);
+                builder.setTitle("Attach a photo");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals(options[0]))
+                        {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, CAMERA_PHOTO);
+                        }
+                        else if (options[item].equals(options[1]))
+                        {
+                            Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(intent, GALLERY_PHOTO);
+                        }
+                        else if (options[item].equals(options[2])) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_PHOTO) {
+                Bundle extras = data.getExtras();
+                bitmap_image = (Bitmap)extras.get("data");
+                newImage.setImageBitmap(bitmap_image);
+            }
+            else if (requestCode == GALLERY_PHOTO) {
+                uri_image = data.getData();
+                newImage.setImageURI(uri_image);
+            }
+        }
+    }
+
+
     private void initializationFromXML() {
         NameOfTask = findViewById(R.id.NameOfTask);
         BonusPoint = findViewById(R.id.BonusPoint);
@@ -180,6 +240,8 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         EndDateTV = (TextView)findViewById(R.id.EndDateTV);
         SubmitButton = (Button)findViewById(R.id.SubmitButton);
         ListOfChildren = (ListView)findViewById(R.id.ListOfChildren);
+        description = findViewById(R.id.Description);
+        newImage = (ImageButton) findViewById(R.id.AddPic);
     }
 
     @Override
@@ -187,6 +249,7 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         setSelectStartDateButton();
         setSelectEndDateButton();
         initializationListOfChildren();
+        setNewImagwButton();
         setFinishButton();
     }
 
