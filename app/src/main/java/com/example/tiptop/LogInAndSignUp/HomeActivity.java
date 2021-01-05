@@ -40,6 +40,7 @@ import static com.example.tiptop.Database.Database2.getCurrFamilyId;
 import static com.example.tiptop.Database.Database2.getPermission;
 import static com.example.tiptop.Database.Database2.initializationCurrFamilyIdAndPermission;
 import static com.example.tiptop.Database.Database2.setCurrFamilyId;
+import static com.example.tiptop.Database.Database2.updateHomePicture;
 import static com.example.tiptop.Database.Database2.updateListOfFamilyFromDB;
 import static com.example.tiptop.Database.Database2.uploadImage;
 
@@ -77,8 +78,6 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         initializationFromXML();
 
         initializationCurrFamilyIdAndPermission();
-
-        //initializationCurrFamilyIdAndPermission(imageButton,getApplicationContext());
 
         initializeClassVariables();
 
@@ -317,6 +316,8 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         spinerActive();
 
         ActivateAllButtons();
+
+        updateHomePicture(imageButton,getApplicationContext());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.tiptop.Database;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
@@ -47,6 +50,7 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
 
     private static DataSnapshot dataSnapshot;
     private static ArrayList<DataChangeListener> listeners;
+    private static FirebaseStorage storage = FirebaseStorage.getInstance();
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static String userID;
@@ -59,7 +63,6 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
 
     private TextView logo_text;
     private ImageView logo_image;
-
 
     private static final DatabaseReference.CompletionListener completionListener = new DatabaseReference.CompletionListener() {
         @Override
@@ -95,14 +98,10 @@ Log.v("gggggggggggggggggg: ", "startt");
             }
         },SPLASH_SCREEN);
 
-
-
-
     }
 
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
-        Log.v("DataChange","Data Was Changed!!!!!!!!!!!!!!!");
         dataSnapshot = snapshot;
         notifyAllListeners();
     }
@@ -125,8 +124,6 @@ Log.v("gggggggggggggggggg: ", "startt");
             listener.notifyOnChange();
         }
     }
-
-
 
     public static String getCurrFamilyId() {
         return currFamilyId;
@@ -366,7 +363,28 @@ Log.v("gggggggggggggggggg: ", "startt");
             email.setText((String) dataSnapshot.child("Users").child(userID).child("email").getValue());
     }
 
+    public static void updateHomePicture(ImageButton imageButton, Context context) {
 
+        String path = "Families/" + getCurrFamilyId();
+
+        storage.getReference(path).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull com.google.android.gms.tasks.Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri imageUri = task.getResult();
+                    Picasso.get()
+                            .load(imageUri)
+                            .fit()
+                            .centerCrop()
+                            .into(imageButton);
+
+                }
+                else {
+                    imageButton.setImageResource(R.drawable.new_family);
+                }
+            }
+        });
+    }
 
     public static void logout(){
         mAuth.signOut();

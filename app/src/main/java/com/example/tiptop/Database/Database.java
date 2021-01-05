@@ -132,7 +132,6 @@ public class Database {
         return true;
     }
 
-
     public static boolean updateTaskListFromDB(ArrayList<Task> toUpdate, ArrayList<String> idToUpdate, String status, ArrayAdapter<Task> mTaskListAdapter) {
         try {
             reference.child("Tasks").child(currFamilyId).addValueEventListener(new ValueEventListener() {
@@ -165,7 +164,6 @@ public class Database {
         }
         return true;
     }
-
 
     public static boolean updateExpandableTaskListFromDB(ArrayList<String> ListChildForTask, HashMap<String, ArrayList<Task>> ListTaskGroups, HashMap<String, ArrayList<String>> ListTaskID, String status, TaskToChildExtendListAdapter childAdapter, int days, boolean endOrConfirmed) {
         try {
@@ -287,7 +285,6 @@ public class Database {
         return true;
     }
 
-
     public static boolean setCurrFamilyId(String CurrFamilyId) {
         try {
             currFamilyId = CurrFamilyId;
@@ -352,7 +349,6 @@ public class Database {
             });
         }
     }
-
 
     public static void updateListOfChildFromDB(ArrayList<String> allKeys, ArrayList<String> allKids, ArrayAdapter adapter) {
         reference.child("Families").child(currFamilyId).addValueEventListener(new ValueEventListener() {
