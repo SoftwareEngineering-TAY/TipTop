@@ -19,6 +19,8 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.ChatActivity;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.FollowUp.FollowUpChildActivity;
 import com.example.tiptop.FollowUp.FollowUpParentActivity;
 import com.example.tiptop.History.HistoryChildActivity;
@@ -34,14 +36,14 @@ import com.example.tiptop.StatisticsActivity;
 
 import java.util.ArrayList;
 
-import static com.example.tiptop.Database.Database.getCurrFamilyId;
-import static com.example.tiptop.Database.Database.getPermission;
-import static com.example.tiptop.Database.Database.initializationCurrFamilyIdAndPermission;
-import static com.example.tiptop.Database.Database.setCurrFamilyId;
-import static com.example.tiptop.Database.Database.updateListOfFamilyFromDB;
-import static com.example.tiptop.Database.Database.uploadImage;
+import static com.example.tiptop.Database.Database2.getCurrFamilyId;
+import static com.example.tiptop.Database.Database2.getPermission;
+import static com.example.tiptop.Database.Database2.initializationCurrFamilyIdAndPermission;
+import static com.example.tiptop.Database.Database2.setCurrFamilyId;
+import static com.example.tiptop.Database.Database2.updateListOfFamilyFromDB;
+import static com.example.tiptop.Database.Database2.uploadImage;
 
-public class HomeActivity extends AppCompatActivity  {
+public class HomeActivity extends AppCompatActivity implements DataChangeListener {
 
     //Variables that will contain all the buttons
     private ImageButton imageButton;
@@ -74,13 +76,14 @@ public class HomeActivity extends AppCompatActivity  {
 
         initializationFromXML();
 
-        initializationCurrFamilyIdAndPermission(imageButton,getApplicationContext());
+        initializationCurrFamilyIdAndPermission();
+
+        //initializationCurrFamilyIdAndPermission(imageButton,getApplicationContext());
 
         initializeClassVariables();
 
-        spinerActive();
+        notifyOnChange();
 
-        ActivateAllButtons();
     }
 
     private void initializationFromXML() {
@@ -307,6 +310,25 @@ public class HomeActivity extends AppCompatActivity  {
                 imageButton.setImageURI(uriImage);
             }
         }
+    }
+
+    @Override
+    public void notifyOnChange() {
+        spinerActive();
+
+        ActivateAllButtons();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 
 //    //need to ask yirat

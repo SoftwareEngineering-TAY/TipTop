@@ -8,15 +8,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Adapters.TaskListAdapter;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.PoolTasks.TaskInfoChildActivity;
 import com.example.tiptop.R;
 
 import java.util.ArrayList;
 
-import static com.example.tiptop.Database.Database.updateTaskListFromDB;
+import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
-public class HistoryChildActivity extends AppCompatActivity {
+public class HistoryChildActivity extends AppCompatActivity implements DataChangeListener {
 
     private ListView historyList;
     private TaskListAdapter mTaskListAdapter;
@@ -30,8 +32,7 @@ public class HistoryChildActivity extends AppCompatActivity {
 
         initializeClassVariables();
         createListOfTask();
-        crateClickEvent();
-        updateTaskListFromDB(list,listID,"Confirmed",mTaskListAdapter);
+        notifyOnChange();
     }
 
     private void initializeClassVariables() {
@@ -52,5 +53,23 @@ public class HistoryChildActivity extends AppCompatActivity {
             intent.putExtra("taskID",listID.get(i));
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void notifyOnChange() {
+        crateClickEvent();
+        updateTaskListFromDB(list,listID,"Confirmed",mTaskListAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }

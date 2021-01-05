@@ -7,14 +7,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 
-import static com.example.tiptop.Database.Database.addPointsToChild;
-import static com.example.tiptop.Database.Database.setConfirmedDate;
-import static com.example.tiptop.Database.Database.setStatus;
+import static com.example.tiptop.Database.Database2.addPointsToChild;
+import static com.example.tiptop.Database.Database2.setConfirmedDate;
+import static com.example.tiptop.Database.Database2.setStatus;
 
-public class ApproveTaskActivity extends AppCompatActivity {
+public class ApproveTaskActivity extends AppCompatActivity implements DataChangeListener {
 
     private Task taskToShow;
     private String taskID;
@@ -31,10 +34,9 @@ public class ApproveTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_approve);
         getExtrasFromIntent();
         initializeClassVariables();
-        setTextInfo();
-        setTaskImage();
-        setApproveButton();
-        setRepeatButton();
+
+        notifyOnChange();
+
     }
 
     private void getExtrasFromIntent() {
@@ -94,5 +96,25 @@ public class ApproveTaskActivity extends AppCompatActivity {
         taskName.setText(taskToShow.getNameTask());
         bonusScore.setText(taskToShow.getBonusScore().toString());
         taskComment.setText(taskToShow.getComment());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void notifyOnChange() {
+        setTextInfo();
+        setTaskImage();
+        setApproveButton();
+        setRepeatButton();
     }
 }

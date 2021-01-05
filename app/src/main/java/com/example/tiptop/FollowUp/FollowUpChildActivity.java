@@ -5,14 +5,16 @@ import android.os.Bundle;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Adapters.TaskListAdapter;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.PoolTasks.TaskInfoChildActivity;
 import com.example.tiptop.R;
 import java.util.ArrayList;
-import static com.example.tiptop.Database.Database.getPermission;
-import static com.example.tiptop.Database.Database.updateTaskListFromDB;
+import static com.example.tiptop.Database.Database2.getPermission;
+import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
-public class FollowUpChildActivity extends AppCompatActivity {
+public class FollowUpChildActivity extends AppCompatActivity implements DataChangeListener {
 
     private ListView followList;
     private TaskListAdapter mTaskListAdapter;
@@ -24,9 +26,8 @@ public class FollowUpChildActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_followup);
         initializeClassVariables();
-        createListOfTask();
-        crateClickEvent();
-        updateTaskListFromDB(list,listID,"WaitingForApproval",mTaskListAdapter);
+        notifyOnChange();
+
     }
 
     private void initializeClassVariables() {
@@ -56,5 +57,24 @@ public class FollowUpChildActivity extends AppCompatActivity {
             intent.putExtra("taskID",listID.get(i));
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void notifyOnChange() {
+        createListOfTask();
+        crateClickEvent();
+        updateTaskListFromDB(list,listID,"WaitingForApproval",mTaskListAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }

@@ -1,15 +1,27 @@
 package com.example.tiptop.Database;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
+import com.example.tiptop.LogInAndSignUp.LoginActivity;
+import com.example.tiptop.LogInAndSignUp.LogoActivity;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.Objects.User;
+import com.example.tiptop.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
@@ -24,34 +36,73 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
-public class Database2  extends android.app.Application implements ValueEventListener {
+import static java.time.temporal.ChronoUnit.DAYS;
+
+public class Database2  extends AppCompatActivity implements ValueEventListener {
 
     private static DataSnapshot dataSnapshot;
     private static ArrayList<DataChangeListener> listeners;
-    private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference();;
+    private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private static String userID = mAuth.getCurrentUser().getUid();
+    private static String userID;
     private static String currFamilyId;
     private static String permission;
     private static String TitleSpinnerOfBelongChild;
+    private static long currPoint;
 
+    private static int SPLASH_SCREEN = 1000;
+
+    private TextView logo_text;
+    private ImageView logo_image;
+
+
+    private static final DatabaseReference.CompletionListener completionListener = new DatabaseReference.CompletionListener() {
+        @Override
+        public void onComplete(DatabaseError error, DatabaseReference ref) {
+            if (error != null) {
+            } else {
+
+            }
+        }
+    };
 
     @Override
-    public void onCreate() {
-        if(!FirebaseApp.getApps(this).isEmpty()) {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_logo);
+Log.v("gggggggggggggggggg: ", "startt");
+        logo_text = (TextView) findViewById(R.id.logo_text);
+        logo_image = (ImageView) findViewById(R.id.logo_image);
+
+//        if(!FirebaseApp.getApps(this).isEmpty()) {
+//            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//        }
         reference.addValueEventListener(this);
         listeners = new ArrayList<>();
 
-        super.onCreate();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent go_to_login = new Intent(Database2.this, LoginActivity.class);
+                startActivity(go_to_login);
+                finish();
+            }
+        },SPLASH_SCREEN);
+
+
+
+
     }
 
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Log.v("DataChange","Data Was Changed!!!!!!!!!!!!!!!");
         dataSnapshot = snapshot;
         notifyAllListeners();
     }
@@ -89,12 +140,24 @@ public class Database2  extends android.app.Application implements ValueEventLis
         return reference.child("Tasks").child(currFamilyId).push().getKey();
     }
 
-    public static void getPoints (long []sum ){
-        sum[0] = (long)dataSnapshot.child("Users").child(userID).child("points").getValue();
+    public static void getPoints (TextView numOfPoints ){
+        numOfPoints.setText (String.valueOf(dataSnapshot.child("Users").child(userID).child("points").getValue(long.class)));;
     }
 
     public static void setStatus(String taskID, String Status) {
         reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue(Status);
+    }
+
+    public static void setConfirmedDate(String taskID) {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        String zeroMonth = "";
+        String zeroDay = "";
+        if (month<10) zeroMonth = "0";
+        if (day < 10) zeroDay = "0";
+        String currentDate = "" + year + "-" + zeroMonth + month + "-" +zeroDay + day;
+        reference.child("Tasks").child(currFamilyId).child(taskID).child("confirmedDate").setValue(currentDate);
     }
 
     public static void setbelongsToUID(String taskID, String uid) {
@@ -147,8 +210,8 @@ public class Database2  extends android.app.Application implements ValueEventLis
     }
 
     public static void addPointsToChild (Task conformedTask){
-        DataSnapshot Child = dataSnapshot.child("Users").child(conformedTask.getBelongsToUID());
-        Child.child("points").getRef().setValue((long)Child.child("points").getValue() + conformedTask.getBonusScore());
+        currPoint = dataSnapshot.child("Users").child(conformedTask.getBelongsToUID()).child("points").getValue(long.class) + conformedTask.getBonusScore();
+        reference.child("Users").child(conformedTask.getBelongsToUID()).child("points").setValue(currPoint);
     }
 
     public static void updateListOfChildFromDB(ArrayList<String> allKeys, ArrayList<String> allKids, ArrayAdapter adapter) {
@@ -159,9 +222,13 @@ public class Database2  extends android.app.Application implements ValueEventLis
         for (DataSnapshot User : UsersInFamily) {
             String toAddChildren = (String) User.getValue();
             String toAddKey = (String) User.getKey();
-            if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")){
-                allKeys.add(toAddKey);
-                allKids.add(toAddChildren);
+            if (User.getKey().equals("Family name")) {
+            }
+            else {
+                if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")) {
+                    allKeys.add(toAddKey);
+                    allKids.add(toAddChildren);
+                }
             }
             adapter.notifyDataSetChanged();
         }
@@ -205,33 +272,45 @@ public class Database2  extends android.app.Application implements ValueEventLis
         mTaskListAdapter.notifyDataSetChanged();
     }
 
-    public static void updateExpandableTaskListFromDB(ArrayList<String> ListChildForTask, HashMap<String, ArrayList<Task>> ListTaskGroups, HashMap<String, ArrayList<String>> ListTaskID, String status, TaskToChildExtendListAdapter childAdapter) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void updateExpandableTaskListFromDB(ArrayList<String> ListChildForTask, HashMap<String, ArrayList<Task>> ListTaskGroups, HashMap<String, ArrayList<String>> ListTaskID, String status, TaskToChildExtendListAdapter childAdapter, int days, boolean endOrConfirmed) {
         ListChildForTask.clear();
         Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
         for (DataSnapshot User : UsersInFamily) {
             String toAddChildren = (String) User.getValue();
-            if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")){
-                ListChildForTask.add(toAddChildren);
-                ArrayList<Task> toAdd = new ArrayList<>();
-                ArrayList<String> toAddID = new ArrayList<>();
-                Iterable<DataSnapshot> Tasks = dataSnapshot.child("Tasks").child(currFamilyId).getChildren();
-                for (DataSnapshot Task : Tasks){
-                    if (Task.child("belongsToUID").getValue() != null && Task.child("belongsToUID").getValue().equals(User.getKey()) && Task.child("status").getValue().equals(status)) {
-                        Task taskToAdd = Task.getValue(Task.class);
-                        toAdd.add(taskToAdd);
-                        toAddID.add(Task.getKey());
+            if (User.getKey().equals("Family name")) {
+            }
+            else{
+                if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")) {
+                    ListChildForTask.add(toAddChildren);
+                    ArrayList<Task> toAdd = new ArrayList<>();
+                    ArrayList<String> toAddID = new ArrayList<>();
+                    Iterable<DataSnapshot> Tasks = dataSnapshot.child("Tasks").child(currFamilyId).getChildren();
+                    for (DataSnapshot Task : Tasks) {
+                        if (Task.child("belongsToUID").getValue() != null && Task.child("belongsToUID").getValue().equals(User.getKey()) && Task.child("status").getValue().equals(status)) {
+                            String toCalc = endOrConfirmed ? "confirmedDate" : "endDate";
+                            long Days = DAYS.between(LocalDate.now(), LocalDate.parse(Task.child(toCalc).getValue(String.class)));
+                            Log.v("DAYS!!!!!!: ", String.valueOf(Days));
+                            if (days >= Math.abs(Days)) {
+                                Task taskToAdd = Task.getValue(Task.class);
+                                toAdd.add(taskToAdd);
+                                toAddID.add(Task.getKey());
+                            }
+                        }
                     }
+                    ListTaskGroups.put(toAddChildren, toAdd);
+                    ListTaskID.put(toAddChildren, toAddID);
+                    childAdapter.notifyDataSetChanged();
                 }
-                ListTaskGroups.put(toAddChildren, toAdd);
-                ListTaskID.put(toAddChildren, toAddID);
-                childAdapter.notifyDataSetChanged();
             }
         }
     }
 
     public static void initializationCurrFamilyIdAndPermission() {
-        currFamilyId = (String) dataSnapshot.child("Users").child(userID).child("currFamilyId").getValue();
-        permission = (String) dataSnapshot.child("Users").child(userID).child("type").getValue();
+        userID = mAuth.getCurrentUser().getUid();
+//        Log.v("gggggggggggg: ", dataSnapshot.getKey());
+        currFamilyId = dataSnapshot.child("Users").child(userID).child("currFamilyId").getValue(String.class);
+        permission = dataSnapshot.child("Users").child(userID).child("type").getValue(String.class);
     }
 
     public static void uploadImage(String family_key, Uri uri_image, Bitmap bitmap_image) {
@@ -270,6 +349,7 @@ public class Database2  extends android.app.Application implements ValueEventLis
             @Override
             public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    userID = mAuth.getCurrentUser().getUid();
                     setFamilyName(key, familyId);
                     setUserToFamily(key, user_to_add.getName());
                     setUserToUserFamily(key, familyId);
@@ -284,5 +364,11 @@ public class Database2  extends android.app.Application implements ValueEventLis
         name.setText((String) dataSnapshot.child("Users").child(userID).child("name").getValue());
         if (email != null)
             email.setText((String) dataSnapshot.child("Users").child(userID).child("email").getValue());
+    }
+
+
+
+    public static void logout(){
+        mAuth.signOut();
     }
 }

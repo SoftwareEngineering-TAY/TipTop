@@ -9,19 +9,22 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 
-import static com.example.tiptop.Database.Database.getAndSetTitleSpinnerOfBelongChild;
-import static com.example.tiptop.Database.Database.setStatus;
-import static com.example.tiptop.Database.Database.setTaskBonus;
-import static com.example.tiptop.Database.Database.setTaskDesctiption;
-import static com.example.tiptop.Database.Database.setTaskName;
-import static com.example.tiptop.Database.Database.setbelongsToUID;
-import static com.example.tiptop.Database.Database.updateListOfChildFromDB;
+import static com.example.tiptop.Database.Database2.getAndSetTitleSpinnerOfBelongChild;
+import static com.example.tiptop.Database.Database2.setStatus;
+import static com.example.tiptop.Database.Database2.setTaskBonus;
+import static com.example.tiptop.Database.Database2.setTaskDesctiption;
+import static com.example.tiptop.Database.Database2.setTaskName;
+import static com.example.tiptop.Database.Database2.setbelongsToUID;
+import static com.example.tiptop.Database.Database2.updateListOfChildFromDB;
 
-public class TaskInfoParentActivity extends AppCompatActivity {
+public class TaskInfoParentActivity extends AppCompatActivity implements DataChangeListener {
 
     private Task taskToShow;
     private String taskID;
@@ -46,12 +49,7 @@ public class TaskInfoParentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_info_parent);
         getExtraFromIntent();
         initializeClassVariables();
-        getExtraFromIntent();
-        updateInfo();
-        updateNameOfTask();
-        updateBonusScore();
-        updateDescriptionButton();
-        updateReAssociation();
+        notifyOnChange();
     }
 
     private void getExtraFromIntent() {
@@ -161,5 +159,27 @@ public class TaskInfoParentActivity extends AppCompatActivity {
         description = findViewById(R.id.Description);
         descriptionButton = (Button) findViewById(R.id.DescriptionUpdate);
 
+    }
+
+    @Override
+    public void notifyOnChange() {
+        getExtraFromIntent();
+        updateInfo();
+        updateNameOfTask();
+        updateBonusScore();
+        updateDescriptionButton();
+        updateReAssociation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }

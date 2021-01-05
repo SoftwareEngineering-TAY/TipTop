@@ -1,22 +1,27 @@
 package com.example.tiptop.PoolTasks;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Adapters.TaskListAdapter;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import java.util.HashMap;
-import static com.example.tiptop.Database.Database.updateExpandableTaskListFromDB;
-import static com.example.tiptop.Database.Database.updateTaskListFromDB;
+import static com.example.tiptop.Database.Database2.updateExpandableTaskListFromDB;
+import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
-public class PoolTasksParentActivity extends AppCompatActivity {
+public class PoolTasksParentActivity extends AppCompatActivity implements DataChangeListener {
 
     private ListView UnassignedTasks;
     private ExpandableListView AssociatedTasks;
@@ -29,6 +34,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
     private TaskToChildExtendListAdapter childAdapter;
     private Button addTaskButton;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +42,7 @@ public class PoolTasksParentActivity extends AppCompatActivity {
         initializeClassVariables();
         createListOfTask();
         createExpandableListOfTask();
-        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Associated",childAdapter,365,false);
-        crateClickEvent();
-        updateTaskListFromDB(ListUnassignedTasks,ListUnassignedTaskId,"NotAssociated",adapter);
-        addButtonFunc();
+        notifyOnChange();
     }
 
     private void createExpandableListOfTask() {
@@ -82,5 +85,26 @@ public class PoolTasksParentActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void notifyOnChange() {
+        updateExpandableTaskListFromDB(ListChildForTask,ListTaskGroups,ListTaskID,"Associated",childAdapter,365,false);
+        crateClickEvent();
+        updateTaskListFromDB(ListUnassignedTasks,ListUnassignedTaskId,"NotAssociated",adapter);
+        addButtonFunc();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }

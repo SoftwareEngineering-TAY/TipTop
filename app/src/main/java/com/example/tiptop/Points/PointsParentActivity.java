@@ -7,10 +7,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.R;
 import static com.example.tiptop.Database.Database.setNamesAndScores;
 
-public class PointsParentActivity extends AppCompatActivity {
+public class PointsParentActivity extends AppCompatActivity implements DataChangeListener {
 
     private TableLayout pointsTable;
 
@@ -21,7 +24,7 @@ public class PointsParentActivity extends AppCompatActivity {
 
         pointsTable = (TableLayout) findViewById(R.id.pointsTable);
 
-        setNamesAndScores(this);
+
 
     }
 
@@ -45,4 +48,21 @@ public class PointsParentActivity extends AppCompatActivity {
         pointsTable.addView(tr);
     }
 
+    @Override
+    public void notifyOnChange() {
+        //setNamesAndScores(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
+    }
 }

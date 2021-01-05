@@ -8,15 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.LogInAndSignUp.HomeActivity;
 import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.R;
 
-import static com.example.tiptop.Database.Database.getPermission;
-import static com.example.tiptop.Database.Database.logout;
-import static com.example.tiptop.Database.Database.setScreenViewByUser;
+import static com.example.tiptop.Database.Database2.getPermission;
+import static com.example.tiptop.Database.Database2.logout;
+import static com.example.tiptop.Database.Database2.setScreenViewByUser;
 
-public class SettingChildActivity extends AppCompatActivity {
+public class SettingChildActivity extends AppCompatActivity implements DataChangeListener {
 
     private TextView name;
 
@@ -28,7 +30,7 @@ public class SettingChildActivity extends AppCompatActivity {
 
         initializeClassVariables();
 
-        setScreenViewByUser(name, null);
+        notifyOnChange();
     }
 
     private void initializeClassVariables(){
@@ -55,4 +57,20 @@ public class SettingChildActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void notifyOnChange() {
+        setScreenViewByUser(name, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
+    }
 }

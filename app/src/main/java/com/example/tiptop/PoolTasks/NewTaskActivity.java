@@ -12,15 +12,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import java.util.Calendar;
-import static com.example.tiptop.Database.Database.addTaskToDB;
-import static com.example.tiptop.Database.Database.getKeyForNewTask;
-import static com.example.tiptop.Database.Database.updateListOfChildFromDB;
+import static com.example.tiptop.Database.Database2.addTaskToDB;
+import static com.example.tiptop.Database.Database2.getKeyForNewTask;
+import static com.example.tiptop.Database.Database2.updateListOfChildFromDB;
 
-public class NewTaskActivity extends AppCompatActivity {
+public class NewTaskActivity extends AppCompatActivity implements DataChangeListener {
 
     private Task toAddTask;
     private com.google.android.material.textfield.TextInputLayout NameOfTask;
@@ -45,10 +48,7 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
         initializationFromXML();
-        setSelectStartDateButton();
-        setSelectEndDateButton();
-        initializationListOfChildren();
-        setFinishButton();
+        notifyOnChange();
     }
 
     private void initializationListOfChildren() {
@@ -180,6 +180,27 @@ public class NewTaskActivity extends AppCompatActivity {
         EndDateTV = (TextView)findViewById(R.id.EndDateTV);
         SubmitButton = (Button)findViewById(R.id.SubmitButton);
         ListOfChildren = (ListView)findViewById(R.id.ListOfChildren);
+    }
+
+    @Override
+    public void notifyOnChange() {
+        setSelectStartDateButton();
+        setSelectEndDateButton();
+        initializationListOfChildren();
+        setFinishButton();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }
 

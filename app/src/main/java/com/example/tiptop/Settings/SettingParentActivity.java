@@ -9,13 +9,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.R;
 
-import static com.example.tiptop.Database.Database.logout;
-import static com.example.tiptop.Database.Database.setScreenViewByUser;
+import static com.example.tiptop.Database.Database2.logout;
+import static com.example.tiptop.Database.Database2.setScreenViewByUser;
 
-public class SettingParentActivity extends AppCompatActivity {
+public class SettingParentActivity extends AppCompatActivity implements DataChangeListener {
 
     private Button manage_circles;
     private TextView name;
@@ -29,9 +31,7 @@ public class SettingParentActivity extends AppCompatActivity {
 
         initializeClassVariables();
 
-        setScreenViewByUser(name,email);
-
-        setManageCirclesButton();
+        notifyOnChange();
     }
 
     private void initializeClassVariables(){
@@ -71,4 +71,22 @@ public class SettingParentActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void notifyOnChange() {
+        setScreenViewByUser(name,email);
+
+        setManageCirclesButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
+    }
 }

@@ -7,11 +7,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-import static com.example.tiptop.Database.Database.setStatus;
+import static com.example.tiptop.Database.Database2.setStatus;
 
-public class TaskInfoChildActivity  extends AppCompatActivity {
+public class TaskInfoChildActivity  extends AppCompatActivity implements DataChangeListener {
 
     private Task taskToShow;
     private String taskID;
@@ -26,8 +29,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_task_info_child);
         getExtraFromIntent();
         initializeClassVariables();
-        setTextInfo();
-        setDoneButton();
+        notifyOnChange();
     }
 
     private void getExtraFromIntent() {
@@ -68,5 +70,23 @@ public class TaskInfoChildActivity  extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void notifyOnChange() {
+        setTextInfo();
+        setDoneButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }
