@@ -7,22 +7,23 @@
     android:padding="20dp">
 
     <LinearLayout
+        android:id="@+id/profileLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/profile_image"
-            android:layout_width="75dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/round_button" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/whitePurple"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
             android:orientation="vertical">
 
             <TextView
@@ -44,21 +45,21 @@
                 android:id="@+id/editMyProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="20dp"
                 android:backgroundTint="@color/white"
                 android:text="@string/edit_my_profile"
-                android:textColor="@color/purple_700" />
+                android:textColor="@color/allAppPurple" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <Button
+    <EditText
         android:id="@+id/manageCircles"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
         android:text="@string/manage_circles"
-        android:textColor="@android:color/black" />
+        android:drawableRight="@drawable/ic_baseline_supervisor_account_24"
+        android:editable="false"/>
 
 </LinearLayout>

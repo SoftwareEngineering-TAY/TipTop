@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -30,11 +31,10 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     private static final String TAG = "CreateChildAccountActivity";
 
     private Button next;
-    private Button selectDate;
-    private TextView birthday;
-    private com.google.android.material.textfield.TextInputLayout name;
-    private com.google.android.material.textfield.TextInputLayout username;
-    private com.google.android.material.textfield.TextInputLayout password;
+    private EditText birthday;
+    private EditText name;
+    private EditText username;
+    private EditText password;
 
     private String family_uid;
     private String family_name;
@@ -66,11 +66,10 @@ public class CreateChildAccountActivity extends AppCompatActivity {
         foundFamilyById();
 
         next = (Button)findViewById(R.id.next);
-        name = findViewById(R.id.name);
-        username = findViewById(R.id.username);
-        password = findViewById(R.id.newPassword);
-        birthday = (TextView) findViewById(R.id.birthday);
-        selectDate = (Button) findViewById(R.id.selectDate);
+        name = (EditText) findViewById(R.id.name);
+        username = (EditText) findViewById(R.id.username);
+        password = (EditText) findViewById(R.id.newPassword);
+        birthday = (EditText) findViewById(R.id.birthday);
 
         user = new User();
         current_user = new User();
@@ -96,7 +95,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     }
 
     private void setSelectDateButton(){
-        selectDate.setOnClickListener(new View.OnClickListener() {
+        birthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -131,9 +130,9 @@ public class CreateChildAccountActivity extends AppCompatActivity {
                     return;
                 }
 
-                String user_name = name.getEditText().getText().toString();
-                String uname = username.getEditText().getText().toString() + "@mail.com";
-                String pass = password.getEditText().getText().toString();
+                String user_name = name.getText().toString();
+                String uname = username.getText().toString() + "@mail.com";
+                String pass = password.getText().toString();
                 String birth = birthday.getText().toString();
                 user.setName(user_name);
                 user.setEmail(uname);
@@ -216,7 +215,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     }
 
     private boolean validateName(){
-        String user_name = name.getEditText().getText().toString();
+        String user_name = name.getText().toString();
         if(user_name.isEmpty()){
             name.setError("Field cannot be empty");
             return false;
@@ -228,7 +227,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     }
 
     private boolean validateUsername(){
-        String mail = username.getEditText().getText().toString();
+        String mail = username.getText().toString();
 
         if(mail.isEmpty()){
             username.setError("Field cannot be empty");
@@ -248,7 +247,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     }
 
     private boolean validatePassword(){
-        String pass = password.getEditText().getText().toString();
+        String pass = password.getText().toString();
         if(pass.isEmpty()){
             password.setError("Field cannot be empty");
             return false;

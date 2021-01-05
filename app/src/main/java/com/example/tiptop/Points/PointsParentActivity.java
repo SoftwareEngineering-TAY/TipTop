@@ -23,9 +23,6 @@ public class PointsParentActivity extends AppCompatActivity implements DataChang
         setContentView(R.layout.activity_points_parent);
 
         pointsTable = (TableLayout) findViewById(R.id.pointsTable);
-
-
-
     }
 
     public void setChildName(String name, Long score){

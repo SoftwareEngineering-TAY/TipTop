@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +20,7 @@ import static com.example.tiptop.Database.Database2.setScreenViewByUser;
 
 public class SettingParentActivity extends AppCompatActivity implements DataChangeListener {
 
-    private Button manage_circles;
+    private EditText manage_circles;
     private TextView name;
     private TextView email;
 
@@ -36,7 +37,7 @@ public class SettingParentActivity extends AppCompatActivity implements DataChan
 
     private void initializeClassVariables(){
 
-        manage_circles = (Button)findViewById(R.id.manageCircles);
+        manage_circles = (EditText) findViewById(R.id.manageCircles);
         name = (TextView)findViewById(R.id.name);
         email = (TextView)findViewById(R.id.email);
     }
