@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.R;
@@ -19,13 +20,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
     //xml variables
     private Button next;
-    private Button select_date;
+//    private Button select_date;
     private TextView login;
-    private TextView birthday;
-    private com.google.android.material.textfield.TextInputLayout name;
-    private com.google.android.material.textfield.TextInputLayout email;
-    private com.google.android.material.textfield.TextInputLayout password;
-    private com.google.android.material.textfield.TextInputLayout confirm_password ;
+    private EditText birthday;
+    private EditText name;
+    private EditText email;
+    private EditText password;
+    private EditText confirm_password ;
 
     //Fire base variables
     private User user;
@@ -51,7 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void setSelectDateButton(){
-        select_date.setOnClickListener(new View.OnClickListener() {
+        birthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -88,9 +89,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     return;
                 }
 
-                String user_name = name.getEditText().getText().toString();
-                String mail = email.getEditText().getText().toString();
-                String pass = password.getEditText().getText().toString();
+                String user_name = name.getText().toString();
+                String mail = email.getText().toString();
+                String pass = password.getText().toString();
                 String birth = birthday.getText().toString();
                 user.setName(user_name);
                 user.setEmail(mail);
@@ -112,13 +113,13 @@ public class RegistrationActivity extends AppCompatActivity {
         email = findViewById(R.id.newEmail);
         password = findViewById(R.id.newPassword);
         confirm_password = findViewById(R.id.confirmPassword);
-        birthday = (TextView) findViewById(R.id.birthday);
-        select_date = (Button) findViewById(R.id.selectDate);
+        birthday = (EditText) findViewById(R.id.birthday);
+//        select_date = (Button) findViewById(R.id.selectDate);
         user = new User();
     }
 
     private boolean validateName(){
-        String user_name = name.getEditText().getText().toString();
+        String user_name = name.getText().toString();
         if(user_name.isEmpty()){
             name.setError("Field cannot be empty");
             return false;
@@ -130,7 +131,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private boolean validateEmail(){
-        String mail = email.getEditText().getText().toString();
+        String mail = email.getText().toString();
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         if(mail.isEmpty()){
             email.setError("Field cannot be empty");
@@ -146,7 +147,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private boolean validatePassword(){
-        String pass = password.getEditText().getText().toString();
+        String pass = password.getText().toString();
         if(pass.isEmpty()){
             password.setError("Field cannot be empty");
             return false;
@@ -158,8 +159,8 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private boolean validateConfirmPassword(){
-        String pass = password.getEditText().getText().toString();
-        String cpass = confirm_password.getEditText().getText().toString();
+        String pass = password.getText().toString();
+        String cpass = confirm_password.getText().toString();
         if(!pass.equals(cpass)){
             confirm_password.setError("Your passwords should be the same");
             return false;

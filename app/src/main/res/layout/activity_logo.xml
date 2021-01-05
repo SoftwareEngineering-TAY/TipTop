@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogoActivity"
     android:orientation="vertical">
 
     <TextView
@@ -12,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome to TipTop"
+        android:textColor="@color/black"
         android:textSize="40dp"
-        android:fontFamily="@font/coming_soon"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="90dp"/>
 
@@ -22,7 +19,27 @@
         android:layout_width="400dp"
         android:layout_height="400dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="190dp"
+        android:layout_marginTop="100dp"
         android:src="@drawable/new_family"/>
+
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-50dp"
+        android:text="TipTop"
+        android:textSize="40dp"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
+        android:text="Organize your family"
+        android:textSize="25dp"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout >

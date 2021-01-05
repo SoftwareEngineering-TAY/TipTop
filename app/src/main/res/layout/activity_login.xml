@@ -6,13 +6,39 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    tools:ignore="VectorDrawableCompat"
-    android:padding="20dp">
+    tools:ignore="VectorDrawableCompat">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:src="@drawable/new_family"/>
+
+    <TextView
+        android:layout_width="43dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-15dp"
+        android:text="TipTop"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
+        android:text="Organize your family"
+        android:textSize="10dp"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic"
+        android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:padding="20dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
@@ -25,6 +51,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp"
             android:padding="15dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -32,6 +59,7 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:background="@color/white"
                 android:orientation="vertical">
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
@@ -76,7 +104,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login"
-
             android:background="@drawable/bg_ui"
             android:textAllCaps="false"
             android:layout_marginBottom="5dp"/>
@@ -88,17 +115,25 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"
             android:layout_below="@+id/login"
-            android:layout_marginTop="200dp"
-            android:text="@string/don_t_have_an_account"/>
+            android:text="@string/don_t_have_an_account"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/signUp"
-            android:layout_width="53dp"
+            android:layout_width="55dp"
             android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"
             android:text="@string/sign_up"
+            android:textColor="@color/black"
             android:textStyle="bold|italic" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/wave"
+        android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
+        android:layout_height="200dp"
+        android:background="@drawable/ic_wave__3_"/>
 
 </LinearLayout>
