@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database2;
 import com.example.tiptop.R;
-import static com.example.tiptop.Database.Database.setNamesAndScores;
+import static com.example.tiptop.Database.Database2.setNamesAndScores;
 
 public class PointsParentActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -23,6 +23,8 @@ public class PointsParentActivity extends AppCompatActivity implements DataChang
         setContentView(R.layout.activity_points_parent);
 
         pointsTable = (TableLayout) findViewById(R.id.pointsTable);
+
+        notifyOnChange();
     }
 
     public void setChildName(String name, Long score){
@@ -47,7 +49,8 @@ public class PointsParentActivity extends AppCompatActivity implements DataChang
 
     @Override
     public void notifyOnChange() {
-        //setNamesAndScores(this);
+        pointsTable.removeAllViews();
+        setNamesAndScores(this);
     }
 
 

@@ -23,6 +23,7 @@ import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.LogInAndSignUp.LogoActivity;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.Objects.User;
+import com.example.tiptop.Points.PointsParentActivity;
 import com.example.tiptop.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.FirebaseApp;
@@ -389,6 +390,20 @@ Log.v("gggggggggggggggggg: ", "startt");
                 }
             }
         });
+    }
+
+    public static void setNamesAndScores(PointsParentActivity act){
+        String key;
+        Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
+        for (DataSnapshot User : UsersInFamily) {
+            key = User.getKey();
+            if (!key.equals("Family name")) {
+                User user = dataSnapshot.child("Users").child(key).getValue(User.class);
+                if (user.getType().equals("Child")) {
+                    act.setChildName(user.getName(), user.getPoints());
+                }
+            }
+        }
     }
 
     public static void logout(){
