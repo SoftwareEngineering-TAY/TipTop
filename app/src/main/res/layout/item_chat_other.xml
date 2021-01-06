@@ -16,6 +16,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="@drawable/circle_accent"
+        android:fontFamily="@font/actor"
         android:gravity="center"
         android:maxEms="1"
         android:textAllCaps="true"
@@ -36,19 +37,20 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_toRightOf="@+id/space"
-        android:background="@drawable/chat_rounded_rect_bg"
+        android:background="@drawable/chat_left"
+        android:fontFamily="@font/actor"
         android:padding="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/grey_100"
+        android:textColor="@color/black"
         tools:text="Hello mate ! \ntest" />
 
     <TextView
-        android:layout_below="@+id/text_view_chat_message"
+        android:id="@+id/receiverMsgTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/receiverMsgTime"
-        android:layout_gravity="right" />
+        android:layout_below="@+id/text_view_chat_message"
+        android:layout_gravity="right"
+        android:fontFamily="@font/actor"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 </RelativeLayout>
