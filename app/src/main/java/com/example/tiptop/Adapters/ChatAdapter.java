@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiptop.Objects.Message;
 import com.example.tiptop.R;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static com.example.tiptop.Database.Database2.getUserID;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -45,10 +46,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (TextUtils.equals(messages.get(position).senderUid,
-                FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        if (messages.get(position).senderUid.equals(getUserID())) {
             configureMyChatViewHolder((MyChatViewHolder) holder, position);
-        } else {
+        }
+        else {
             configureOtherChatViewHolder((OtherChatViewHolder) holder, position);
         }
     }
@@ -80,8 +81,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (TextUtils.equals(messages.get(position).senderUid,
-                FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        if (messages.get(position).senderUid.equals(getUserID())) {
             return VIEW_TYPE_ME;
         } else {
             return VIEW_TYPE_OTHER;

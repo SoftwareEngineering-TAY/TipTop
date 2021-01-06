@@ -27,6 +27,8 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.Points.PointsParentActivity;
 import com.example.tiptop.R;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
@@ -127,6 +129,10 @@ Log.v("gggggggggggggggggg: ", "startt");
         for (DataChangeListener listener : listeners) {
             listener.notifyOnChange();
         }
+    }
+
+    public static String getUserID() {
+        return userID;
     }
 
     public static String getCurrFamilyId() {
@@ -280,6 +286,59 @@ Log.v("gggggggggggggggggg: ", "startt");
             messages.add(toAdd);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void initializeArraysFromDB(ArrayList<BarEntry> visitors, ArrayList<PieEntry> visitors2) {
+        visitors.clear();
+        visitors2.clear();
+        if(permission.equals("Parent")){
+            int countChild =0;
+            Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
+            for (DataSnapshot User : UsersInFamily) {
+                if (!User.getKey().equals("Family name") && !User.getKey().equals("Route Type")) {
+                    String toAddChildren = (String) User.getValue();
+                    String toAddKey = (String) User.getKey();
+                    if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")) {
+                        countChild++;
+                        long sumTimes;
+                        int countTasks=0;
+                        Iterable<DataSnapshot> Tasks = dataSnapshot.child("Tasks").child(currFamilyId).getChildren();
+                        for (DataSnapshot Task : Tasks) {
+                            if (Task.child("status").getValue().equals("Confirmed") && Task.child("belongsToUID").getValue().equals(toAddKey)) {
+                                Task toAdd = Task.getValue(Task.class);
+                                countTasks++;
+                                sumTimes = LocalDate.parse(toAdd.getStartDate()).until(LocalDate.parse(toAdd.getConfirmedDate()),DAYS);
+                                visitors.add(new BarEntry(countChild,countTasks));
+                                visitors2.add(new PieEntry(sumTimes/countTasks,toAddChildren));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+//
+//
+//        visitors.add(new BarEntry(1,20));
+//        visitors.add(new BarEntry(2,40));
+//        visitors.add(new BarEntry(3,10));
+//        visitors.add(new BarEntry(4,30));
+//        visitors.add(new BarEntry(5,20));
+//        visitors.add(new BarEntry(6,40));
+//        visitors.add(new BarEntry(7,10));
+//        visitors.add(new BarEntry(8,30));
+//
+//
+//        visitors2.add(new PieEntry(1,"20"));
+//        visitors2.add(new PieEntry(2,"40"));
+//        visitors2.add(new PieEntry(3,"10"));
+//        visitors2.add(new PieEntry(4,"30"));
+//        visitors2.add(new PieEntry(5,"20"));
+//        visitors2.add(new PieEntry(6,"40"));
+//        visitors2.add(new PieEntry(7,"10"));
+//        visitors2.add(new PieEntry(8,"30"));
     }
 
     public static void sendMessage(String texkMsg) {
