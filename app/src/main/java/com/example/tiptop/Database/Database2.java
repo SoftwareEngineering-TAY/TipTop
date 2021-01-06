@@ -86,7 +86,7 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_logo);
-Log.v("gggggggggggggggggg: ", "startt");
+        Log.v("gggggggggggggggggg: ", "startt");
         logo_text = (TextView) findViewById(R.id.logo_text);
         logo_image = (ImageView) findViewById(R.id.logo_image);
 
@@ -302,44 +302,36 @@ Log.v("gggggggggggggggggg: ", "startt");
                     String toAddKey = (String) User.getKey();
                     if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")) {
                         countChild++;
-                        long sumTimes;
+                        int sumTimes=0;
                         int countTasks=0;
                         Iterable<DataSnapshot> Tasks = dataSnapshot.child("Tasks").child(currFamilyId).getChildren();
                         for (DataSnapshot Task : Tasks) {
                             if (Task.child("status").getValue().equals("Confirmed") && Task.child("belongsToUID").getValue().equals(toAddKey)) {
                                 Task toAdd = Task.getValue(Task.class);
                                 countTasks++;
-                                sumTimes = LocalDate.parse(toAdd.getStartDate()).until(LocalDate.parse(toAdd.getConfirmedDate()),DAYS);
-                                visitors.add(new BarEntry(countChild,countTasks));
-                                visitors2.add(new PieEntry(sumTimes/countTasks,toAddChildren));
+                                sumTimes += LocalDate.parse(toAdd.getStartDate()).until(LocalDate.parse(toAdd.getConfirmedDate()),DAYS);
+
                             }
                         }
+                        visitors.add(new BarEntry(countChild,countTasks));
+                        visitors2.add(new PieEntry(sumTimes/countTasks,toAddChildren));
                     }
                 }
             }
         }
-
-
-//
-//
-//        visitors.add(new BarEntry(1,20));
-//        visitors.add(new BarEntry(2,40));
-//        visitors.add(new BarEntry(3,10));
-//        visitors.add(new BarEntry(4,30));
-//        visitors.add(new BarEntry(5,20));
-//        visitors.add(new BarEntry(6,40));
-//        visitors.add(new BarEntry(7,10));
-//        visitors.add(new BarEntry(8,30));
-//
-//
-//        visitors2.add(new PieEntry(1,"20"));
-//        visitors2.add(new PieEntry(2,"40"));
-//        visitors2.add(new PieEntry(3,"10"));
-//        visitors2.add(new PieEntry(4,"30"));
-//        visitors2.add(new PieEntry(5,"20"));
-//        visitors2.add(new PieEntry(6,"40"));
-//        visitors2.add(new PieEntry(7,"10"));
-//        visitors2.add(new PieEntry(8,"30"));
+        else{
+            Iterable<DataSnapshot> Tasks = dataSnapshot.child("Tasks").child(currFamilyId).getChildren();
+            int CountTask = 0;
+            int Time=0;
+            for (DataSnapshot Task : Tasks) {
+                if (Task.child("status").getValue().equals("Confirmed") && Task.child("belongsToUID").getValue().equals(userID)) {
+                    Task toAdd = Task.getValue(Task.class);
+                    Time = (int) LocalDate.parse(toAdd.getStartDate()).until(LocalDate.parse(toAdd.getConfirmedDate()),DAYS);
+                    visitors.add(new BarEntry(++CountTask,toAdd.getBonusScore()));
+                    visitors2.add(new PieEntry(Time,toAdd.getNameTask()));
+                }
+            }
+        }
     }
 
     public static void sendMessage(String texkMsg) {
