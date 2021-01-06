@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -41,14 +42,14 @@ import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class TaskInfoParentActivity extends AppCompatActivity implements DataChangeListener {
     private String taskID;
-    private com.google.android.material.textfield.TextInputLayout taskName;
+    private EditText taskName;
     private Button taskNameButton;
-    private com.google.android.material.textfield.TextInputLayout bonusScore;
+    private EditText bonusScore;
     private Button bonusScoreButton;
     private ImageButton newImage;
     private Button ImageButtonUpdate;
     private Spinner chooseChildSpinner;
-    private com.google.android.material.textfield.TextInputLayout description;
+    private EditText description;
     private Button descriptionButton;
     private Button Back;
     private Bitmap bitmap_image =null;
@@ -132,9 +133,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         descriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String descriptionToUpdate = description.getEditText().getText().toString();
+                String descriptionToUpdate = description.getText().toString();
                 setTaskDesctiption(taskID, descriptionToUpdate);
-                description.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+//                description.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
             }
         });
     }
@@ -143,9 +144,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         taskNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nameToUpdate = taskName.getEditText().getText().toString();
+                String nameToUpdate = taskName.getText().toString();
                 taskName.setHint(nameToUpdate);
-                taskName.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+//                taskName.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
                 setTaskName(taskID, nameToUpdate);
 
             }
@@ -156,10 +157,10 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         bonusScoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int bonusToUpdate =  Integer.parseInt(bonusScore.getEditText().getText().toString());
+                int bonusToUpdate =  Integer.parseInt(bonusScore.getText().toString());
                 String bonusHint = Integer.toString(bonusToUpdate);
                 bonusScore.setHint(bonusHint);
-                bonusScore.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+//                bonusScore.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
                 setTaskBonus(taskID, bonusToUpdate);
             }
         });
@@ -177,17 +178,17 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
     }
 
     private void initializeClassVariables(){
-        taskName = findViewById(R.id.NameOfTask);
+        taskName = (EditText) findViewById(R.id.NameOfTask);
         taskNameButton = (Button) findViewById(R.id.UpdateName);
         chooseChildSpinner = (Spinner) findViewById(R.id.SpinnerChooseChild);
-        description = findViewById(R.id.Description);
+        description = (EditText) findViewById(R.id.Description);
         descriptionButton = (Button) findViewById(R.id.DescriptionUpdate);
         Back=(Button) findViewById(R.id.Back);
         newImage = (ImageButton) findViewById(R.id.AddPic);
         ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
         if(getRouteType().equals("With bonuses"))
         {
-            bonusScore = findViewById(R.id.BonusPoints);
+            bonusScore = (EditText) findViewById(R.id.BonusPoints);
             bonusScoreButton = (Button) findViewById(R.id.UpdateBonus);
         }
         allKeys = new ArrayList<>();

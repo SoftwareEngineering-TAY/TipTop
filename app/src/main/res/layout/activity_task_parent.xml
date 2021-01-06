@@ -3,31 +3,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15dp"
     android:orientation="vertical"
     android:weightSum="2">
+
+    <TextView
+        android:id="@+id/TaskPoolText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Task Pool:"
+        android:textColor="@color/black"
+        android:textSize="30dp"/>
 
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_margin="15dp"
-         >
+        android:layout_margin="15dp">
+
         <TextView
             android:id="@+id/UnassignedTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Unassigned tasks"
-            android:textColor="#070707"
-            android:textSize="32dp"
-            android:textStyle="bold|italic"
-           />
+            android:text="Unassigned tasks:"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"/>
+
         <ListView
                 android:id="@+id/ListUnassignedTasks"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-         />
+                android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -35,18 +45,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_margin="15dp"
-        >
+        android:layout_margin="15dp">
+
         <TextView
             android:id="@+id/AssociatedTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Associated tasks"
-            android:textColor="#070707"
-            android:textSize="32dp"
-            android:textStyle="bold|italic"
-            />
+            android:text="Associated tasks:"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"/>
+
         <ExpandableListView
             android:id="@+id/ListAssociatedTasks"
             android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
     private Button ImageButtonUpdate;
     private Bitmap bitmap_image =null;
     private Uri uri_image = null;
-    private com.google.android.material.textfield.TextInputLayout comment;
+    private EditText comment;
     private Button commentButton;
     private static final int CAMERA_PHOTO = 1;
     private static final int GALLERY_PHOTO = 2;
@@ -81,8 +82,8 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         doneTask = (Button)findViewById(R.id.TaskDone);
         newImage = (ImageButton) findViewById(R.id.AddPic);
         ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
-        comment = findViewById(R.id.Comment);
-        commentButton = findViewById(R.id.CommentUpdate);
+        comment = (EditText) findViewById(R.id.Comment);
+        commentButton = (Button) findViewById(R.id.CommentUpdate);
         if(getRouteType().equals("With bonuses")){
             bonusScore = (TextView)findViewById(R.id.BonusPointShow);
         }
@@ -100,9 +101,9 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String commentToUpdate = comment.getEditText().getText().toString();
+                String commentToUpdate = comment.getText().toString();
                 setTaskComment(taskID, commentToUpdate);
-                comment.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+//                comment.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
             }
         });
     }

@@ -43,6 +43,7 @@
     <string name="titleParentSpinner">titleParentSpinner</string>
     <string name="the_amount_of_points_you_have_earned_is">The amount of points you have earned is</string>
     <string name="well_done">Well done!</string>
+    <string name="update">update</string>
 
     <string-array name="Route">
         <item>With bonuses</item>
