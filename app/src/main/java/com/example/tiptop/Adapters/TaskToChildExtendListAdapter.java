@@ -115,9 +115,19 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
                 else timeView.setText("days left : inf");
 
                 break;
-
             case R.layout.row_task_without_bonus:
+                TextView nameViewWithoutBonus = (TextView) row.findViewById(R.id.TaskNameRow);
+                TextView statusViewWithoutBonus = (TextView) row.findViewById(R.id.StatusTaskRow);
+                TextView timeViewWithoutBonus= (TextView) row.findViewById(R.id.TimeLeftRow);
 
+                //setting the view to reflect the data we need to display
+                nameViewWithoutBonus.setText(task.getNameTask());
+                statusViewWithoutBonus.setText("Status: " + task.getStatus().toString());
+                if (task.getEndDate()!=null){
+                    long Days = LocalDate.now().until(LocalDate.parse(task.getEndDate()),DAYS);
+                    timeViewWithoutBonus.setText("days left : "+ Days);
+                }
+                else timeViewWithoutBonus.setText("days left : inf");
 
                 break;
 

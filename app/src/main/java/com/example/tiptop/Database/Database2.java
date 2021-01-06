@@ -233,7 +233,7 @@ Log.v("gggggggggggggggggg: ", "startt");
         for (DataSnapshot User : UsersInFamily) {
             String toAddChildren = (String) User.getValue();
             String toAddKey = (String) User.getKey();
-            if (!User.getKey().equals("Family name")) {
+            if (!User.getKey().equals("Family name")&&!User.getKey().equals("Route Type")) {
                 if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")) {
                     allKeys.add(toAddKey);
                     allKids.add(toAddChildren);
@@ -287,7 +287,7 @@ Log.v("gggggggggggggggggg: ", "startt");
         Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
         for (DataSnapshot User : UsersInFamily) {
             String toAddChildren = (String) User.getValue();
-            if (!User.getKey().equals("Family name")) {
+            if (!User.getKey().equals("Family name")&&!User.getKey().equals("Route Type")) {
                 if (dataSnapshot.child("Users").child(User.getKey()).child("type").getValue().toString().equals("Child")) {
                     ListChildForTask.add(toAddChildren);
                     ArrayList<Task> toAdd = new ArrayList<>();
@@ -407,7 +407,7 @@ Log.v("gggggggggggggggggg: ", "startt");
         Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
         for (DataSnapshot User : UsersInFamily) {
             key = User.getKey();
-            if (!key.equals("Family name")) {
+            if (!key.equals("Family name")&&!key.equals("Route Type")) {
                 User user = dataSnapshot.child("Users").child(key).getValue(User.class);
                 if (user.getType().equals("Child")) {
                     act.setChildName(user.getName(), user.getPoints());

@@ -16,6 +16,7 @@ import com.example.tiptop.R;
 
 import java.util.ArrayList;
 
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
 public class HistoryChildActivity extends AppCompatActivity implements DataChangeListener {
@@ -29,7 +30,6 @@ public class HistoryChildActivity extends AppCompatActivity implements DataChang
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_child);
-
         initializeClassVariables();
         createListOfTask();
         notifyOnChange();

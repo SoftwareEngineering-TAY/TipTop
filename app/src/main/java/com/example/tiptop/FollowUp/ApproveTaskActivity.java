@@ -14,6 +14,7 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 
 import static com.example.tiptop.Database.Database2.addPointsToChild;
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.setConfirmedDate;
 import static com.example.tiptop.Database.Database2.setStatus;
 
@@ -31,7 +32,14 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_approve);
+        if(getRouteType().equals("With bonuses"))
+        {
+            setContentView(R.layout.activity_task_approve);
+        }
+        else
+        {
+            setContentView(R.layout.activity_task_approve_no_bonus);
+        }
         getExtrasFromIntent();
         initializeClassVariables();
 
@@ -55,16 +63,18 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
 
     private void initializeClassVariables(){
         taskName = (TextView)findViewById(R.id.TaskNameShow);
-        bonusScore = (TextView)findViewById(R.id.BonusPointShow);
         taskImage = (ImageView)findViewById(R.id.taskImage);
         taskComment = (TextView)findViewById(R.id.CommentShow);
         approveTask = (Button)findViewById(R.id.TaskApprove);
         repeat_task = (Button)findViewById(R.id.TaskRepeat);
+        if(getRouteType().equals("With bonuses")) {
+            bonusScore = (TextView) findViewById(R.id.BonusPointShow);
+        }
 
     }
 
     private void setTaskImage() {
-      //  task_image.
+        //  task_image.
         //get image!!
     }
 
@@ -85,7 +95,9 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
             public void onClick(View v) {
                 setStatus(taskID,"Confirmed");
                 setConfirmedDate(taskID);
-                addPointsToChild(taskToShow);
+                if(getRouteType().equals("With bonuses")) {
+                    addPointsToChild(taskToShow);
+                }
                 Intent i = new Intent(v.getContext(), FollowUpParentActivity.class);
                 startActivity(i);
             }
@@ -94,7 +106,9 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
 
     private void setTextInfo() {
         taskName.setText(taskToShow.getNameTask());
-        bonusScore.setText(taskToShow.getBonusScore().toString());
+        if(getRouteType().equals("With bonuses")) {
+            bonusScore.setText(taskToShow.getBonusScore().toString());
+        }
         taskComment.setText(taskToShow.getComment());
     }
 

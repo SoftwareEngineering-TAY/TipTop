@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import static com.example.tiptop.Database.Database2.addTaskToDB;
 import static com.example.tiptop.Database.Database2.getKeyForNewTask;
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.setTaskDesctiption;
 import static com.example.tiptop.Database.Database2.updateListOfChildFromDB;
 import static com.example.tiptop.Database.Database2.uploadImage;
@@ -62,7 +63,12 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_task);
+        if(getRouteType().equals("With bonuses")) {
+            setContentView(R.layout.activity_new_task);
+        }
+        else {
+            setContentView(R.layout.activity_new_task_no_bonus);
+        }
         initializationFromXML();
         notifyOnChange();
     }
@@ -101,8 +107,6 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         key = getKeyForNewTask();
         uploadImage( key, uri_image , bitmap_image,"taskImage");
         toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
-        long bp = Long.parseLong(BonusPoint.getEditText().getText().toString());
-        toAddTask.setBonusScore(bp);
         toAddTask.setStartDate(StartDate);
         toAddTask.setEndDate(EndDate);
         toAddTask.setBelongsToUID(keyKid);
@@ -111,7 +115,10 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         else
             toAddTask.setStatus(Task.STATUS.Associated);
         toAddTask.setDescription(description.getEditText().getText().toString());
-
+        if(getRouteType().equals("With bonuses")) {
+            long bp = Long.parseLong(BonusPoint.getEditText().getText().toString());
+            toAddTask.setBonusScore(bp);
+        }
     }
 
     private void setFinishButton() {
@@ -233,7 +240,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
 
     private void initializationFromXML() {
         NameOfTask = findViewById(R.id.NameOfTask);
-        BonusPoint = findViewById(R.id.BonusPoint);
+        if(getRouteType().equals("With bonuses")) {
+            BonusPoint = findViewById(R.id.BonusPoint);
+        }
         StartDateButton = (Button) findViewById(R.id.StartDateButton);
         EndDateButton = (Button)findViewById(R.id.EndDateButton);
         StartDateTV = (TextView) findViewById(R.id.StartDateTV);

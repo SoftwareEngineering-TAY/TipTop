@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import static com.example.tiptop.Database.Database2.createUserInFireBase;
 import static com.example.tiptop.Database.Database2.getAndSetTitleSpinnerOfBelongChild;
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.setStatus;
 import static com.example.tiptop.Database.Database2.setTaskBonus;
 import static com.example.tiptop.Database.Database2.setTaskDesctiption;
@@ -64,7 +65,13 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_info_parent);
+        if(getRouteType().equals("With bonuses")) {
+            setContentView(R.layout.activity_task_info_parent);
+        }
+        else
+        {
+            setContentView(R.layout.activity_task_info_parent_no_bonuses);
+        }
         getExtraFromIntent();
         initializeClassVariables();
         notifyOnChange();
@@ -172,14 +179,17 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
     private void initializeClassVariables(){
         taskName = findViewById(R.id.NameOfTask);
         taskNameButton = (Button) findViewById(R.id.UpdateName);
-        bonusScore = findViewById(R.id.BonusPoints);
-        bonusScoreButton = (Button) findViewById(R.id.UpdateBonus);
         chooseChildSpinner = (Spinner) findViewById(R.id.SpinnerChooseChild);
         description = findViewById(R.id.Description);
         descriptionButton = (Button) findViewById(R.id.DescriptionUpdate);
         Back=(Button) findViewById(R.id.Back);
         newImage = (ImageButton) findViewById(R.id.AddPic);
         ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
+        if(getRouteType().equals("With bonuses"))
+        {
+            bonusScore = findViewById(R.id.BonusPoints);
+            bonusScoreButton = (Button) findViewById(R.id.UpdateBonus);
+        }
         allKeys = new ArrayList<>();
         allKids = new ArrayList<>();
     }
@@ -243,11 +253,13 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
     public void notifyOnChange() {
         getExtraFromIntent();
         updateNameOfTask();
-        updateBonusScore();
         updateDescriptionButton();
         updateReAssociation();
         setNewImagwButton();
         updateImageButton();
+        if(getRouteType().equals("With bonuses")) {
+            updateBonusScore();
+        }
     }
 
     @Override

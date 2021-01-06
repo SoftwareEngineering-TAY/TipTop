@@ -86,7 +86,7 @@ public class MembersActivity extends AppCompatActivity {
                         family_members.setText(value+"'s members");
                     }
 
-                    else{
+                    else if(!key.equals("Route Type")){
                         membersArray.add(value);
                     }
                 }

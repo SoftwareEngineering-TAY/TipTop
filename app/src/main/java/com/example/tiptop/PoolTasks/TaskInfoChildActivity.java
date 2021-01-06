@@ -20,6 +20,7 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import com.google.android.material.textfield.TextInputLayout;
 
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.setStatus;
 import static com.example.tiptop.Database.Database2.setTaskComment;
 import static com.example.tiptop.Database.Database2.setTaskDesctiption;
@@ -45,7 +46,14 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_info_child);
+        if(getRouteType().equals("With bonuses"))
+        {
+            setContentView(R.layout.activity_task_info_child);
+        }
+        else
+        {
+            setContentView(R.layout.activity_task_info_child_no_bonus);
+        }
         getExtraFromIntent();
         initializeClassVariables();
         notifyOnChange();
@@ -69,19 +77,23 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
 
     private void initializeClassVariables(){
         taskName = (TextView)findViewById(R.id.TaskNameShow);
-        bonusScore = (TextView)findViewById(R.id.BonusPointShow);
         description = (TextView)findViewById(R.id.DescriptionShow);
         doneTask = (Button)findViewById(R.id.TaskDone);
         newImage = (ImageButton) findViewById(R.id.AddPic);
         ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
         comment = findViewById(R.id.Comment);
         commentButton = findViewById(R.id.CommentUpdate);
+        if(getRouteType().equals("With bonuses")){
+            bonusScore = (TextView)findViewById(R.id.BonusPointShow);
+        }
 
     }
     private void setTextInfo() {
         taskName.setText(taskToShow.getNameTask());
-        bonusScore.setText(taskToShow.getBonusScore().toString());
         description.setText(taskToShow.getDescription());
+        if(getRouteType().equals("With bonuses")){
+            bonusScore.setText(taskToShow.getBonusScore().toString());
+        }
     }
 
     private void updateCommentButton() {

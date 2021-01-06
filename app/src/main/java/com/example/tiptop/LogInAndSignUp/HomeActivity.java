@@ -38,6 +38,7 @@ import java.util.ArrayList;
 
 import static com.example.tiptop.Database.Database2.getCurrFamilyId;
 import static com.example.tiptop.Database.Database2.getPermission;
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.initializationCurrFamilyIdAndPermission;
 import static com.example.tiptop.Database.Database2.initializationRouteType;
 import static com.example.tiptop.Database.Database2.setCurrFamilyId;
@@ -73,14 +74,20 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_home);
-
-        initializationFromXML();
-
         initializationCurrFamilyIdAndPermission();
 
         initializationRouteType();
+
+        if(getRouteType().equals("With bonuses"))
+        {
+            setContentView(R.layout.activity_home);
+        }
+        else
+        {
+            setContentView(R.layout.activity_home_no_bonus);
+        }
+
+        initializationFromXML();
 
         initializeClassVariables();
 
@@ -99,12 +106,14 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         Tasks = findViewById(R.id.tasks);
         //Set the history button
         history = findViewById(R.id.history);
-        //Set the points button
-        points = findViewById(R.id.points);
         //Set the ImageButton button
         imageButton = (ImageButton)findViewById(R.id.imageButton);
         //Set the SpinnerFamily Spinner
         SpinnerFamily = (Spinner)findViewById(R.id.SpinnerFamily);
+        if(getRouteType().equals("With bonuses")) {
+            //Set the points button
+            points = findViewById(R.id.points);
+        }
     }
 
     private void initializeClassVariables() {
@@ -242,21 +251,21 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
             }
         });
 
-        //Moves to the points activity
-        points.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i;
-                if(getPermission().equals("Parent")){
-                    i = new Intent(v.getContext(), PointsParentActivity.class);
+        if(getRouteType().equals("With bonuses")) {
+            //Moves to the points activity
+            points.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i;
+                    if (getPermission().equals("Parent")) {
+                        i = new Intent(v.getContext(), PointsParentActivity.class);
+                    } else if (getPermission().equals("Child")) {
+                        i = new Intent(v.getContext(), PointsChildActivity.class);
+                    } else return;
+                    startActivity(i);
                 }
-                else if (getPermission().equals("Child")) {
-                    i = new Intent(v.getContext(), PointsChildActivity.class);
-                }
-                else return;
-                startActivity(i);
-            }
-        });
+            });
+        }
 
         //Moves to the ImageButton activity
         imageButton.setOnClickListener(new View.OnClickListener() {

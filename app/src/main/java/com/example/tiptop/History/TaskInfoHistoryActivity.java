@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 
+import static com.example.tiptop.Database.Database2.getRouteType;
+
 public class TaskInfoHistoryActivity extends AppCompatActivity {
 
     private Task taskToShow;
@@ -25,7 +27,14 @@ public class TaskInfoHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_info_history);
+        if(getRouteType().equals("With bonuses"))
+        {
+            setContentView(R.layout.activity_task_info_history);
+        }
+        else
+        {
+            setContentView(R.layout.activity_task_info_history_no_bonus);
+        }
 
         getExtrasFromIntent();
 
@@ -51,15 +60,19 @@ public class TaskInfoHistoryActivity extends AppCompatActivity {
     private void initializeClassVariables(){
         taskImage = (ImageView)findViewById(R.id.taskImage);
         taskName = (TextView)findViewById(R.id.taskName);
-        taskBonus = (TextView)findViewById(R.id.taskBonus);
         taskApproval = (TextView)findViewById(R.id.taskApproval);
         taskComment = (TextView)findViewById(R.id.taskComment);
+        if(getRouteType().equals("With bonuses")) {
+            taskBonus = (TextView) findViewById(R.id.taskBonus);
+        }
     }
 
     private void setTextInfo() {
         taskName.setText(taskToShow.getNameTask());
-        taskBonus.setText(taskToShow.getBonusScore().toString());
         taskApproval.setText(taskToShow.getConfirmedDate());
         taskComment.setText(taskToShow.getComment());
+        if(getRouteType().equals("With bonuses")) {
+            taskBonus.setText(taskToShow.getBonusScore().toString());
+        }
     }
 }

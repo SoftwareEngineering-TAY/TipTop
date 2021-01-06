@@ -12,6 +12,7 @@ import com.example.tiptop.PoolTasks.TaskInfoChildActivity;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import static com.example.tiptop.Database.Database2.getPermission;
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
 public class FollowUpChildActivity extends AppCompatActivity implements DataChangeListener {
@@ -38,7 +39,13 @@ public class FollowUpChildActivity extends AppCompatActivity implements DataChan
     private void createListOfTask() {
         list = new ArrayList<>();
         listID = new ArrayList<>();
-        mTaskListAdapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task_with_bonus,list);
+        if(getRouteType().equals("With bonuses")) {
+            mTaskListAdapter = new TaskListAdapter(getApplicationContext(), R.layout.row_task_with_bonus, list);
+        }
+        else
+        {
+            mTaskListAdapter = new TaskListAdapter(getApplicationContext(), R.layout.row_task_without_bonus, list);
+        }
         followList.setAdapter(mTaskListAdapter);
     }
 

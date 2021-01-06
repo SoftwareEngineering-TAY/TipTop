@@ -6,6 +6,8 @@ import android.widget.ExpandableListView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tiptop.Adapters.TaskListAdapter;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database2;
@@ -13,6 +15,8 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.updateExpandableTaskListFromDB;
 
 public class FollowUpParentActivity extends AppCompatActivity implements DataChangeListener {
@@ -41,7 +45,13 @@ public class FollowUpParentActivity extends AppCompatActivity implements DataCha
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
         ListTaskID = new HashMap<>();//list of ID'S Tasks
-        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task_with_bonus, ApproveTaskActivity.class);
+        if(getRouteType().equals("With bonuses")) {
+            childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task_with_bonus, ApproveTaskActivity.class);
+        }
+        else
+        {
+            childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task_without_bonus, ApproveTaskActivity.class);
+        }
         AssociatedTasks.setAdapter(childAdapter);
     }
 

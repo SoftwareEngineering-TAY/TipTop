@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.example.tiptop.Database.Database2.getCurrFamilyId;
+import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.setCurrFamilyId;
 import static com.example.tiptop.Database.Database2.updateExpandableTaskListFromDB;
 import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
@@ -52,7 +53,13 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
         ListTaskID = new HashMap<>();//list of ID'S Tasks
-        childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task_with_bonus, TaskInfoParentActivity.class);
+        if(getRouteType().equals("With bonuses")) {
+            childAdapter = new TaskToChildExtendListAdapter(ListChildForTask, ListTaskGroups, ListTaskID, R.layout.row_task_with_bonus, TaskInfoParentActivity.class);
+        }
+        else
+        {
+            childAdapter = new TaskToChildExtendListAdapter(ListChildForTask, ListTaskGroups, ListTaskID, R.layout.row_task_without_bonus, TaskInfoParentActivity.class);
+        }
         AssociatedTasks.setAdapter(childAdapter);
     }
 
@@ -64,7 +71,14 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
     private void createListOfTask() {
         ListUnassignedTasks = new ArrayList<>();
         ListUnassignedTaskId = new ArrayList<>();
-        adapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task_with_bonus,ListUnassignedTasks);
+        if(getRouteType().equals("With bonuses"))
+        {
+            adapter = new TaskListAdapter(getApplicationContext(), R.layout.row_task_with_bonus, ListUnassignedTasks);
+        }
+        else
+        {
+            adapter = new TaskListAdapter(getApplicationContext(), R.layout.row_task_without_bonus, ListUnassignedTasks);
+        }
         UnassignedTasks.setAdapter(adapter);
     }
 
