@@ -84,7 +84,7 @@ public class ParentRightsActivity extends AppCompatActivity {
 
                     key = ds.getKey();
 
-                    if(!key.equals("Family name")){
+                    if(!key.equals("Family name") && !key.equals("Route Type")){
 
                         createSwitchForEveryUser(key);
 
@@ -146,5 +146,4 @@ public class ParentRightsActivity extends AppCompatActivity {
             }
         });
     }
-
 }
