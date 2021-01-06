@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,10 +38,8 @@ import static com.example.tiptop.Database.Database2.uploadImage;
 public class NewTaskActivity extends AppCompatActivity implements DataChangeListener {
 
     private Task toAddTask;
-    private com.google.android.material.textfield.TextInputLayout NameOfTask;
-    private com.google.android.material.textfield.TextInputLayout BonusPoint;
-    private Button StartDateButton;
-    private Button EndDateButton;
+    private EditText NameOfTask;
+    private EditText BonusPoint;
     private TextView StartDateTV;
     private TextView EndDateTV;
     private Button SubmitButton;
@@ -49,7 +48,7 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
     private String EndDate;
     private String keyKid;
     private String key;
-    private com.google.android.material.textfield.TextInputLayout description;
+    private EditText description;
     private ImageButton newImage;
     private Bitmap bitmap_image =null;
     private Uri uri_image = null;
@@ -106,7 +105,7 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         toAddTask = new Task();
         key = getKeyForNewTask();
         uploadImage( key, uri_image , bitmap_image,"taskImage");
-        toAddTask.setNameTask(NameOfTask.getEditText().getText().toString());
+        toAddTask.setNameTask(NameOfTask.getText().toString());
         toAddTask.setStartDate(StartDate);
         toAddTask.setEndDate(EndDate);
         toAddTask.setBelongsToUID(keyKid);
@@ -114,9 +113,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
             toAddTask.setStatus(Task.STATUS.NotAssociated);
         else
             toAddTask.setStatus(Task.STATUS.Associated);
-        toAddTask.setDescription(description.getEditText().getText().toString());
+        toAddTask.setDescription(description.getText().toString());
         if(getRouteType().equals("With bonuses")) {
-            long bp = Long.parseLong(BonusPoint.getEditText().getText().toString());
+            long bp = Long.parseLong(BonusPoint.getText().toString());
             toAddTask.setBonusScore(bp);
         }
     }
@@ -134,7 +133,7 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
     }
 
     private void setSelectStartDateButton(){
-        StartDateButton.setOnClickListener(new View.OnClickListener() {
+        StartDateTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -163,7 +162,7 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
     }
 
     private void setSelectEndDateButton() {
-        EndDateButton.setOnClickListener(new View.OnClickListener() {
+        EndDateTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -239,17 +238,15 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
 
 
     private void initializationFromXML() {
-        NameOfTask = findViewById(R.id.NameOfTask);
+        NameOfTask = (EditText) findViewById(R.id.NameOfTask);
         if(getRouteType().equals("With bonuses")) {
-            BonusPoint = findViewById(R.id.BonusPoint);
+            BonusPoint = (EditText) findViewById(R.id.BonusPoint);
         }
-        StartDateButton = (Button) findViewById(R.id.StartDateButton);
-        EndDateButton = (Button)findViewById(R.id.EndDateButton);
-        StartDateTV = (TextView) findViewById(R.id.StartDateTV);
-        EndDateTV = (TextView)findViewById(R.id.EndDateTV);
+        StartDateTV = (EditText) findViewById(R.id.StartDate);
+        EndDateTV = (EditText)findViewById(R.id.EndDate);
         SubmitButton = (Button)findViewById(R.id.SubmitButton);
         ListOfChildren = (ListView)findViewById(R.id.ListOfChildren);
-        description = findViewById(R.id.Description);
+        description = (EditText) findViewById(R.id.Description);
         newImage = (ImageButton) findViewById(R.id.AddPic);
     }
 
