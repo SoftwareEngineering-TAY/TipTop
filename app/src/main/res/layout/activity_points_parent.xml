@@ -21,25 +21,28 @@
         android:id="@+id/pointsTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"
+        android:paddingTop="2dp"
         android:stretchColumns="0,1"
         android:layout_marginTop="20dp">
 
         <TableRow
+            android:id="@+id/titlesRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Child name"
-                android:textSize="20dp"
+                android:textSize="25dp"
+                android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:layout_gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Child scores"
-                android:textSize="20dp"
+                android:textSize="25dp"
+                android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:layout_gravity="center"/>
         </TableRow>

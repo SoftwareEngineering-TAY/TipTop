@@ -81,7 +81,7 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         String sGroup = String.valueOf(getGroup(groupPosition));
         textView.setText(sGroup);
         textView.setTypeface(null, Typeface.BOLD);
-        textView.setTextColor(Color.BLUE);
+        textView.setTextColor(Color.rgb(117, 0, 153));
         return convertView;
     }
 
