@@ -18,9 +18,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tiptop.Adapters.ChatAdapter;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
 import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.LogInAndSignUp.LogoActivity;
+import com.example.tiptop.Objects.Message;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.Points.PointsParentActivity;
@@ -45,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import static java.lang.System.currentTimeMillis;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Database2  extends AppCompatActivity implements ValueEventListener {
@@ -71,7 +74,6 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
         public void onComplete(DatabaseError error, DatabaseReference ref) {
             if (error != null) {
             } else {
-
             }
         }
     };
@@ -135,12 +137,20 @@ Log.v("gggggggggggggggggg: ", "startt");
         return permission;
     }
 
+    public static String getNameByUid(String UserId){
+        return dataSnapshot.child("Users").child(userID).child("name").getValue(String.class);
+    }
+
     public static String getRouteType() {
         return routeType;
     }
 
     public static String getKeyForNewTask() {
         return reference.child("Tasks").child(currFamilyId).push().getKey();
+    }
+
+    public static String getKeyForNewMessage() {
+        return reference.child("Chats").child(currFamilyId).push().getKey();
     }
 
     public static void getPoints (TextView numOfPoints ){
@@ -260,6 +270,22 @@ Log.v("gggggggggggggggggg: ", "startt");
             allKeys.add(0, currFamilyId);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    public static void updateChatListFromDB(ArrayList<Message> messages, ChatAdapter mAdapter){
+        messages.clear();
+        Iterable<DataSnapshot> Messages = dataSnapshot.child("Chats").child(currFamilyId).getChildren();
+        for(DataSnapshot Msg : Messages){
+            Message toAdd = Msg.getValue(Message.class);
+            messages.add(toAdd);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public static void sendMessage(String texkMsg) {
+        Message toAdd =new Message(getNameByUid(userID),userID,texkMsg, currentTimeMillis());
+        String key = getKeyForNewMessage();
+        reference.child("Chats").child(currFamilyId).child(key).setValue(toAdd);
     }
 
     public static void updateTaskListFromDB(ArrayList<Task> toUpdate, ArrayList<String> idToUpdate, String status, ArrayAdapter<Task> mTaskListAdapter) {
@@ -415,6 +441,8 @@ Log.v("gggggggggggggggggg: ", "startt");
             }
         }
     }
+
+
 
     public static void logout(){
         mAuth.signOut();

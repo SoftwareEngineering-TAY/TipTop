@@ -1,7 +1,6 @@
 package com.example.tiptop.LogInAndSignUp;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +17,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.tiptop.ChatActivity;
+
+import com.example.tiptop.Chat.ChatActivity;
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database2;
 import com.example.tiptop.FollowUp.FollowUpChildActivity;

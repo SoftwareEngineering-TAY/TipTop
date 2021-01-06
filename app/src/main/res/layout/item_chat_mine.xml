@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="10dp"
+    android:paddingEnd="10dp"
+    android:paddingStart="10dp"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/text_view_chat_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginEnd="-4dp"
+        android:layout_marginRight="-4dp"
+        android:layout_toStartOf="@+id/text_view_user_alphabet"
+        android:layout_toLeftOf="@+id/text_view_user_alphabet"
+        android:background="@drawable/chat_rounded_rect_bg"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/grey_100"
+        tools:text="Noice man !" />
+
+    <TextView
+        android:id="@+id/text_view_user_alphabet"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/circle_accent"
+        android:gravity="center"
+        android:maxEms="1"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/grey_100"
+        android:textStyle="bold"
+        tools:text="a"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16dp" />
+
+
+    <TextView
+        android:layout_below="@+id/text_view_chat_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/senderMsgTime"
+        android:layout_gravity="right" />
+
+</RelativeLayout>

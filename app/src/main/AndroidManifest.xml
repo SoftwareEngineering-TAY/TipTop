@@ -71,8 +71,10 @@
 
         <activity android:name=".Points.PointsParentActivity"/>
 
+        //Chat
+        <activity android:name=".Chat.ChatActivity"/>
+
         //Without Packages
-        <activity android:name=".ChatActivity"/>
 
         <activity android:name=".ImageActivity"/>
 
