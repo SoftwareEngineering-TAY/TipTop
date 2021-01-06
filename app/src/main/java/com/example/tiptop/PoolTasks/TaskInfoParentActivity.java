@@ -112,6 +112,7 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
                     if(position == 1)
                     {
                         setStatus(taskID,"NotAssociated");
+
                     }
                     else
                     {
@@ -120,6 +121,7 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
                 }
 
                 adapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(),"ReAssociation!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -135,7 +137,7 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
             public void onClick(View v) {
                 String descriptionToUpdate = description.getText().toString();
                 setTaskDesctiption(taskID, descriptionToUpdate);
-//                description.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
+                Toast.makeText(getApplicationContext(),"Update!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -146,8 +148,8 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
             public void onClick(View v) {
                 String nameToUpdate = taskName.getText().toString();
                 taskName.setHint(nameToUpdate);
-//                taskName.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
                 setTaskName(taskID, nameToUpdate);
+                Toast.makeText(getApplicationContext(),"Update!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -160,8 +162,8 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
                 int bonusToUpdate =  Integer.parseInt(bonusScore.getText().toString());
                 String bonusHint = Integer.toString(bonusToUpdate);
                 bonusScore.setHint(bonusHint);
-//                bonusScore.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
                 setTaskBonus(taskID, bonusToUpdate);
+                Toast.makeText(getApplicationContext(),"Update!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -246,6 +248,7 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
             @Override
             public void onClick(View v) {
                 uploadImage( taskID, uri_image , bitmap_image,"taskImage");
+                Toast.makeText(getApplicationContext(),"Update!", Toast.LENGTH_SHORT).show();
             }
         });
     }

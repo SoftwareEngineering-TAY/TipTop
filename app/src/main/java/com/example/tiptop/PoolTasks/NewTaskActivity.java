@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -126,6 +128,7 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
             public void onClick(View v) {
                 initializationTask();
                 addTaskToDB(key,toAddTask);
+                Toast.makeText(getApplicationContext(),"A new task has been created!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(v.getContext(), PoolTasksParentActivity.class);
                 startActivity(i);
             }

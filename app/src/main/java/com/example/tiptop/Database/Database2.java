@@ -75,6 +75,7 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
         @Override
         public void onComplete(DatabaseError error, DatabaseReference ref) {
             if (error != null) {
+
             } else {
             }
         }

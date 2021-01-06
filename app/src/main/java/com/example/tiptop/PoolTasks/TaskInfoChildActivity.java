@@ -89,6 +89,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         }
 
     }
+
     private void setTextInfo() {
         taskName.setText(taskToShow.getNameTask());
         description.setText(taskToShow.getDescription());
@@ -103,6 +104,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
             public void onClick(View v) {
                 String commentToUpdate = comment.getText().toString();
                 setTaskComment(taskID, commentToUpdate);
+                Toast.makeText(getApplicationContext(),"Update!", Toast.LENGTH_SHORT).show();
 //                comment.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
             }
         });
