@@ -56,7 +56,6 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         {
             setContentView(R.layout.activity_task_info_child_no_bonus);
         }
-        getExtraFromIntent();
         initializeClassVariables();
         notifyOnChange();
     }
@@ -178,6 +177,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
     }
     @Override
     public void notifyOnChange() {
+        getExtraFromIntent();
         setTextInfo();
         updatePicture(newImage,getApplicationContext(),taskID,"taskImage");
         setDoneButton();
