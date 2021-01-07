@@ -61,7 +61,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String date=sfd.format(new Date(msg.timestamp + (1000*60*60*2)).getTime());
         myChatViewHolder.senderMsgTime.setText(date);
         myChatViewHolder.txtChatMessage.setText(msg.message);
-        myChatViewHolder.txtUserAlphabet.setText(msg.sender);
+        myChatViewHolder.txtUserAlphabet.setText(msg.sender.substring(0,2));
     }
 
     private void configureOtherChatViewHolder(final OtherChatViewHolder otherChatViewHolder, int position) {
@@ -70,7 +70,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String date=sfd.format(new Date(message.timestamp+ (1000*60*60*2)).getTime());
         otherChatViewHolder.receiverMsgTime.setText(date);
         otherChatViewHolder.txtChatMessage.setText(message.message);
-        otherChatViewHolder.txtUserAlphabet.setText(message.sender);
+        otherChatViewHolder.txtUserAlphabet.setText(message.sender.substring(0,2));
     }
 
     @Override

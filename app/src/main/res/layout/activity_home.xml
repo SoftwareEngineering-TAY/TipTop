@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/SpinnerFamily"
             android:spinnerMode="dropdown"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="1dp"
             android:layout_marginLeft="140dp"
             android:gravity="center_horizontal"
             android:prompt="@string/spinnerTitle"/>
@@ -34,7 +34,7 @@
             android:scaleType="fitCenter"
             android:background="@color/white"
             android:layout_below="@+id/SpinnerFamily"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="1dp"
             />
 
         <!--All bottom buttons-->

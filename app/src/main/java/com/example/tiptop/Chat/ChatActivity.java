@@ -65,6 +65,7 @@ public class ChatActivity extends AppCompatActivity implements DataChangeListene
             public void onClick(View v) {
                 String texkMsg = type.getText().toString();
                 sendMessage(texkMsg);
+                type.setText("");
             }
         });
     }
