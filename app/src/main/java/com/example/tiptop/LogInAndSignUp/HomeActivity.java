@@ -42,8 +42,8 @@ import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.initializationCurrFamilyIdAndPermission;
 import static com.example.tiptop.Database.Database2.initializationRouteType;
 import static com.example.tiptop.Database.Database2.setCurrFamilyId;
-import static com.example.tiptop.Database.Database2.updateHomePicture;
 import static com.example.tiptop.Database.Database2.updateListOfFamilyFromDB;
+import static com.example.tiptop.Database.Database2.updatePicture;
 import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class HomeActivity extends AppCompatActivity implements DataChangeListener {
@@ -329,7 +329,7 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
 
         ActivateAllButtons();
 
-        updateHomePicture(imageButton,getApplicationContext());
+        updatePicture(imageButton,getApplicationContext(),getCurrFamilyId(),"Families");
     }
 
     @Override

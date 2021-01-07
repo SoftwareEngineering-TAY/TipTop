@@ -38,6 +38,7 @@ import static com.example.tiptop.Database.Database2.setTaskDesctiption;
 import static com.example.tiptop.Database.Database2.setTaskName;
 import static com.example.tiptop.Database.Database2.setbelongsToUID;
 import static com.example.tiptop.Database.Database2.updateListOfChildFromDB;
+import static com.example.tiptop.Database.Database2.updatePicture;
 import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class TaskInfoParentActivity extends AppCompatActivity implements DataChangeListener {
@@ -256,6 +257,7 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
     @Override
     public void notifyOnChange() {
         getExtraFromIntent();
+        updatePicture(newImage,getApplicationContext(),taskID,"taskImage");
         updateNameOfTask();
         updateDescriptionButton();
         updateReAssociation();

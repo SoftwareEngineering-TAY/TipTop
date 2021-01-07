@@ -25,6 +25,7 @@ import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.setStatus;
 import static com.example.tiptop.Database.Database2.setTaskComment;
 import static com.example.tiptop.Database.Database2.setTaskDesctiption;
+import static com.example.tiptop.Database.Database2.updatePicture;
 import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class TaskInfoChildActivity  extends AppCompatActivity implements DataChangeListener {
@@ -96,6 +97,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         if(getRouteType().equals("With bonuses")){
             bonusScore.setText(taskToShow.getBonusScore().toString());
         }
+
     }
 
     private void updateCommentButton() {
@@ -177,6 +179,7 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
     @Override
     public void notifyOnChange() {
         setTextInfo();
+        updatePicture(newImage,getApplicationContext(),taskID,"taskImage");
         setDoneButton();
         setNewImagwButton();
         updateImageButton();

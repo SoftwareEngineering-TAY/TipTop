@@ -403,7 +403,6 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
     }
 
     public static void uploadImage(String family_key, Uri uri_image, Bitmap bitmap_image, String folder) {
-        //String path = "Families/" + family_key;
         String path =folder+"/" + family_key;
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference mStorageRef = storage.getReference(path);
@@ -457,9 +456,9 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
             email.setText((String) dataSnapshot.child("Users").child(userID).child("email").getValue());
     }
 
-    public static void updateHomePicture(ImageButton imageButton, Context context) {
+    public static void updatePicture(ImageButton imageButton, Context context,String key,String folder) {
 
-        String path = "Families/" + getCurrFamilyId();
+        String path = folder+"/" + key;
 
         storage.getReference(path).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override

@@ -42,9 +42,7 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
         }
         getExtrasFromIntent();
         initializeClassVariables();
-
         notifyOnChange();
-
     }
 
     private void getExtrasFromIntent() {
