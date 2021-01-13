@@ -22,6 +22,21 @@ most children today receive a phone at the age of 8.
 
 <img width="30"  src="https://user-images.githubusercontent.com/57855070/104468124-c3619980-55bf-11eb-8431-45335dafa9ec.png"> **The system has two tracks:** Upon entry the parent can choose a track with bonuses or without bonuses
 
+### Actions that can be done in the app:
+***
+
+* Adding  family  users and edits management privileges.
+* Creating a task
+* Update task details
+* Follow up tasks
+* See history of tasks
+* See the Accumulation of points
+* Talk in a chat
+* See Statistics about tasks
+
+<img width="200"  src="https://user-images.githubusercontent.com/57855070/104470097-f9a01880-55c1-11eb-8fa0-82a3ebb1b771.png">
+
+
 ### Project partners: <br />
 ***
 [Tom Latin](https://github.com/TomLatin) ,
