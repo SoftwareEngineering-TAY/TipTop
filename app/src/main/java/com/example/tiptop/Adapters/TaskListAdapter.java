@@ -21,6 +21,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
     int mLayoutResourceId;
     ArrayList<Task> mData = null;
 
+    //default constructor
     public TaskListAdapter(Context context, int resource, ArrayList<Task> data) {
         super(context, resource, data);
         this.mContext = context;
