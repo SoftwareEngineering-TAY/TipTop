@@ -15,6 +15,8 @@ import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
 public class PoolTasksChildActivity extends AppCompatActivity implements DataChangeListener {
+
+    //Fields
     private ListView followList;
     private TaskListAdapter mTaskListAdapter;
     private ArrayList<Task> list;
@@ -24,16 +26,22 @@ public class PoolTasksChildActivity extends AppCompatActivity implements DataCha
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_child);
-        initializeClassVariables();
+        initializationFromXML();
         createListOfTask();
         crateClickEvent();
         notifyOnChange();
     }
 
-    private void initializeClassVariables() {
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
+    private void initializationFromXML() {
         followList = (ListView) findViewById(R.id.followList);
     }
 
+    /**
+     * The function is responsible for creating the list of tasks of the child
+     */
     private void createListOfTask() {
         list = new ArrayList<>();
         listID = new ArrayList<>();
@@ -48,6 +56,10 @@ public class PoolTasksChildActivity extends AppCompatActivity implements DataCha
         followList.setAdapter(mTaskListAdapter);
     }
 
+    /**
+     * The function is responsible for listening to clicks on the tasks in the list and if one of the
+     * tasks is clicked on the list then also on moving a screen to information about the task
+     */
     private void crateClickEvent() {
         followList.setOnItemClickListener((adapterView,view,i,l) -> {
             Intent intent = new Intent(view.getContext(), TaskInfoChildActivity.class);
@@ -61,7 +73,6 @@ public class PoolTasksChildActivity extends AppCompatActivity implements DataCha
     public void notifyOnChange() {
         updateTaskListFromDB(list,listID,"Associated",mTaskListAdapter);
     }
-
 
     @Override
     protected void onResume() {

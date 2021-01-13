@@ -42,6 +42,7 @@ import static com.example.tiptop.Database.Database2.updatePicture;
 import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class TaskInfoParentActivity extends AppCompatActivity implements DataChangeListener {
+    //Fields
     private String taskID;
     private EditText taskName;
     private Button taskNameButton;
@@ -57,7 +58,6 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
     private Uri uri_image = null;
     private static final int CAMERA_PHOTO = 1;
     private static final int GALLERY_PHOTO = 2;
-
 
     //Variables to be used for the spinner
     private ArrayList <String> allKeys;
@@ -75,11 +75,35 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
             setContentView(R.layout.activity_task_info_parent_no_bonuses);
         }
         getExtraFromIntent();
-        initializeClassVariables();
+        initializationFromXML();
         notifyOnChange();
         clickOnBack();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
+    private void initializationFromXML(){
+        taskName = (EditText) findViewById(R.id.NameOfTask);
+        taskNameButton = (Button) findViewById(R.id.UpdateName);
+        chooseChildSpinner = (Spinner) findViewById(R.id.SpinnerChooseChild);
+        description = (EditText) findViewById(R.id.Description);
+        descriptionButton = (Button) findViewById(R.id.DescriptionUpdate);
+        Back=(Button) findViewById(R.id.Back);
+        newImage = (ImageButton) findViewById(R.id.AddPic);
+        ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
+        if(getRouteType().equals("With bonuses"))
+        {
+            bonusScore = (EditText) findViewById(R.id.BonusPoints);
+            bonusScoreButton = (Button) findViewById(R.id.UpdateBonus);
+        }
+        allKeys = new ArrayList<>();
+        allKids = new ArrayList<>();
+    }
+
+    /**
+     * The function is responsible for retrieving information from the Intent
+     */
     private void getExtraFromIntent() {
         Bundle extras = getIntent().getExtras();
         if(extras!=null) {
@@ -92,6 +116,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         }
     }
 
+    /**
+     * The function is responsible for updating the re-assignment of the task
+     */
     private void updateReAssociation() {
         //Connecting the list to the view
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, allKids);
@@ -132,6 +159,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * The function is responsible for updating the description
+     */
     private void updateDescriptionButton() {
         descriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +173,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         });
     }
 
+    /**
+     * The function is responsible for updating the task name
+     */
     private void updateNameOfTask() {
         taskNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +189,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         });
     }
 
+    /**
+     * The function is responsible for updating the name of the bonus points
+     */
     private void updateBonusScore() {
         bonusScoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +205,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         });
     }
 
+    /**
+     * The function is responsible for returning to the screen where all the tasks are
+     */
     private void clickOnBack()
     {
         Back.setOnClickListener(new View.OnClickListener() {
@@ -180,24 +219,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         });
     }
 
-    private void initializeClassVariables(){
-        taskName = (EditText) findViewById(R.id.NameOfTask);
-        taskNameButton = (Button) findViewById(R.id.UpdateName);
-        chooseChildSpinner = (Spinner) findViewById(R.id.SpinnerChooseChild);
-        description = (EditText) findViewById(R.id.Description);
-        descriptionButton = (Button) findViewById(R.id.DescriptionUpdate);
-        Back=(Button) findViewById(R.id.Back);
-        newImage = (ImageButton) findViewById(R.id.AddPic);
-        ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
-        if(getRouteType().equals("With bonuses"))
-        {
-            bonusScore = (EditText) findViewById(R.id.BonusPoints);
-            bonusScoreButton = (Button) findViewById(R.id.UpdateBonus);
-        }
-        allKeys = new ArrayList<>();
-        allKids = new ArrayList<>();
-    }
-
+    /**
+     * The function is responsible for saving the image
+     */
     private void setNewImagwButton(){
         newImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,6 +252,9 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         });
     }
 
+    /**
+     * The function is responsible for saving the image
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -244,6 +271,10 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         }
     }
 
+    /**
+     * The function is responsible for calling the function that is responsible for
+     * updating the image in the database
+     */
     private void updateImageButton(){
         ImageButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override

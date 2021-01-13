@@ -1,5 +1,6 @@
 package com.example.tiptop.FollowUp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,9 +18,11 @@ import static com.example.tiptop.Database.Database2.addPointsToChild;
 import static com.example.tiptop.Database.Database2.getRouteType;
 import static com.example.tiptop.Database.Database2.setConfirmedDate;
 import static com.example.tiptop.Database.Database2.setStatus;
+import static com.example.tiptop.Database.Database2.updateImageView;
 
 public class ApproveTaskActivity extends AppCompatActivity implements DataChangeListener {
 
+    //Fields
     private Task taskToShow;
     private String taskID;
     private TextView taskName;
@@ -45,6 +48,9 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
         notifyOnChange();
     }
 
+    /**
+     * The function is responsible for retrieving information from the Intent
+     */
     private void getExtrasFromIntent() {
         Bundle extras = getIntent().getExtras();
         if(extras!=null)
@@ -59,6 +65,9 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
         }
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And class variables
+     */
     private void initializeClassVariables(){
         taskName = (TextView)findViewById(R.id.TaskNameShow);
         taskImage = (ImageView)findViewById(R.id.taskImage);
@@ -68,14 +77,12 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
         if(getRouteType().equals("With bonuses")) {
             bonusScore = (TextView) findViewById(R.id.BonusPointShow);
         }
-
     }
 
-    private void setTaskImage() {
-        //  task_image.
-        //get image!!
-    }
-
+    /**
+     * The function is responsible for listening to the repeat button, if he is pressed to update the
+     * status of the task back to "associated" and move in to the follow up screen
+     */
     private void setRepeatButton() {
         repeat_task.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +94,10 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
         });
     }
 
+    /**
+     * The function is responsible for listening to the approve button, if he is pressed to update the
+     * status of the task to "Confirmed" and move in to the follow up screen
+     */
     private void setApproveButton() {
         approveTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +113,9 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
         });
     }
 
+    /**
+     * The function is responsible for displaying the name, comment and bonus if necessary in the activity
+     */
     private void setTextInfo() {
         taskName.setText(taskToShow.getNameTask());
         if(getRouteType().equals("With bonuses")) {
@@ -125,7 +139,7 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
     @Override
     public void notifyOnChange() {
         setTextInfo();
-        setTaskImage();
+        updateImageView(taskImage, getApplicationContext(),taskID,"taskImage");
         setApproveButton();
         setRepeatButton();
     }

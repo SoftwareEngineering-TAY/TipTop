@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -473,7 +474,33 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
 
                 }
                 else {
-                    imageButton.setImageResource(R.drawable.new_family);
+                    if(folder.equals("Families"))
+                    {
+                        imageButton.setImageResource(R.drawable.new_family);
+                    }
+                }
+            }
+        });
+    }
+
+    public static void updateImageView(ImageView imageView, Context context,String key,String folder) {
+
+        String path = folder+"/" + key;
+
+        storage.getReference(path).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull com.google.android.gms.tasks.Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri imageUri = task.getResult();
+                    Picasso.get()
+                            .load(imageUri)
+                            .fit()
+                            .centerCrop()
+                            .into(imageView);
+
+                }
+                else {
+                    Toast.makeText(context,"Failed",Toast.LENGTH_SHORT).show();
                 }
             }
         });

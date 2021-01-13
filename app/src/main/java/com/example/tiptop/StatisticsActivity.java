@@ -43,8 +43,6 @@ public class StatisticsActivity extends AppCompatActivity implements DataChangeL
 
     }
 
-
-
     private void initializeClassVariables() {
         barChart = findViewById(R.id.BarChart);
         visitors = new ArrayList<>();

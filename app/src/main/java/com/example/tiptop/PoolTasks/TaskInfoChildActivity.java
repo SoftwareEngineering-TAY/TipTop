@@ -10,7 +10,9 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +32,7 @@ import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class TaskInfoChildActivity  extends AppCompatActivity implements DataChangeListener {
 
+    //Fields
     private Task taskToShow;
     private String taskID;
     private TextView taskName;
@@ -56,10 +59,29 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         {
             setContentView(R.layout.activity_task_info_child_no_bonus);
         }
-        initializeClassVariables();
+        initializationFromXML();
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
+    private void initializationFromXML(){
+        taskName = (TextView)findViewById(R.id.TaskNameShow);
+        description = (TextView)findViewById(R.id.DescriptionShow);
+        doneTask = (Button)findViewById(R.id.TaskDone);
+        newImage = (ImageButton) findViewById(R.id.AddPic);
+        ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
+        comment = (EditText) findViewById(R.id.Comment);
+        commentButton = (Button) findViewById(R.id.CommentUpdate);
+        if(getRouteType().equals("With bonuses")){
+            bonusScore = (TextView)findViewById(R.id.BonusPointShow);
+        }
+    }
+
+    /**
+     * The function is responsible for retrieving information from the Intent
+     */
     private void getExtraFromIntent() {
         Bundle extras = getIntent().getExtras();
         if(extras!=null)
@@ -76,20 +98,9 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         }
     }
 
-    private void initializeClassVariables(){
-        taskName = (TextView)findViewById(R.id.TaskNameShow);
-        description = (TextView)findViewById(R.id.DescriptionShow);
-        doneTask = (Button)findViewById(R.id.TaskDone);
-        newImage = (ImageButton) findViewById(R.id.AddPic);
-        ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
-        comment = (EditText) findViewById(R.id.Comment);
-        commentButton = (Button) findViewById(R.id.CommentUpdate);
-        if(getRouteType().equals("With bonuses")){
-            bonusScore = (TextView)findViewById(R.id.BonusPointShow);
-        }
-
-    }
-
+    /**
+     * The function is responsible for displaying the name, description and bonus if necessary in the activity
+     */
     private void setTextInfo() {
         taskName.setText(taskToShow.getNameTask());
         description.setText(taskToShow.getDescription());
@@ -99,6 +110,9 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
 
     }
 
+    /**
+     * The function is responsible for updating the child's comment
+     */
     private void updateCommentButton() {
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,11 +120,14 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
                 String commentToUpdate = comment.getText().toString();
                 setTaskComment(taskID, commentToUpdate);
                 Toast.makeText(getApplicationContext(),"Update!", Toast.LENGTH_SHORT).show();
-//                comment.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
             }
         });
     }
 
+    /**
+     * The function is responsible for updating the status of the task and transferring it back
+     * to the child's task screen
+     */
     private void setDoneButton() {
         doneTask.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -121,6 +138,10 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
             }
         });
     }
+
+    /**
+     * The function is responsible for saving the image
+     */
     private void setNewImagwButton(){
         newImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +172,9 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         });
     }
 
+    /**
+     * The function is responsible for saving the image
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -167,14 +191,19 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
         }
     }
 
+    /**
+     * The function is responsible for calling the function that is responsible for
+     * updating the image in the database
+     */
     private void updateImageButton(){
         ImageButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadImage( taskID, uri_image , bitmap_image,"taskImage");
+                uploadImage(taskID, uri_image , bitmap_image,"taskImage");
             }
         });
     }
+
     @Override
     public void notifyOnChange() {
         getExtraFromIntent();

@@ -11,6 +11,7 @@ import static com.example.tiptop.Database.Database2.getPoints;
 
 public class PointsChildActivity extends AppCompatActivity implements DataChangeListener {
 
+    //Fields
     private TextView numOfPoints;
 
     @Override

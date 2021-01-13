@@ -39,6 +39,7 @@ import static com.example.tiptop.Database.Database2.uploadImage;
 
 public class NewTaskActivity extends AppCompatActivity implements DataChangeListener {
 
+    //Fields
     private Task toAddTask;
     private EditText NameOfTask;
     private EditText BonusPoint;
@@ -51,12 +52,15 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
     private String keyKid;
     private String key;
     private EditText description;
+
+    //Variables for the image
     private ImageButton newImage;
     private Bitmap bitmap_image =null;
     private Uri uri_image = null;
     private static final int CAMERA_PHOTO = 1;
     private static final int GALLERY_PHOTO = 2;
 
+    //Variables for the list
     private ArrayList<String> allKeys;
     private ArrayList<String> allKids;
     private ArrayAdapter adapter;
@@ -74,13 +78,35 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         notifyOnChange();
     }
 
+    /**
+     * The function is responsible for creating the list, Listening to the list clicks and updating the list
+     */
     private void initializationListOfChildren() {
         createList();
         crateClickEvent();
         updateListOfChildFromDB(allKeys,allKids, adapter);
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file.
+     */
+    private void initializationFromXML() {
+        NameOfTask = (EditText) findViewById(R.id.NameOfTask);
+        if(getRouteType().equals("With bonuses")) {
+            BonusPoint = (EditText) findViewById(R.id.BonusPoint);
+        }
+        StartDateTV = (EditText) findViewById(R.id.StartDate);
+        EndDateTV = (EditText)findViewById(R.id.EndDate);
+        SubmitButton = (Button)findViewById(R.id.SubmitButton);
+        ListOfChildren = (ListView)findViewById(R.id.ListOfChildren);
+        description = (EditText) findViewById(R.id.Description);
+        newImage = (ImageButton) findViewById(R.id.AddPic);
+    }
 
+    /**
+     * A function responsible for listening to clicks on the child list. When we detect a click,
+     * the selection in the keyKid field will be saved.
+     */
     private void crateClickEvent() {
         ListOfChildren.setOnItemClickListener((adapterView,view,i,l) -> {
             if(allKids.get(i).equals("Not Associated"))
@@ -95,6 +121,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         });
     }
 
+    /**
+     * A function responsible for creating the child list that will be used to select the assignment of the task
+     */
     private void createList() {
         allKeys = new ArrayList<>();
         allKids =  new ArrayList<>();
@@ -103,6 +132,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         ListOfChildren.setAdapter(adapter);
     }
 
+    /**
+     * A function responsible for creating a new task object and filling in its fields according to what the user has entered
+     */
     private void initializationTask() {
         toAddTask = new Task();
         key = getKeyForNewTask();
@@ -122,6 +154,11 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         }
     }
 
+    /**
+     * A function responsible for calling a function that creates an object of a new task,
+     * notifying the user that the task has been created and transferring the user back to the
+     * activity in which he sees all the tasks.
+     */
     private void setFinishButton() {
         SubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +172,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         });
     }
 
+    /**
+     * The function is responsible for opening the start date dialog
+     */
     private void setSelectStartDateButton(){
         StartDateTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +204,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         });
     }
 
+    /**
+     * The function is responsible for opening the end date dialog
+     */
     private void setSelectEndDateButton() {
         EndDateTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +236,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         });
     }
 
+    /**
+     * The function is responsible for saving the image
+     */
     private void setNewImagwButton(){
         newImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +269,9 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         });
     }
 
+    /**
+     * The function is responsible for saving the image
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -239,20 +288,6 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         }
     }
 
-
-    private void initializationFromXML() {
-        NameOfTask = (EditText) findViewById(R.id.NameOfTask);
-        if(getRouteType().equals("With bonuses")) {
-            BonusPoint = (EditText) findViewById(R.id.BonusPoint);
-        }
-        StartDateTV = (EditText) findViewById(R.id.StartDate);
-        EndDateTV = (EditText)findViewById(R.id.EndDate);
-        SubmitButton = (Button)findViewById(R.id.SubmitButton);
-        ListOfChildren = (ListView)findViewById(R.id.ListOfChildren);
-        description = (EditText) findViewById(R.id.Description);
-        newImage = (ImageButton) findViewById(R.id.AddPic);
-    }
-
     @Override
     public void notifyOnChange() {
         setSelectStartDateButton();
@@ -261,7 +296,6 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
         setNewImagwButton();
         setFinishButton();
     }
-
 
     @Override
     protected void onResume() {

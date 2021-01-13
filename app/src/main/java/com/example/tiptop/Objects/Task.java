@@ -5,17 +5,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class Task implements Serializable {
 
-    //Default constructor
-    public Task() {
-    }
-
-    public enum STATUS {
-        NotAssociated,
-        Associated,
-        WaitingForApproval,
-        Confirmed
-    }
-
+    //Fields
     private String nameTask;
     private Long bonusScore;
     private String belongsToUID; //Here we enter the UID from the function firebase.auth().Currentuser.uid
@@ -26,6 +16,17 @@ public class Task implements Serializable {
     private String comment;
     private String description;
     private StorageReference image;
+
+    //Default constructor
+    public Task() {
+    }
+
+    public enum STATUS {
+        NotAssociated,
+        Associated,
+        WaitingForApproval,
+        Confirmed
+    }
 
     //Getter
     public String getNameTask() {

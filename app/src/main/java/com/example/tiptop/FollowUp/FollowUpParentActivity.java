@@ -21,6 +21,7 @@ import static com.example.tiptop.Database.Database2.updateExpandableTaskListFrom
 
 public class FollowUpParentActivity extends AppCompatActivity implements DataChangeListener {
 
+    //Fields
     private ExpandableListView AssociatedTasks;
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;
@@ -37,10 +38,17 @@ public class FollowUpParentActivity extends AppCompatActivity implements DataCha
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And class variables
+     */
     private void initializeClassVariables() {
         AssociatedTasks = (ExpandableListView) findViewById(R.id.followExpandableList);
     }
 
+    /**
+     *The function is responsible for creating the expanding list in which the names of all the
+     * children and within each child's tab there is a list of all his tasks in status WaitingForApproval.
+     */
     private void createExpandableListOfTask() {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child

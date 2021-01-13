@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
+    //Fields
     private String name;
     private String email;
     private String password;
@@ -12,65 +13,71 @@ public class User implements Serializable {
     private String currFamilyId;
     private long points;
 
+    //Default constructor
     public User() {
     }
 
+    //Getter
     public long getPoints() {
         return points;
-    }
-
-    public void setPoints(long points) {
-        this.points = points;
     }
 
     public String getCurrFamilyId() {
         return currFamilyId;
     }
 
-    public void setCurrFamilyId(String currFamilyId) {
-        this.currFamilyId = currFamilyId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getBirthday() {
         return birthday;
     }
 
+
+    //Setter
     public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
+    public void setPoints(long points) {
+        this.points = points;
+    }
+
+    public void setCurrFamilyId(String currFamilyId) {
+        this.currFamilyId = currFamilyId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    //methods
     @Override
     public String toString() {
         return "User{" +

@@ -27,6 +27,7 @@ import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
 public class PoolTasksParentActivity extends AppCompatActivity implements DataChangeListener {
 
+    //Fields
     private ListView UnassignedTasks;
     private ExpandableListView AssociatedTasks;
     private ArrayList<Task> ListUnassignedTasks;
@@ -43,12 +44,25 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_parent);
-        initializeClassVariables();
+        initializationFromXML();
         createListOfTask();
         createExpandableListOfTask();
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
+    private void initializationFromXML() {
+        UnassignedTasks = (ListView) findViewById(R.id.ListUnassignedTasks);
+        AssociatedTasks = (ExpandableListView) findViewById(R.id.ListAssociatedTasks);
+        addTaskButton = (Button)findViewById(R.id.addTaskButton);
+    }
+
+    /**
+     *The function is responsible for creating the expanding list in which the names of all the
+     * children and within each child's tab there is a list of all his tasks in status Associated
+     */
     private void createExpandableListOfTask() {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child
@@ -63,11 +77,9 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
         AssociatedTasks.setAdapter(childAdapter);
     }
 
-    private void initializeClassVariables() {
-        UnassignedTasks = (ListView) findViewById(R.id.ListUnassignedTasks);
-        AssociatedTasks = (ExpandableListView) findViewById(R.id.ListAssociatedTasks);
-    }
-
+    /**
+     * The function is responsible for creating the list of tasks that have not been assigned to any child, ie in Not associated status
+     */
     private void createListOfTask() {
         ListUnassignedTasks = new ArrayList<>();
         ListUnassignedTaskId = new ArrayList<>();
@@ -82,6 +94,10 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
         UnassignedTasks.setAdapter(adapter);
     }
 
+    /**
+     * The function is responsible for listening to a click on the unassigned task list and if a
+     * click was made to move a screen to a screen where the information of the task appears
+     */
     private void crateClickEvent() {
         UnassignedTasks.setOnItemClickListener((adapterView,view,i,l) -> {
             Intent intent =new Intent(view.getContext(), TaskInfoParentActivity.class);
@@ -93,8 +109,10 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
 
     }
 
+    /**
+     * The function is responsible for move to the activity of creating a new task
+     */
     private void addButtonFunc() {
-        addTaskButton = (Button)findViewById(R.id.addTaskButton);
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

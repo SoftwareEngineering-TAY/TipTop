@@ -17,6 +17,7 @@ import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
 
 public class FollowUpChildActivity extends AppCompatActivity implements DataChangeListener {
 
+    //Fields
     private ListView followList;
     private TaskListAdapter mTaskListAdapter;
     private ArrayList<Task> list;
@@ -31,11 +32,17 @@ public class FollowUpChildActivity extends AppCompatActivity implements DataChan
 
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And class variables
+     */
     private void initializeClassVariables() {
         followList = (ListView) findViewById(R.id.followList);
         Bundle extras = getIntent().getExtras();
     }
 
+    /**
+     * The function creates the child's task's list
+     */
     private void createListOfTask() {
         list = new ArrayList<>();
         listID = new ArrayList<>();
@@ -49,6 +56,10 @@ public class FollowUpChildActivity extends AppCompatActivity implements DataChan
         followList.setAdapter(mTaskListAdapter);
     }
 
+    /**
+     * A function responsible for listening to clicks on the task list. When we detect a click,
+     * The user goes to a screen where there is a detail about the task that has been pressed
+     */
     private void crateClickEvent() {
         followList.setOnItemClickListener((adapterView,view,i,l) -> {
             Intent intent;

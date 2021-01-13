@@ -3,22 +3,22 @@ package com.example.tiptop.Objects;
 import java.io.Serializable;
 
 public class Message implements Serializable {
+
+    //Fields
     public String sender;
-//    public String receiver;
     public String senderUid;
-//    public String receiverUid;
     public String message;
     public long timestamp;
 
+    //Default constructor
     public Message(){
 
     }
 
+    //Parameter constructor
     public Message(String sender, String senderUid, String message, long timestamp) {
         this.sender = sender;
-//        this.receiver = receiver;
         this.senderUid = senderUid;
-//        this.receiverUid = receiverUid;
         this.message = message;
         this.timestamp = timestamp;
     }
