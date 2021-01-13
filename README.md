@@ -1,6 +1,7 @@
 <img width="465"  src="https://user-images.githubusercontent.com/57855070/104464373-84c9e000-55bb-11eb-9a4d-83ee38d396a6.png">
 
 This application was developed as part of the "Software Introduction" course at Ariel University.
+In this [link](https://www.canva.com/design/DAESK04Qy5g/G-Lj3LRWrm2kWTEHb3qHPA/edit) you will see a presentation with more details and videos detailing our app.
 
 ### tools, Databases And programming language:
 ***
