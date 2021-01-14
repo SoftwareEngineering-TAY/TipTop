@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -527,6 +528,26 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
                 }
             }
         }
+    }
+
+    public static void setScreenViewByFamily(Context context, ListView circle_members,TextView family_members){
+        ArrayList<String> membersArray = new ArrayList<>();
+        ArrayAdapter membersAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, membersArray);
+        circle_members.setAdapter(membersAdapter);
+        String key;
+        String value;
+        Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
+        for (DataSnapshot User : UsersInFamily) {
+            key = User.getKey();
+            value = User.getValue(String.class);
+            if (key.equals("Family name")){
+                family_members.setText(value+"'s members");
+            }
+            else if(!key.equals("Route Type")){
+                membersArray.add(value);
+            }
+        }
+        membersAdapter.notifyDataSetChanged();
     }
 
     public static void createSwitchForEveryUser(Context context, LinearLayout parent_layout ,LinearLayout child_layout){
