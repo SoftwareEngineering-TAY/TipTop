@@ -8,10 +8,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +32,7 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.Points.PointsParentActivity;
 import com.example.tiptop.R;
+import com.example.tiptop.Settings.ParentRightsActivity;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -145,8 +150,12 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
         return permission;
     }
 
-    public static String getNameByUid(String UserId){
+    public static String getNameByUid(){
         return dataSnapshot.child("Users").child(userID).child("name").getValue(String.class);
+    }
+
+    public static String getFamilyName(){
+        return dataSnapshot.child("Families").child(currFamilyId).child("Family name").getValue(String.class);
     }
 
     public static String getRouteType() {
@@ -336,7 +345,7 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
     }
 
     public static void sendMessage(String texkMsg) {
-        Message toAdd =new Message(getNameByUid(userID),userID,texkMsg, currentTimeMillis());
+        Message toAdd =new Message(getNameByUid(),userID,texkMsg, currentTimeMillis());
         String key = getKeyForNewMessage();
         reference.child("Chats").child(currFamilyId).child(key).setValue(toAdd);
     }
@@ -520,7 +529,46 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
         }
     }
 
+    public static void createSwitchForEveryUser(Context context, LinearLayout parent_layout ,LinearLayout child_layout){
+        String key;
+        Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
+        for (DataSnapshot User : UsersInFamily) {
+            key = User.getKey();
+            if (!key.equals("Family name")&&!key.equals("Route Type")) {
+                User user = dataSnapshot.child("Users").child(key).getValue(User.class);
 
+                Switch user_switch=new Switch(context);
+                user_switch.setGravity(Gravity.LEFT);
+                user_switch.setText(user.getName());
+
+                if(user.getType().equals("Parent")){
+                    user_switch.setChecked(true);
+                    parent_layout.addView(user_switch);
+                }
+                else if(user.getType().equals("Child")){
+                    user_switch.setChecked(false);
+                    child_layout.addView(user_switch);
+                }
+                DatabaseReference childReference = reference.child("Users").child(key);
+                user_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(user.getType().equals("Child")) {
+                            child_layout.removeView(user_switch);
+                            parent_layout.addView(user_switch);
+                            user.setType("Parent");
+                            childReference.child("type").setValue("Parent");
+                        }
+                        else if(user.getType().equals("Parent")){
+                            parent_layout.removeView(user_switch);
+                            child_layout.addView(user_switch);
+                            user.setType("Child");
+                            childReference.child("type").setValue("Child");
+                        }
+                    }
+                });
+            }
+        }
+    }
 
     public static void logout(){
         mAuth.signOut();
