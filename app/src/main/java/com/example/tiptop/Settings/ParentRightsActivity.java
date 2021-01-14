@@ -30,7 +30,7 @@ public class ParentRightsActivity extends AppCompatActivity implements DataChang
         child_layout = (LinearLayout)findViewById(R.id.childMembers);
         family_name = (TextView)findViewById(R.id.familyName);
 
-        family_name.setText(getFamilyName()+" Circle");
+        family_name.setText(getFamilyName()+" Family");
     }
 
     @Override

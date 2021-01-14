@@ -24,10 +24,10 @@
     <string name="family_name">Family name</string>
     <string name="spinnerTitle">TipTop</string>
     <string name="spinnerChildTitle">TipTop</string>
-    <string name="circle_information">Circle information</string>
-    <string name="circle_s_you_belong_to">circle(s) you belong to</string>
+    <string name="circle_information">family information</string>
+    <string name="circle_s_you_belong_to">family(s) you belong to</string>
     <string name="edit_my_profile">EDIT MY PROFILE</string>
-    <string name="manage_circles">manage circles</string>
+    <string name="manage_circles">manage families</string>
     <string name="name_of_task">Name of task</string>
     <string name="bonus_point">Bonus point</string>
     <string name="start_date">Start date</string>
@@ -37,7 +37,7 @@
     <string name="enter_email_or_username">Enter Email or Username</string>
     <string name="task_assignment">Task assignment:</string>
     <string name="parent_members">Parent members</string>
-    <string name="parents_have_full_control_of_the_aplication_and_can_manage_the_members_of_the_circle">Parents have full control of the aplication and can manage the members of the circle</string>
+    <string name="parents_have_full_control_of_the_aplication_and_can_manage_the_members_of_the_circle">Parents have full control of the aplication and can manage the members of the family</string>
     <string name="child_members">Child members</string>
     <string name="infoParentSpinner">infoParentSpinner</string>
     <string name="titleParentSpinner">titleParentSpinner</string>
