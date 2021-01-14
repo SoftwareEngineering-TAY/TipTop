@@ -105,6 +105,9 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         }
     }
 
+    /**
+     * This function initializes all the fields class Unrelated to XML
+     */
     private void initializeClassVariables() {
         spinnerTitle = getCurrFamilyId();
         //Initialize the 2 lists that will save all the last names and all the keys respectively.
@@ -112,12 +115,20 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         allFamilies = new ArrayList<>();
     }
 
+    /**
+     * @param menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
         return true;
     }
 
+    /**
+     * @param item
+     * @return true if the item selected or false if not.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -254,6 +265,9 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         });
     }
 
+    /**
+     * The function is responsible for saving the image
+     */
     private void setNewImagwButton(){
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,6 +296,9 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         });
     }
 
+    /**
+     * The function is responsible for saving the image
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -316,23 +333,5 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         Database.removeListener(this);
         super.onPause();
     }
-
-//    //need to ask yirat
-//    private void initializationImage() {
-//        String path = "Families/" + getCurrFamilyId();
-//        FirebaseStorage storage = FirebaseStorage.getInstance();
-//        StorageReference mStorageRef = storage.getReference(path);
-//        if (mStorageRef != null)
-//        {
-//
-//        }
-//
-//        else
-//        {
-//            imageButton.setImageResource(R.drawable.new_family);
-//        }
-//
-//    }
-//
 
 }

@@ -24,12 +24,19 @@ public class CurrentCircleActivity extends AppCompatActivity implements DataChan
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And of the class
+     */
     private void initializeClassVariables(){
         family_name = (TextView)findViewById(R.id.familyName);
         circle_information = (ListView)findViewById(R.id.circleInformation);
         family_name.setText(getFamilyName());
     }
 
+    /**
+     * The function produces a list of choices between MembersActivity and ParentRightsActivity and
+     * depending on the click moves the user to the correct activity
+     */
     private void setCirclesList(){
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CurrentCircleActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.CircleInformation));
         circle_information.setAdapter(adapter);

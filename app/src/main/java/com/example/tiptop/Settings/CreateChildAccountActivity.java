@@ -38,6 +38,9 @@ public class CreateChildAccountActivity extends AppCompatActivity implements Dat
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And of the class
+     */
     private void initializeClassVariables(){
         next = (Button)findViewById(R.id.next);
         name = (EditText) findViewById(R.id.name);
@@ -47,6 +50,9 @@ public class CreateChildAccountActivity extends AppCompatActivity implements Dat
         user = new User();
     }
 
+    /**
+     * The function is responsible for opening the birthday date dialog
+     */
     private void setSelectDateButton(){
         birthday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +78,11 @@ public class CreateChildAccountActivity extends AppCompatActivity implements Dat
         });
     }
 
+    /**
+     * The function listens to the click of a continue button and saves all the information entered
+     * about the user within a user object, then saves it in the database and moves the user back to
+     * the home screen.
+     */
     private void setContinueButton(){
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +104,10 @@ public class CreateChildAccountActivity extends AppCompatActivity implements Dat
         });
     }
 
+    /**
+     * The function verifies that a name has been entered and that this field is not empty
+     * @return True if the name not empty and false if the name is empty
+     */
     private boolean validateName(){
         String user_name = name.getText().toString();
         if(user_name.isEmpty()){
@@ -105,6 +120,10 @@ public class CreateChildAccountActivity extends AppCompatActivity implements Dat
         }
     }
 
+    /**
+     * The function verifies that a username has been entered and in good format and that this field is not empty
+     * @return True if the username not empty and false if the username is empty or bad format
+     */
     private boolean validateUsername(){
         String mail = username.getText().toString();
         if(mail.isEmpty()){
@@ -121,6 +140,10 @@ public class CreateChildAccountActivity extends AppCompatActivity implements Dat
         }
     }
 
+    /**
+     * The function verifies that a password has been entered and that this field is not empty
+     * @return True if the password not empty and false if  the password is empty
+     */
     private boolean validatePassword(){
         String pass = password.getText().toString();
         if(pass.isEmpty()){

@@ -95,6 +95,10 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
     }
 
 
+    /**
+     * The function listens to the user's choice regarding the route selected in the application and
+     * saves it in the field of the department
+     */
     private void setRouteTypeSpinner() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateFamilyActivity.this,
                 android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.Route));
@@ -113,6 +117,9 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
         });
     }
 
+    /**
+     * The function is responsible for saving the image
+     */
     private void setNewImagwButton(){
         newImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +150,9 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
         });
     }
 
+    /**
+     * The function is responsible for saving the image
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -159,6 +169,10 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
         }
     }
 
+    /**
+     * The function listens to the FinishButton and if the user press on it,
+     * A new user is created in the database and the user is transferred to the login screen
+     */
     private void setFinishButton(){
         finish.setOnClickListener(new View.OnClickListener() {
             @Override

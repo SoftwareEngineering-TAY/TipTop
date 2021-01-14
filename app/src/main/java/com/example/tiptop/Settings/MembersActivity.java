@@ -26,12 +26,19 @@ public class MembersActivity extends AppCompatActivity implements DataChangeList
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And of the class
+     */
     private void initializeClassVariables(){
         family_members = (TextView)findViewById(R.id.familyMembers);
         circle_members = (ListView)findViewById(R.id.circleMembers);
         create_a_child_account = (Button)findViewById(R.id.inviteNewMember);
     }
 
+    /**
+     * The function listens to the click on the button Create a new child and is responsible for
+     * transferring the user to the correct screen.
+     */
     private void setCreateAChildAccountButton(){
         create_a_child_account.setOnClickListener(new View.OnClickListener() {
             @Override

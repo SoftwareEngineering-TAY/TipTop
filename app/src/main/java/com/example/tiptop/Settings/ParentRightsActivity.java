@@ -25,11 +25,13 @@ public class ParentRightsActivity extends AppCompatActivity implements DataChang
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And of the class
+     */
     private void initializeClassVariables(){
         parent_layout = (LinearLayout)findViewById(R.id.parentMembers);
         child_layout = (LinearLayout)findViewById(R.id.childMembers);
         family_name = (TextView)findViewById(R.id.familyName);
-
         family_name.setText(getFamilyName()+" Family");
     }
 

@@ -35,6 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.enterPassword);
     }
 
+    /**
+     * The function listens for a click on the login button and indicates that such a user exists in the database
+     * And transfer to the relevant screen if the user exists
+     */
     private void setLoginButton(){
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +54,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * The function listens for a click on the SignUp button And transfer to the relevant screen
+     */
     private void setSignUpTextView(){
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override

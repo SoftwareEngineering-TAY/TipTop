@@ -27,6 +27,11 @@ public class PointsParentActivity extends AppCompatActivity implements DataChang
         notifyOnChange();
     }
 
+    /**
+     * This function creates a row in the table that has the child's name and its bonus points.
+     * @param name
+     * @param score
+     */
     public void setChildName(String name, Long score){
 
         TableRow tr = new TableRow(this);

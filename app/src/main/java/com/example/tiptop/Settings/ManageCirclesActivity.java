@@ -24,6 +24,9 @@ public class ManageCirclesActivity extends AppCompatActivity implements DataChan
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And of the class
+     */
     private void initializeClassVariables(){
         circles_list = (ListView)findViewById(R.id.circlesList);
     }

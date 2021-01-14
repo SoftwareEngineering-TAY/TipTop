@@ -29,13 +29,19 @@ public class SettingParentActivity extends AppCompatActivity implements DataChan
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And of the class
+     */
     private void initializeClassVariables(){
-
         manage_circles = (EditText) findViewById(R.id.manageCircles);
         name = (TextView)findViewById(R.id.name);
         email = (TextView)findViewById(R.id.email);
     }
 
+    /**
+     * The function listens to the click on the button  manage circles and is responsible for
+     * transferring the user to the correct screen.
+     */
     private void setManageCirclesButton(){
         manage_circles.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,12 +52,20 @@ public class SettingParentActivity extends AppCompatActivity implements DataChan
         });
     }
 
+    /**
+     * @param menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.setting_menu, menu);
         return true;
     }
 
+    /**
+     * @param item
+     * @return true if the item selected or false if not.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

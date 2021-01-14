@@ -53,6 +53,9 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * The function listens for a click on the login button And transfer to the relevant screen
+     */
     private void setLoginButton(){
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +66,9 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * The function is responsible for opening the start date dialog
+     */
     private void setSelectDateButton(){
         birthday.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +95,11 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * The function listens to the click on the Continue button and when it is pressed it checks
+     * that all the data is correct, then fills in the fields of the new user and moves it to the
+     * next screen in the registration
+     */
     private void setContinueButton(){
         next.setOnClickListener(new View.OnClickListener() {
 
@@ -116,6 +127,10 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * The function verifies that a name has been entered and that this field is not empty
+     * @return True if the name not empty and false if the name is empty
+     */
     private boolean validateName(){
         String user_name = name.getText().toString();
         if(user_name.isEmpty()){
@@ -128,6 +143,10 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The function verifies that a email has been entered and in good format and that this field is not empty
+     * @return True if the email not empty and false if the username is empty or bad format
+     */
     private boolean validateEmail(){
         String mail = email.getText().toString();
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -144,6 +163,10 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The function verifies that a password has been entered and that this field is not empty
+     * @return True if the password not empty and false if  the password is empty
+     */
     private boolean validatePassword(){
         String pass = password.getText().toString();
         if(pass.isEmpty()){
@@ -156,6 +179,10 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The function checks if the password and password confirmation are the same
+     * @return True if they are the same and false otherwise
+     */
     private boolean validateConfirmPassword(){
         String pass = password.getText().toString();
         String cpass = confirm_password.getText().toString();

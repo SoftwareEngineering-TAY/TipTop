@@ -26,16 +26,27 @@ public class SettingChildActivity extends AppCompatActivity implements DataChang
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And of the class
+     */
     private void initializeClassVariables(){
         name = (TextView)findViewById(R.id.name);
     }
 
+    /**
+     * @param menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.setting_menu, menu);
         return true;
     }
 
+    /**
+     * @param item
+     * @return true if the item selected or false if not.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
