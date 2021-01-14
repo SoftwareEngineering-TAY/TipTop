@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiptop.Adapters.ChatAdapter;
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Message;
 import com.example.tiptop.R;
 
 import java.util.ArrayList;
 
-import static com.example.tiptop.Database.Database2.sendMessage;
-import static com.example.tiptop.Database.Database2.updateChatListFromDB;
+import static com.example.tiptop.Database.Database.sendMessage;
+import static com.example.tiptop.Database.Database.updateChatListFromDB;
 
 
 public class ChatActivity extends AppCompatActivity implements DataChangeListener {
@@ -73,12 +73,12 @@ public class ChatActivity extends AppCompatActivity implements DataChangeListene
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

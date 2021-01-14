@@ -9,14 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
-import com.example.tiptop.LogInAndSignUp.HomeActivity;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.R;
 
-import static com.example.tiptop.Database.Database2.getPermission;
-import static com.example.tiptop.Database.Database2.logout;
-import static com.example.tiptop.Database.Database2.setScreenViewByUser;
+import static com.example.tiptop.Database.Database.logout;
+import static com.example.tiptop.Database.Database.setScreenViewByUser;
 
 public class SettingChildActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -65,12 +63,12 @@ public class SettingChildActivity extends AppCompatActivity implements DataChang
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

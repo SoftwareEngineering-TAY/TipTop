@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Chat.ChatActivity;
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.FollowUp.FollowUpChildActivity;
 import com.example.tiptop.FollowUp.FollowUpParentActivity;
 import com.example.tiptop.History.HistoryChildActivity;
@@ -36,15 +36,15 @@ import com.example.tiptop.StatisticsActivity;
 
 import java.util.ArrayList;
 
-import static com.example.tiptop.Database.Database2.getCurrFamilyId;
-import static com.example.tiptop.Database.Database2.getPermission;
-import static com.example.tiptop.Database.Database2.getRouteType;
-import static com.example.tiptop.Database.Database2.initializationCurrFamilyIdAndPermission;
-import static com.example.tiptop.Database.Database2.initializationRouteType;
-import static com.example.tiptop.Database.Database2.setCurrFamilyId;
-import static com.example.tiptop.Database.Database2.updateListOfFamilyFromDB;
-import static com.example.tiptop.Database.Database2.updatePicture;
-import static com.example.tiptop.Database.Database2.uploadImage;
+import static com.example.tiptop.Database.Database.getCurrFamilyId;
+import static com.example.tiptop.Database.Database.getPermission;
+import static com.example.tiptop.Database.Database.getRouteType;
+import static com.example.tiptop.Database.Database.initializationCurrFamilyIdAndPermission;
+import static com.example.tiptop.Database.Database.initializationRouteType;
+import static com.example.tiptop.Database.Database.setCurrFamilyId;
+import static com.example.tiptop.Database.Database.updateListOfFamilyFromDB;
+import static com.example.tiptop.Database.Database.updatePicture;
+import static com.example.tiptop.Database.Database.uploadImage;
 
 public class HomeActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -335,12 +335,12 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 

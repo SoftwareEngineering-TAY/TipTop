@@ -10,25 +10,21 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-import com.google.android.material.textfield.TextInputLayout;
 
-import static com.example.tiptop.Database.Database2.getRouteType;
-import static com.example.tiptop.Database.Database2.setStatus;
-import static com.example.tiptop.Database.Database2.setTaskComment;
-import static com.example.tiptop.Database.Database2.setTaskDesctiption;
-import static com.example.tiptop.Database.Database2.updatePicture;
-import static com.example.tiptop.Database.Database2.uploadImage;
+import static com.example.tiptop.Database.Database.getRouteType;
+import static com.example.tiptop.Database.Database.setStatus;
+import static com.example.tiptop.Database.Database.setTaskComment;
+import static com.example.tiptop.Database.Database.updatePicture;
+import static com.example.tiptop.Database.Database.uploadImage;
 
 public class TaskInfoChildActivity  extends AppCompatActivity implements DataChangeListener {
 
@@ -218,12 +214,12 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

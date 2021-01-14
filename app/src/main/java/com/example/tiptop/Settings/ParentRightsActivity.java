@@ -6,10 +6,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.R;
-import static com.example.tiptop.Database.Database2.createSwitchForEveryUser;
-import static com.example.tiptop.Database.Database2.getFamilyName;
+import static com.example.tiptop.Database.Database.createSwitchForEveryUser;
+import static com.example.tiptop.Database.Database.getFamilyName;
 
 public class ParentRightsActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -41,12 +41,12 @@ public class ParentRightsActivity extends AppCompatActivity implements DataChang
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

@@ -23,19 +23,17 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import static com.example.tiptop.Database.Database2.addTaskToDB;
-import static com.example.tiptop.Database.Database2.getKeyForNewTask;
-import static com.example.tiptop.Database.Database2.getRouteType;
-import static com.example.tiptop.Database.Database2.setTaskDesctiption;
-import static com.example.tiptop.Database.Database2.updateListOfChildFromDB;
-import static com.example.tiptop.Database.Database2.uploadImage;
+import static com.example.tiptop.Database.Database.addTaskToDB;
+import static com.example.tiptop.Database.Database.getKeyForNewTask;
+import static com.example.tiptop.Database.Database.getRouteType;
+import static com.example.tiptop.Database.Database.updateListOfChildFromDB;
+import static com.example.tiptop.Database.Database.uploadImage;
 
 public class NewTaskActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -300,12 +298,12 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

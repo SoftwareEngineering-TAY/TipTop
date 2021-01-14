@@ -1,7 +1,6 @@
 package com.example.tiptop.History;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 
-import static com.example.tiptop.Database.Database2.getRouteType;
+import static com.example.tiptop.Database.Database.getRouteType;
 
 public class TaskInfoHistoryActivity extends AppCompatActivity {
 

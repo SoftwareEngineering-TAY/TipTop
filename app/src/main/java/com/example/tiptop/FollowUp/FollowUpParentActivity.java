@@ -7,17 +7,16 @@ import android.widget.ExpandableListView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tiptop.Adapters.TaskListAdapter;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.example.tiptop.Database.Database2.getRouteType;
-import static com.example.tiptop.Database.Database2.updateExpandableTaskListFromDB;
+import static com.example.tiptop.Database.Database.getRouteType;
+import static com.example.tiptop.Database.Database.updateExpandableTaskListFromDB;
 
 public class FollowUpParentActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -72,12 +71,12 @@ public class FollowUpParentActivity extends AppCompatActivity implements DataCha
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

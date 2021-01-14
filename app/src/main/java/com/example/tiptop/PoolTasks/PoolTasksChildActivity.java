@@ -6,13 +6,13 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Adapters.TaskListAdapter;
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 
-import static com.example.tiptop.Database.Database2.getRouteType;
-import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
+import static com.example.tiptop.Database.Database.getRouteType;
+import static com.example.tiptop.Database.Database.updateTaskListFromDB;
 
 public class PoolTasksChildActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -77,12 +77,12 @@ public class PoolTasksChildActivity extends AppCompatActivity implements DataCha
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }
