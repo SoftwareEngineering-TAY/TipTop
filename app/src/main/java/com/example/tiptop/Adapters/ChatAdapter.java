@@ -20,7 +20,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_OTHER = 2;
     private List<Message> messages;
 
-    //default constructor
+    /**
+     * default constructor
+     */
     public ChatAdapter(List<Message> mChats) {
         this.messages = mChats;
     }
@@ -53,7 +55,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    //set data to user massage view
+    /**
+     * set data to user massage view
+     */
     private void configureMyChatViewHolder(final MyChatViewHolder myChatViewHolder, int position) {
         Message msg = messages.get(position);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sfd = new SimpleDateFormat("hh:mm a");
@@ -63,7 +67,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         myChatViewHolder.txtUserAlphabet.setText(msg.sender.substring(0,2));
     }
 
-    //set data to other's massage views
+    /**
+     * set data to other's massage views
+     */
     private void configureOtherChatViewHolder(final OtherChatViewHolder otherChatViewHolder, int position) {
         Message message = messages.get(position);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sfd = new SimpleDateFormat("hh:mm a");
@@ -73,13 +79,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         otherChatViewHolder.txtUserAlphabet.setText(message.sender.substring(0,2));
     }
 
-    //num of massages
+    /**
+     * num of massages
+     */
     @Override
     public int getItemCount() {
         return messages.size();
     }
 
-    //how send the massage
+    /**
+     * how send the massage
+     */
     @Override
     public int getItemViewType(int position) {
         if (messages.get(position).senderUid.equals(getUserID())) {
@@ -89,13 +99,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    //class for user messages with view holder
+    /**
+     * class for user messages with view holder
+     */
     private static class MyChatViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtChatMessage;
         private final TextView txtUserAlphabet;
         private final TextView senderMsgTime;
 
-        //set items references of massages
+        /**
+         * set items references of massages
+         */
         public MyChatViewHolder(View itemView) {
             super(itemView);
             txtChatMessage = (TextView) itemView.findViewById(R.id.text_view_chat_message);
@@ -104,13 +118,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    //class for other's messages with view holder
+    /**
+     * class for other's messages with view holder
+     */
     private static class OtherChatViewHolder extends RecyclerView.ViewHolder {
         private final TextView txtChatMessage;
         private final TextView txtUserAlphabet;
         private final TextView receiverMsgTime;
 
-        //set items references of massages
+        /**
+         * set items references of massages
+         */
         public OtherChatViewHolder(View itemView) {
             super(itemView);
             txtChatMessage = (TextView) itemView.findViewById(R.id.text_view_chat_message);

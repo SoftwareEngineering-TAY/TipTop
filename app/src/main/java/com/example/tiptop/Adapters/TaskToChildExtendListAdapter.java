@@ -36,6 +36,10 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         this.dest = dest;
     }
 
+    /**
+     * geters for the extendable list
+     * @return
+     */
     @Override
     public int getGroupCount() {
         return ListChildForTask.size();
@@ -56,10 +60,6 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         return ListTaskGroups.get(ListChildForTask.get(groupPosition)).get(childPosition);
     }
 
-    public String getTaskID(int groupPosition, int childPosition) {
-        return ListTaskID.get(ListChildForTask.get(groupPosition)).get(childPosition);
-    }
-
     @Override
     public long getGroupId(int groupPosition) {
         return 0;
@@ -75,6 +75,13 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    public String getTaskID(int groupPosition, int childPosition) {
+        return ListTaskID.get(ListChildForTask.get(groupPosition)).get(childPosition);
+    }
+
+    /**
+     * the view of the group items of the list
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_expandable_list_item_1,parent,false);
@@ -86,6 +93,9 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    /**
+     * the view of the child items of etch group
+     */
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -145,7 +155,9 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
 
         }
 
-
+        /**
+         * click functionality
+         */
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

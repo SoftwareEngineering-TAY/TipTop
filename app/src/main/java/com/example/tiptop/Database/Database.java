@@ -574,30 +574,30 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         }
     }
 
-//    public static void login(String mail, String pass, View v , Context context){
-//        mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
-//                if(task.isSuccessful()) {
-//                    Intent go_home_screen = new Intent(v.getContext(), HomeActivity.class);
-//                    startActivity(go_home_screen);
-//                }
-//                else {
-//                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
-//                    dlgAlert.setCancelable(true);
-//                    dlgAlert.setMessage("Wrong password or email");
-//                    dlgAlert.setTitle("Error Message");
-//                    dlgAlert.setPositiveButton("OK", null);
-//                    dlgAlert.setCancelable(true);
-//                    dlgAlert.create().show();
-//                    dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog,int which) {
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//    }
+    public static void login(String mail, String pass, View v , Context context){
+        mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    Intent go_home_screen = new Intent(v.getContext(), HomeActivity.class);
+                    context.startActivity(go_home_screen);
+                }
+                else {
+                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
+                    dlgAlert.setCancelable(true);
+                    dlgAlert.setMessage("Wrong password or email");
+                    dlgAlert.setTitle("Error Message");
+                    dlgAlert.setPositiveButton("OK", null);
+                    dlgAlert.setCancelable(true);
+                    dlgAlert.create().show();
+                    dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int which) {
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     public static void logout(){
         mAuth.signOut();

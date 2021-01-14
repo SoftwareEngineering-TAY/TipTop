@@ -21,7 +21,9 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
     private final int mLayoutResourceId;
     private final ArrayList<Task> mData;
 
-    //default constructor
+    /**
+     * default constructor
+     */
     public TaskListAdapter(Context context, int resource, ArrayList<Task> data) {
         super(context, resource, data);
         this.mContext = context;
@@ -39,23 +41,31 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row;
-        //inflate the layout for a single row
+        /**
+         * inflate the layout for a single row
+         */
         LayoutInflater inflater = LayoutInflater.from(mContext);
         row = inflater.inflate(mLayoutResourceId, parent, false);
 
-        //get the data from the data array
+        /**
+         * get the data from the data array
+         */
         Task task = mData.get(position);
 
         switch (mLayoutResourceId) {
 
             case R.layout.row_task_with_bonus:
-                //get a reference to the different view elements we wish to update
+                /**
+                 * get a reference to the different view elements we wish to update
+                 */
                 TextView nameView = (TextView) row.findViewById(R.id.TaskNameRow);
                 TextView bonusView = (TextView) row.findViewById(R.id.BonusPointRow);
                 TextView statusView = (TextView) row.findViewById(R.id.StatusTaskRow);
                 TextView timeView = (TextView) row.findViewById(R.id.TimeLeftRow);
 
-                //setting the view to reflect the data we need to display
+                /**
+                 * setting the view to reflect the data we need to display
+                 */
                 nameView.setText(task.getNameTask());
                 bonusView.setText("Bonus: " + task.getBonusScore());
                 statusView.setText("Status: " + task.getStatus().toString());
@@ -67,12 +77,16 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
                 break;
 
             case R.layout.row_task_without_bonus:
-                //get a reference to the different view elements we wish to update
+                /**
+                 * get a reference to the different view elements we wish to update
+                 */
                 TextView nameViewWithoutBonus = (TextView) row.findViewById(R.id.TaskNameRow);
                 TextView statusViewWithoutBonus = (TextView) row.findViewById(R.id.StatusTaskRow);
                 TextView timeViewWithoutBonus = (TextView) row.findViewById(R.id.TimeLeftRow);
 
-                //setting the view to reflect the data we need to display
+                /**
+                 * setting the view to reflect the data we need to display
+                 */
                 nameViewWithoutBonus.setText(task.getNameTask());
                 statusViewWithoutBonus.setText("Status: " + task.getStatus().toString());
                 if (task.getEndDate() != null) {
@@ -82,7 +96,9 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
                 break;
 
             case R.layout.row_task_history:
-                //get a reference to the different view elements we wish to update
+                /**
+                 * get a reference to the different view elements we wish to update
+                 */
                 TextView taskName = (TextView) row.findViewById(R.id.taskName);
                 TextView ApprovalDate = (TextView) row.findViewById(R.id.taskApproval);
 
@@ -91,7 +107,9 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
                 break;
         }
-        //returning the row view (because this is called getView after all)
+        /**
+         * returning the row view (because this is called getView after all)
+         */
         return row;
     }
 }

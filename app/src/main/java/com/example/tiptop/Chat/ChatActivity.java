@@ -33,6 +33,9 @@ public class ChatActivity extends AppCompatActivity implements DataChangeListene
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
     private void initializeClassVariables() {
         messages = new ArrayList<>();
         mAdapter = new ChatAdapter(messages);
@@ -51,6 +54,9 @@ public class ChatActivity extends AppCompatActivity implements DataChangeListene
         updateChatListFromDB(messages, mAdapter);
     }
 
+    /**
+     * click on btn functionality
+     */
     private void createClickEvent() {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
