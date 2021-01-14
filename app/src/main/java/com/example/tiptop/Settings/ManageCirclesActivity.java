@@ -6,12 +6,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 
 import static com.example.tiptop.Database.Database2.updateListOfFamilyFromDB;
 
-public class ManageCirclesActivity extends AppCompatActivity {
+public class ManageCirclesActivity extends AppCompatActivity implements DataChangeListener {
 
     private ListView circles_list;
 
@@ -20,7 +22,7 @@ public class ManageCirclesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_circles);
         initializeClassVariables();
-        setCirclesList();
+        notifyOnChange();
     }
 
     private void initializeClassVariables(){
@@ -37,5 +39,22 @@ public class ManageCirclesActivity extends AppCompatActivity {
             Intent go_to_current_circle = new Intent(ManageCirclesActivity.this,CurrentCircleActivity.class);
             startActivity(go_to_current_circle);
         });
+    }
+
+    @Override
+    public void notifyOnChange() {
+        setCirclesList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }

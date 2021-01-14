@@ -7,10 +7,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.R;
 import static com.example.tiptop.Database.Database2.setScreenViewByFamily;
 
-public class MembersActivity extends AppCompatActivity {
+public class MembersActivity extends AppCompatActivity implements DataChangeListener {
 
     private TextView family_members;
     private ListView circle_members;
@@ -21,8 +23,7 @@ public class MembersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_members);
         initializeClassVariables();
-        setScreenViewByFamily(this, circle_members, family_members);
-        setCreateAChildAccountButton();
+        notifyOnChange();
     }
 
     private void initializeClassVariables(){
@@ -39,5 +40,23 @@ public class MembersActivity extends AppCompatActivity {
                 startActivity(go_to_child_account);
             }
         });
+    }
+
+    @Override
+    public void notifyOnChange() {
+        setScreenViewByFamily(this, circle_members, family_members);
+        setCreateAChildAccountButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }

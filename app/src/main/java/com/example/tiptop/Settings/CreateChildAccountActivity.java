@@ -9,6 +9,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.LogInAndSignUp.HomeActivity;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.R;
@@ -18,9 +20,7 @@ import static com.example.tiptop.Database.Database2.getCurrFamilyId;
 import static com.example.tiptop.Database.Database2.getFamilyName;
 import static com.example.tiptop.Database.Database2.getRouteType;
 
-public class CreateChildAccountActivity extends AppCompatActivity {
-
-    private static final String TAG = "CreateChildAccountActivity";
+public class CreateChildAccountActivity extends AppCompatActivity implements DataChangeListener {
 
     private Button next;
     private EditText birthday;
@@ -35,8 +35,7 @@ public class CreateChildAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_child_account);
         initializeClassVariables();
-        setSelectDateButton();
-        setContinueButton();
+        notifyOnChange();
     }
 
     private void initializeClassVariables(){
@@ -132,5 +131,23 @@ public class CreateChildAccountActivity extends AppCompatActivity {
             password.setError(null);
             return true;
         }
+    }
+
+    @Override
+    public void notifyOnChange() {
+        setSelectDateButton();
+        setContinueButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }

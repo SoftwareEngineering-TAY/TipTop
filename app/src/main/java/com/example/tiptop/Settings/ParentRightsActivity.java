@@ -5,11 +5,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.R;
 import static com.example.tiptop.Database.Database2.createSwitchForEveryUser;
 import static com.example.tiptop.Database.Database2.getFamilyName;
 
-public class ParentRightsActivity extends AppCompatActivity {
+public class ParentRightsActivity extends AppCompatActivity implements DataChangeListener {
 
     private TextView family_name;
     private LinearLayout parent_layout;
@@ -20,7 +22,7 @@ public class ParentRightsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent_rights);
         initializeClassVariables();
-        createSwitchForEveryUser(ParentRightsActivity.this, parent_layout, child_layout);
+        notifyOnChange();
     }
 
     private void initializeClassVariables(){
@@ -29,5 +31,22 @@ public class ParentRightsActivity extends AppCompatActivity {
         family_name = (TextView)findViewById(R.id.familyName);
 
         family_name.setText(getFamilyName()+" Circle");
+    }
+
+    @Override
+    public void notifyOnChange() {
+        createSwitchForEveryUser(ParentRightsActivity.this, parent_layout, child_layout);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }

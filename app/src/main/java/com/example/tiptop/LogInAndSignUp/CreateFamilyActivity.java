@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database2;
 import com.example.tiptop.Objects.User;
@@ -23,8 +22,6 @@ import com.example.tiptop.R;
 import static com.example.tiptop.Database.Database2.createUserInFireBase;
 
 public class CreateFamilyActivity extends AppCompatActivity implements DataChangeListener {
-
-    private static final String TAG = "NewFamilyIDActivity";
 
     private com.google.android.material.textfield.TextInputLayout familyName;
     private ImageButton newImage;

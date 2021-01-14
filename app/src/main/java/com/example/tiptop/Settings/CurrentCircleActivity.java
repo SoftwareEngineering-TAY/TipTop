@@ -6,10 +6,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.tiptop.Database.DataChangeListener;
+import com.example.tiptop.Database.Database2;
 import com.example.tiptop.R;
 import static com.example.tiptop.Database.Database2.getFamilyName;
 
-public class CurrentCircleActivity extends AppCompatActivity {
+public class CurrentCircleActivity extends AppCompatActivity implements DataChangeListener {
 
     private TextView family_name;
     private ListView circle_information;
@@ -19,7 +21,7 @@ public class CurrentCircleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_circle);
         initializeClassVariables();
-        setCirclesList();
+        notifyOnChange();
     }
 
     private void initializeClassVariables(){
@@ -41,6 +43,23 @@ public class CurrentCircleActivity extends AppCompatActivity {
                 startActivity(go_to_parent_rights);
             }
         });
+    }
+
+    @Override
+    public void notifyOnChange() {
+        setCirclesList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database2.addListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        Database2.removeListener(this);
+        super.onPause();
     }
 }
 
