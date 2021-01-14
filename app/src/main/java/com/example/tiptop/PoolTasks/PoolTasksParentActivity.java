@@ -13,17 +13,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Adapters.TaskListAdapter;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.example.tiptop.Database.Database2.getCurrFamilyId;
-import static com.example.tiptop.Database.Database2.getRouteType;
-import static com.example.tiptop.Database.Database2.setCurrFamilyId;
-import static com.example.tiptop.Database.Database2.updateExpandableTaskListFromDB;
-import static com.example.tiptop.Database.Database2.updateTaskListFromDB;
+import static com.example.tiptop.Database.Database.getCurrFamilyId;
+import static com.example.tiptop.Database.Database.getRouteType;
+import static com.example.tiptop.Database.Database.setCurrFamilyId;
+import static com.example.tiptop.Database.Database.updateExpandableTaskListFromDB;
+import static com.example.tiptop.Database.Database.updateTaskListFromDB;
 
 public class PoolTasksParentActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -134,13 +134,13 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
         setCurrFamilyId(getCurrFamilyId());
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

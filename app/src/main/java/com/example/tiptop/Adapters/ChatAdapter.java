@@ -1,6 +1,5 @@
 package com.example.tiptop.Adapters;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static com.example.tiptop.Database.Database2.getUserID;
+import static com.example.tiptop.Database.Database.getUserID;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

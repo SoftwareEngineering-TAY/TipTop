@@ -7,11 +7,11 @@ import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 
-import static com.example.tiptop.Database.Database2.updateListOfFamilyFromDB;
+import static com.example.tiptop.Database.Database.updateListOfFamilyFromDB;
 
 public class ManageCirclesActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -49,12 +49,12 @@ public class ManageCirclesActivity extends AppCompatActivity implements DataChan
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

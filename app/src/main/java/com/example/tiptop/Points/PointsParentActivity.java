@@ -10,9 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.R;
-import static com.example.tiptop.Database.Database2.setNamesAndScores;
+import static com.example.tiptop.Database.Database.setNamesAndScores;
 
 public class PointsParentActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -64,12 +64,12 @@ public class PointsParentActivity extends AppCompatActivity implements DataChang
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

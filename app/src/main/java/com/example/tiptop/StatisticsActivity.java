@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
@@ -21,8 +21,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
-import static com.example.tiptop.Database.Database2.getPermission;
-import static com.example.tiptop.Database.Database2.initializeArraysFromDB;
+import static com.example.tiptop.Database.Database.getPermission;
+import static com.example.tiptop.Database.Database.initializeArraysFromDB;
 
 public class StatisticsActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -94,12 +94,12 @@ public class StatisticsActivity extends AppCompatActivity implements DataChangeL
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.tiptop.FollowUp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,15 +9,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tiptop.Database.DataChangeListener;
-import com.example.tiptop.Database.Database2;
+import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 
-import static com.example.tiptop.Database.Database2.addPointsToChild;
-import static com.example.tiptop.Database.Database2.getRouteType;
-import static com.example.tiptop.Database.Database2.setConfirmedDate;
-import static com.example.tiptop.Database.Database2.setStatus;
-import static com.example.tiptop.Database.Database2.updateImageView;
+import static com.example.tiptop.Database.Database.addPointsToChild;
+import static com.example.tiptop.Database.Database.getRouteType;
+import static com.example.tiptop.Database.Database.setConfirmedDate;
+import static com.example.tiptop.Database.Database.setStatus;
+import static com.example.tiptop.Database.Database.updateImageView;
 
 public class ApproveTaskActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -127,12 +126,12 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
     @Override
     protected void onResume() {
         super.onResume();
-        Database2.addListener(this);
+        Database.addListener(this);
     }
 
     @Override
     protected void onPause() {
-        Database2.removeListener(this);
+        Database.removeListener(this);
         super.onPause();
     }
 

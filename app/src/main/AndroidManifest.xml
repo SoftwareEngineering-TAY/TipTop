@@ -11,7 +11,7 @@
         android:theme="@style/Theme.TipTop">
 
         //LogInAndSignUp
-        <activity android:name=".Database.Database2">
+        <activity android:name=".Database.Database">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
