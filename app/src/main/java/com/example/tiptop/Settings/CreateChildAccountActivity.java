@@ -7,24 +7,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.LogInAndSignUp.HomeActivity;
 import com.example.tiptop.Objects.User;
 import com.example.tiptop.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
+import static com.example.tiptop.Database.Database2.createUserInFireBase;
+import static com.example.tiptop.Database.Database2.getCurrFamilyId;
+import static com.example.tiptop.Database.Database2.getFamilyName;
+import static com.example.tiptop.Database.Database2.getRouteType;
 
 public class CreateChildAccountActivity extends AppCompatActivity {
 
@@ -36,62 +28,24 @@ public class CreateChildAccountActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
 
-    private String family_uid;
-    private String family_name;
     private User user;
-    private User current_user;
-
-    private FirebaseDatabase root;
-    private DatabaseReference reference;
-    private FirebaseAuth mAuth;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_child_account);
         initializeClassVariables();
-        setCurrentUser();
         setSelectDateButton();
         setContinueButton();
     }
 
     private void initializeClassVariables(){
-        Bundle extras = getIntent().getExtras();
-        family_uid = (String) extras.get("family_uid");
-        root = FirebaseDatabase.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        reference = root.getReference();
-
-        foundFamilyById();
-
         next = (Button)findViewById(R.id.next);
         name = (EditText) findViewById(R.id.name);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.newPassword);
         birthday = (EditText) findViewById(R.id.birthday);
-
         user = new User();
-        current_user = new User();
-
-    }
-
-    private void setCurrentUser(){
-        String uid = mAuth.getCurrentUser().getUid();
-        reference = root.getReference().child("Users").child(uid);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                current_user = snapshot.getValue(User.class);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     private void setSelectDateButton(){
@@ -105,7 +59,6 @@ public class CreateChildAccountActivity extends AppCompatActivity {
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(CreateChildAccountActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
-
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String zeroMonth = "";
@@ -122,94 +75,21 @@ public class CreateChildAccountActivity extends AppCompatActivity {
 
     private void setContinueButton(){
         next.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
                 if(!validateName() || !validateUsername() || !validatePassword()){
                     return;
                 }
-
-                String user_name = name.getText().toString();
-                String uname = username.getText().toString() + "@mail.com";
-                String pass = password.getText().toString();
-                String birth = birthday.getText().toString();
-                user.setName(user_name);
-                user.setEmail(uname);
-                user.setPassword(pass);
-                user.setBirthday(birth);
+                user.setName(name.getText().toString());
+                user.setEmail(username.getText().toString() + "@mail.com");
+                user.setPassword(password.getText().toString());
+                user.setBirthday(birthday.getText().toString());
                 user.setType("Child");
 
-                createUserInFireBase();
+                createUserInFireBase(user,getFamilyName(),getRouteType(),null,null,getCurrFamilyId());
 
-                signInCurrentUser();
-
-            }
-        });
-    }
-
-    private void createUserInFireBase(){
-
-        user.setCurrFamilyId(family_uid);
-
-        mAuth.createUserWithEmailAndPassword(user.getEmail(),user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-
-                    String uid = task.getResult().getUser().getUid();
-
-                    reference = root.getReference();
-
-                    reference.child("Families").child(family_uid).child(uid).setValue(user.getName());
-                    reference.child("UserFamilies").child(uid).child(family_uid).setValue(family_name);
-                    reference.child("Users").child(uid).setValue(user);
-
-                    Toast.makeText(getApplicationContext(),"Account created", Toast.LENGTH_SHORT).show();
-
-                }
-                else{
-
-                    Toast.makeText(getApplicationContext(),"Account failed", Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-        });
-    }
-
-    private void signInCurrentUser(){
-
-        mAuth.signOut();
-
-        mAuth.signInWithEmailAndPassword(current_user.getEmail(),current_user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Intent go_to_home = new Intent(CreateChildAccountActivity.this, HomeActivity.class);
-                    startActivity(go_to_home);
-                }
-                else {
-
-                }
-            }
-        });
-    }
-
-    private void foundFamilyById(){
-
-        reference = root.getReference("Families").child(family_uid).child("Family name");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                family_name = snapshot.getValue().toString();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+                Intent go_to_home = new Intent(CreateChildAccountActivity.this, HomeActivity.class);
+                startActivity(go_to_home);
             }
         });
     }
@@ -228,18 +108,14 @@ public class CreateChildAccountActivity extends AppCompatActivity {
 
     private boolean validateUsername(){
         String mail = username.getText().toString();
-
         if(mail.isEmpty()){
             username.setError("Field cannot be empty");
             return false;
         }
-
-
         if(mail.contains(" ")){
             username.setError("Field cannot contains spaces");
             return false;
         }
-
         else{
             username.setError(null);
             return true;

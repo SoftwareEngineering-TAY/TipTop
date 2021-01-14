@@ -442,20 +442,22 @@ public class Database2  extends AppCompatActivity implements ValueEventListener 
         }
     }
 
-    public static void createUserInFireBase(User user_to_add, String familyId,String routeType, Uri uri, Bitmap bitmap) {
-        String key = reference.child("Families").push().getKey();
+    public static void createUserInFireBase(User user_to_add, String familyName,String routeType, Uri uri, Bitmap bitmap , String familyID) {
+        String key;
+        if (familyID.equals(null)) key = reference.child("Families").push().getKey();
+        else key = familyID;
         user_to_add.setCurrFamilyId(key);
         mAuth.createUserWithEmailAndPassword(user_to_add.getEmail(), user_to_add.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    userID = mAuth.getCurrentUser().getUid();
-                    setFamilyName(key, familyId);
+                    if (familyID.equals(null)) userID = task.getResult().getUser().getUid();
+                    setFamilyName(key, familyName);
                     setRouteType(key, routeType);
                     setUserToFamily(key, user_to_add.getName());
-                    setUserToUserFamily(key, familyId);
+                    setUserToUserFamily(key, familyName);
                     setUser(user_to_add);
-                    uploadImage(key, uri, bitmap,"Families");
+                    if (!uri.equals(null)) uploadImage(key, uri, bitmap,"Families");
                 }
             }
         });

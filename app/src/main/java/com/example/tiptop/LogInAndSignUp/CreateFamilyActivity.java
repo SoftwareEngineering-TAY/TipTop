@@ -26,7 +26,7 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
 
     private static final String TAG = "NewFamilyIDActivity";
 
-    private com.google.android.material.textfield.TextInputLayout familyId;
+    private com.google.android.material.textfield.TextInputLayout familyName;
     private ImageButton newImage;
     private Spinner route_type;
     private Button finish;
@@ -52,7 +52,7 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
         newImage = (ImageButton) findViewById(R.id.newImage);
         route_type = (Spinner) findViewById(R.id.route_type_spinner);
         finish = (Button) findViewById(R.id.finish);
-        familyId = findViewById(R.id.familyName);
+        familyName = findViewById(R.id.familyName);
         route_information = (TextView) findViewById(R.id.route_information);
         bitmap_image = null;
         uri_image = null;
@@ -159,7 +159,7 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createUserInFireBase(user_to_add, familyId.getEditText().getText().toString(),route_type_in_firebase, uri_image , bitmap_image);
+                createUserInFireBase(user_to_add, familyName.getEditText().getText().toString(),route_type_in_firebase, uri_image , bitmap_image, null);
                 Intent go_login = new Intent(v.getContext(),LoginActivity.class);
                 startActivity(go_login);
             }
