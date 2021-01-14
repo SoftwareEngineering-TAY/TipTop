@@ -10,7 +10,6 @@ import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
-
 import static com.example.tiptop.Database.Database.getRouteType;
 import static com.example.tiptop.Database.Database.updateTaskListFromDB;
 
@@ -45,12 +44,10 @@ public class PoolTasksChildActivity extends AppCompatActivity implements DataCha
     private void createListOfTask() {
         list = new ArrayList<>();
         listID = new ArrayList<>();
-        if(getRouteType().equals("With bonuses"))
-        {
+        if(getRouteType().equals("With bonuses")) {
             mTaskListAdapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task_with_bonus,list);
         }
-        else
-        {
+        else {
             mTaskListAdapter = new TaskListAdapter(getApplicationContext(),R.layout.row_task_without_bonus,list);
         }
         followList.setAdapter(mTaskListAdapter);

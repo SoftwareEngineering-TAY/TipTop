@@ -2,9 +2,7 @@ package com.example.tiptop.History;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
@@ -18,7 +16,6 @@ import static com.example.tiptop.Database.Database.updateExpandableTaskListFromD
 
 public class HistoryParentActivity extends AppCompatActivity implements DataChangeListener {
 
-    private EditText search;
     private ExpandableListView AssociatedTasks;
     private ArrayList<String> ListChildForTask;
     private HashMap<String,ArrayList<Task>> ListTaskGroups;

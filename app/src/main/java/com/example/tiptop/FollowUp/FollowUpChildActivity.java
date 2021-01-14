@@ -29,7 +29,6 @@ public class FollowUpChildActivity extends AppCompatActivity implements DataChan
         setContentView(R.layout.activity_followup);
         initializeClassVariables();
         notifyOnChange();
-
     }
 
     /**
@@ -37,7 +36,6 @@ public class FollowUpChildActivity extends AppCompatActivity implements DataChan
      */
     private void initializeClassVariables() {
         followList = (ListView) findViewById(R.id.followList);
-        Bundle extras = getIntent().getExtras();
     }
 
     /**

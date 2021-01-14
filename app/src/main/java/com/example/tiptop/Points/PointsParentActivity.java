@@ -8,7 +8,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.R;
@@ -23,10 +22,8 @@ public class PointsParentActivity extends AppCompatActivity implements DataChang
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_points_parent);
-
         pointsTable = (TableLayout) findViewById(R.id.pointsTable);
         titlesRow = (TableRow) findViewById(R.id.titlesRow);
-
         notifyOnChange();
     }
 

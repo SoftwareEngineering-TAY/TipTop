@@ -4,14 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,17 +25,13 @@ public class LoginActivity extends AppCompatActivity {
 
     //Fire base variable
     private FirebaseAuth mAuth;
-    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         initializeClassVariables();
-
         setSignUpTextView();
-
         setLoginButton();
     }
 
@@ -47,13 +40,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String mail = email.getEditText().getText().toString();
-
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 if(!mail.matches(emailPattern)){
                     mail = mail+"@mail.com";
                 }
-
                 String pass = password.getEditText().getText().toString();
+         //       login(mail,pass,v,LoginActivity.this);
+
                 mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -62,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(go_home_screen);
                         }
                         else {
-                            Log.d(TAG,task.getException().toString());
                             AlertDialog.Builder dlgAlert = new AlertDialog.Builder(LoginActivity.this);
                             dlgAlert.setCancelable(true);
                             dlgAlert.setMessage("Wrong password or email");
@@ -92,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initializeClassVariables(){
-
         login = (Button)findViewById(R.id.login);
         sign_up = (TextView) findViewById(R.id.signUp);
         email =  findViewById(R.id.enterEmail);

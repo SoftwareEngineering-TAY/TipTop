@@ -3,18 +3,14 @@ package com.example.tiptop.History;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Adapters.TaskListAdapter;
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-
 import java.util.ArrayList;
-
 import static com.example.tiptop.Database.Database.updateTaskListFromDB;
 
 public class HistoryChildActivity extends AppCompatActivity implements DataChangeListener {

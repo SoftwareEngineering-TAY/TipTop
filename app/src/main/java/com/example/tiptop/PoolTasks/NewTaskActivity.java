@@ -18,15 +18,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import static com.example.tiptop.Database.Database.addTaskToDB;
@@ -107,15 +104,12 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
      */
     private void crateClickEvent() {
         ListOfChildren.setOnItemClickListener((adapterView,view,i,l) -> {
-            if(allKids.get(i).equals("Not Associated"))
-            {
+            if(allKids.get(i).equals("Not Associated")) {
                 keyKid=null;
             }
-            else
-            {
+            else {
                 keyKid = allKeys.get(i-1);
             }
-
         });
     }
 
@@ -181,8 +175,6 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
-
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NewTaskActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
 
@@ -213,7 +205,6 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
-
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(NewTaskActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
@@ -247,13 +238,11 @@ public class NewTaskActivity extends AppCompatActivity implements DataChangeList
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        if (options[item].equals(options[0]))
-                        {
+                        if (options[item].equals(options[0])) {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(intent, CAMERA_PHOTO);
                         }
-                        else if (options[item].equals(options[1]))
-                        {
+                        else if (options[item].equals(options[1])) {
                             Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, GALLERY_PHOTO);
                         }

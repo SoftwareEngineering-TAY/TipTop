@@ -3,10 +3,8 @@ package com.example.tiptop.FollowUp;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ExpandableListView;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
@@ -14,7 +12,6 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import static com.example.tiptop.Database.Database.getRouteType;
 import static com.example.tiptop.Database.Database.updateExpandableTaskListFromDB;
 
@@ -55,8 +52,7 @@ public class FollowUpParentActivity extends AppCompatActivity implements DataCha
         if(getRouteType().equals("With bonuses")) {
             childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task_with_bonus, ApproveTaskActivity.class);
         }
-        else
-        {
+        else {
             childAdapter = new TaskToChildExtendListAdapter(ListChildForTask,ListTaskGroups,ListTaskID,R.layout.row_task_without_bonus, ApproveTaskActivity.class);
         }
         AssociatedTasks.setAdapter(childAdapter);

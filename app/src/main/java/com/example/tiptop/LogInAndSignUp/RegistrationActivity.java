@@ -3,7 +3,6 @@ package com.example.tiptop.LogInAndSignUp;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,9 +15,7 @@ import java.util.Calendar;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private static final String TAG = "NewClientActivity";
-
-    //xml variables
+//    xml variables
     private Button next;
 //    private Button select_date;
     private TextView login;
@@ -82,9 +79,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
-                Log.d(TAG, "onClick: nxt button has been clicked");
-
                 if(!validateName() || !validateEmail() || !validatePassword() || !validateConfirmPassword()){
                     return;
                 }
@@ -170,5 +164,4 @@ public class RegistrationActivity extends AppCompatActivity {
             return true;
         }
     }
-
 }

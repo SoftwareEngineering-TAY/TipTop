@@ -1,5 +1,6 @@
 package com.example.tiptop.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,11 +22,11 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<String> ListChildForTask;
-    private HashMap<String,ArrayList<Task>> ListTaskGroups;
-    private HashMap<String,ArrayList<String>> ListTaskID;
-    private Class dest;
-    private int mLayoutResourceId;
+    private final ArrayList<String> ListChildForTask;
+    private final HashMap<String,ArrayList<Task>> ListTaskGroups;
+    private final HashMap<String,ArrayList<String>> ListTaskID;
+    private final Class dest;
+    private final int mLayoutResourceId;
 
     public TaskToChildExtendListAdapter(ArrayList<String> ListChildForTask , HashMap<String,ArrayList<Task>> ListTaskGroups,HashMap<String,ArrayList<String>> ListTaskID , int resource , Class dest){
         this.ListChildForTask = ListChildForTask;
@@ -85,6 +86,7 @@ public class TaskToChildExtendListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {

@@ -8,12 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.R;
-
 import static com.example.tiptop.Database.Database.logout;
 import static com.example.tiptop.Database.Database.setScreenViewByUser;
 
@@ -26,11 +24,8 @@ public class SettingParentActivity extends AppCompatActivity implements DataChan
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_setting);
-
         initializeClassVariables();
-
         notifyOnChange();
     }
 
@@ -59,9 +54,7 @@ public class SettingParentActivity extends AppCompatActivity implements DataChan
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
         if(id==R.id.logoutItem){
             Intent log_out = new Intent(this, LoginActivity.class);
             logout();
@@ -74,7 +67,6 @@ public class SettingParentActivity extends AppCompatActivity implements DataChan
     @Override
     public void notifyOnChange() {
         setScreenViewByUser(name,email);
-
         setManageCirclesButton();
     }
 

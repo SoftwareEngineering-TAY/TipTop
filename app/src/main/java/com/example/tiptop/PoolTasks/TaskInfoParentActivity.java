@@ -16,13 +16,10 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.R;
-
 import java.util.ArrayList;
-
 import static com.example.tiptop.Database.Database.getRouteType;
 import static com.example.tiptop.Database.Database.setStatus;
 import static com.example.tiptop.Database.Database.setTaskBonus;
@@ -62,8 +59,7 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         if(getRouteType().equals("With bonuses")) {
             setContentView(R.layout.activity_task_info_parent);
         }
-        else
-        {
+        else {
             setContentView(R.layout.activity_task_info_parent_no_bonuses);
         }
         getExtraFromIntent();
@@ -84,8 +80,7 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         Back=(Button) findViewById(R.id.Back);
         newImage = (ImageButton) findViewById(R.id.AddPic);
         ImageButtonUpdate=(Button) findViewById(R.id.ImageButtonUpdate);
-        if(getRouteType().equals("With bonuses"))
-        {
+        if(getRouteType().equals("With bonuses")) {
             bonusScore = (EditText) findViewById(R.id.BonusPoints);
             bonusScoreButton = (Button) findViewById(R.id.UpdateBonus);
         }
@@ -125,21 +120,17 @@ public class TaskInfoParentActivity extends AppCompatActivity implements DataCha
         chooseChildSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position > 0)
-                {
+                if(position > 0) {
                     setbelongsToUID(taskID,allKeys.get(position-1));
                     adapter.notifyDataSetChanged();
-                    if(position == 1)
-                    {
+                    if(position == 1) {
                         setStatus(taskID,"NotAssociated");
 
                     }
-                    else
-                    {
+                    else {
                         setStatus(taskID,"Associated");
                     }
                 }
-
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getApplicationContext(),"ReAssociation!", Toast.LENGTH_SHORT).show();
             }

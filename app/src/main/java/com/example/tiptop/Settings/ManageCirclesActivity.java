@@ -10,7 +10,6 @@ import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.R;
 import java.util.ArrayList;
-
 import static com.example.tiptop.Database.Database.updateListOfFamilyFromDB;
 
 public class ManageCirclesActivity extends AppCompatActivity implements DataChangeListener {

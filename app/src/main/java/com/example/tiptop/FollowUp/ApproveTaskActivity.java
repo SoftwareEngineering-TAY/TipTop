@@ -7,12 +7,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-
 import static com.example.tiptop.Database.Database.addPointsToChild;
 import static com.example.tiptop.Database.Database.getRouteType;
 import static com.example.tiptop.Database.Database.setConfirmedDate;
@@ -34,12 +32,10 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getRouteType().equals("With bonuses"))
-        {
+        if(getRouteType().equals("With bonuses")) {
             setContentView(R.layout.activity_task_approve);
         }
-        else
-        {
+        else {
             setContentView(R.layout.activity_task_approve_no_bonus);
         }
         getExtrasFromIntent();
@@ -52,8 +48,7 @@ public class ApproveTaskActivity extends AppCompatActivity implements DataChange
      */
     private void getExtrasFromIntent() {
         Bundle extras = getIntent().getExtras();
-        if(extras!=null)
-        {
+        if(extras!=null) {
             if(extras.get("task")!=null){
                 taskToShow = (Task) extras.get("task");
             }

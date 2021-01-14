@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Adapters.TaskListAdapter;
@@ -18,7 +17,6 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import static com.example.tiptop.Database.Database.getCurrFamilyId;
 import static com.example.tiptop.Database.Database.getRouteType;
 import static com.example.tiptop.Database.Database.setCurrFamilyId;
@@ -70,8 +68,7 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
         if(getRouteType().equals("With bonuses")) {
             childAdapter = new TaskToChildExtendListAdapter(ListChildForTask, ListTaskGroups, ListTaskID, R.layout.row_task_with_bonus, TaskInfoParentActivity.class);
         }
-        else
-        {
+        else {
             childAdapter = new TaskToChildExtendListAdapter(ListChildForTask, ListTaskGroups, ListTaskID, R.layout.row_task_without_bonus, TaskInfoParentActivity.class);
         }
         AssociatedTasks.setAdapter(childAdapter);
@@ -83,12 +80,10 @@ public class PoolTasksParentActivity extends AppCompatActivity implements DataCh
     private void createListOfTask() {
         ListUnassignedTasks = new ArrayList<>();
         ListUnassignedTaskId = new ArrayList<>();
-        if(getRouteType().equals("With bonuses"))
-        {
+        if(getRouteType().equals("With bonuses")) {
             adapter = new TaskListAdapter(getApplicationContext(), R.layout.row_task_with_bonus, ListUnassignedTasks);
         }
-        else
-        {
+        else {
             adapter = new TaskListAdapter(getApplicationContext(), R.layout.row_task_without_bonus, ListUnassignedTasks);
         }
         UnassignedTasks.setAdapter(adapter);

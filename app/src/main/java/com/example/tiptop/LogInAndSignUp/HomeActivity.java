@@ -15,9 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Chat.ChatActivity;
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
@@ -32,10 +30,8 @@ import com.example.tiptop.PoolTasks.PoolTasksParentActivity;
 import com.example.tiptop.R;
 import com.example.tiptop.Settings.SettingChildActivity;
 import com.example.tiptop.Settings.SettingParentActivity;
-import com.example.tiptop.StatisticsActivity;
-
+import com.example.tiptop.Statistics.StatisticsActivity;
 import java.util.ArrayList;
-
 import static com.example.tiptop.Database.Database.getCurrFamilyId;
 import static com.example.tiptop.Database.Database.getPermission;
 import static com.example.tiptop.Database.Database.getRouteType;
@@ -61,38 +57,28 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
     //Variables to be used for the spinner
     private ArrayList <String> allKeys;
     private ArrayList <String> allFamilies;
-    private ArrayAdapter adapter;
     public String spinnerTitle;
 
     private Bitmap bitmapImage =null;
     private Uri uriImage = null;
     private static final int CAMERA_PHOTO = 1;
     private static final int GALLERY_PHOTO = 2;
-    private static final String TAG = "HomeActivity";
 
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializationCurrFamilyIdAndPermission();
-
         initializationRouteType();
-
-        if(getRouteType().equals("With bonuses"))
-        {
+        if(getRouteType().equals("With bonuses")) {
             setContentView(R.layout.activity_home);
         }
-        else
-        {
+        else {
             setContentView(R.layout.activity_home_no_bonus);
         }
-
         initializationFromXML();
-
         initializeClassVariables();
-
         notifyOnChange();
-
     }
 
     private void initializationFromXML() {
@@ -131,12 +117,9 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
         if(id==R.id.settingItem){
             Intent i;
-
             if(getPermission().equals("Parent")){
                 i = new Intent(HomeActivity.this, SettingParentActivity.class);
             }
@@ -145,14 +128,8 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
             }
             startActivity(i);
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
 
     /**
      * The function activates the spinner component, meaning it fills in the spinner all
@@ -160,12 +137,10 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
      * name the currFamilyId changes in the title and in DB and this is what is transmitted on the Internet.
      */
     private void spinerActive() {
-
         //Connecting the list to the view
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, allFamilies);
+        ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, allFamilies);
         SpinnerFamily.setAdapter(adapter);
-
-        updateListOfFamilyFromDB(allKeys,allFamilies,adapter);
+        updateListOfFamilyFromDB(allKeys,allFamilies, adapter);
 
         //Defines the functionality of a last name click
         SpinnerFamily.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -182,7 +157,6 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
     }
 
     private void ActivateAllButtons() {
-
         //Moves to the followUp activity
         followUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,13 +261,11 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        if (options[item].equals(options[0]))
-                        {
+                        if (options[item].equals(options[0])) {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(intent, CAMERA_PHOTO);
                         }
-                        else if (options[item].equals(options[1]))
-                        {
+                        else if (options[item].equals(options[1])) {
                             Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, GALLERY_PHOTO);
                         }
@@ -326,9 +298,7 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
     @Override
     public void notifyOnChange() {
         spinerActive();
-
         ActivateAllButtons();
-
         updatePicture(imageButton,getApplicationContext(),getCurrFamilyId(),"Families");
     }
 

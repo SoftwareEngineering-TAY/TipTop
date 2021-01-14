@@ -1,14 +1,16 @@
 package com.example.tiptop.Database;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -19,13 +21,12 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Adapters.ChatAdapter;
 import com.example.tiptop.Adapters.TaskToChildExtendListAdapter;
+import com.example.tiptop.LogInAndSignUp.HomeActivity;
 import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.Objects.Message;
 import com.example.tiptop.Objects.Task;
@@ -46,13 +47,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
 import static java.lang.System.currentTimeMillis;
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -60,28 +59,22 @@ public class Database extends AppCompatActivity implements ValueEventListener {
 
     private static DataSnapshot dataSnapshot;
     private static ArrayList<DataChangeListener> listeners;
-    private static FirebaseStorage storage = FirebaseStorage.getInstance();
-    private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private static final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private static final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static String userID;
     private static String currFamilyId;
     private static String routeType;
     private static String permission;
-    private static String TitleSpinnerOfBelongChild;
-    private static long currPoint;
-
-    private static int SPLASH_SCREEN = 1000;
-
-    private TextView logo_text;
-    private ImageView logo_image;
+    private static final int SPLASH_SCREEN = 1000;
 
     private static final DatabaseReference.CompletionListener completionListener = new DatabaseReference.CompletionListener() {
         @Override
-        public void onComplete(DatabaseError error, DatabaseReference ref) {
-            if (error != null) {
-
-            } else {
-            }
+        public void onComplete(DatabaseError error, @NonNull DatabaseReference ref) {
+//            if (error != null) {
+//
+//            } else {
+//            }
         }
     };
 
@@ -90,9 +83,8 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_logo);
-        Log.v("gggggggggggggggggg: ", "startt");
-        logo_text = (TextView) findViewById(R.id.logo_text);
-        logo_image = (ImageView) findViewById(R.id.logo_image);
+        TextView logo_text = (TextView) findViewById(R.id.logo_text);
+        ImageView logo_image = (ImageView) findViewById(R.id.logo_image);
 
 //        if(!FirebaseApp.getApps(this).isEmpty()) {
 //            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -169,7 +161,7 @@ public class Database extends AppCompatActivity implements ValueEventListener {
     }
 
     public static void getPoints (TextView numOfPoints ){
-        numOfPoints.setText (String.valueOf(dataSnapshot.child("Users").child(userID).child("points").getValue(long.class)));;
+        numOfPoints.setText (String.valueOf(dataSnapshot.child("Users").child(userID).child("points").getValue(long.class)));
     }
 
     public static void setStatus(String taskID, String Status) {
@@ -240,13 +232,8 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         reference.child("Tasks").child(currFamilyId).child(taskID).child("bonusScore").setValue(bonusToUpdate);
     }
 
-    public static String getAndSetTitleSpinnerOfBelongChild(String BelongsToUID) {
-        TitleSpinnerOfBelongChild = dataSnapshot.child("Users").child(BelongsToUID).child("name").getValue().toString();
-        return TitleSpinnerOfBelongChild;
-    }
-
     public static void addPointsToChild (Task conformedTask){
-        currPoint = dataSnapshot.child("Users").child(conformedTask.getBelongsToUID()).child("points").getValue(long.class) + conformedTask.getBonusScore();
+        long currPoint = dataSnapshot.child("Users").child(conformedTask.getBelongsToUID()).child("points").getValue(long.class) + conformedTask.getBonusScore();
         reference.child("Users").child(conformedTask.getBelongsToUID()).child("points").setValue(currPoint);
     }
 
@@ -383,7 +370,6 @@ public class Database extends AppCompatActivity implements ValueEventListener {
                         if (Task.child("belongsToUID").getValue() != null && Task.child("belongsToUID").getValue().equals(User.getKey()) && Task.child("status").getValue().equals(status)) {
                             String toCalc = endOrConfirmed ? "confirmedDate" : "endDate";
                             long Days = DAYS.between(LocalDate.now(), LocalDate.parse(Task.child(toCalc).getValue(String.class)));
-                            Log.v("DAYS!!!!!!: ", String.valueOf(Days));
                             if (days >= Math.abs(Days)) {
                                 Task taskToAdd = Task.getValue(Task.class);
                                 toAdd.add(taskToAdd);
@@ -418,22 +404,21 @@ public class Database extends AppCompatActivity implements ValueEventListener {
             mStorageRef.putFile(uri_image).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                    } else {
-                    }
+//                    if (task.isSuccessful()) {
+//                    } else {
+//                    }
                 }
             });
         } else if (bitmap_image != null) {
             ByteArrayOutputStream to_stream = new ByteArrayOutputStream();
             bitmap_image.compress(Bitmap.CompressFormat.JPEG, 100, to_stream);
-            byte bytes[] = to_stream.toByteArray();
+            byte[] bytes = to_stream.toByteArray();
             mStorageRef.putBytes(bytes).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                    } else {
-
-                    }
+//                    if (task.isSuccessful()) {
+//                    } else {
+//                    }
                 }
             });
         }
@@ -480,7 +465,6 @@ public class Database extends AppCompatActivity implements ValueEventListener {
                             .fit()
                             .centerCrop()
                             .into(imageButton);
-
                 }
                 else {
                     if(folder.equals("Families"))
@@ -589,6 +573,31 @@ public class Database extends AppCompatActivity implements ValueEventListener {
             }
         }
     }
+
+//    public static void login(String mail, String pass, View v , Context context){
+//        mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
+//                if(task.isSuccessful()) {
+//                    Intent go_home_screen = new Intent(v.getContext(), HomeActivity.class);
+//                    startActivity(go_home_screen);
+//                }
+//                else {
+//                    AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
+//                    dlgAlert.setCancelable(true);
+//                    dlgAlert.setMessage("Wrong password or email");
+//                    dlgAlert.setTitle("Error Message");
+//                    dlgAlert.setPositiveButton("OK", null);
+//                    dlgAlert.setCancelable(true);
+//                    dlgAlert.create().show();
+//                    dlgAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog,int which) {
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//    }
 
     public static void logout(){
         mAuth.signOut();

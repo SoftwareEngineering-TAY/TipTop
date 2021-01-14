@@ -14,12 +14,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
-
 import static com.example.tiptop.Database.Database.getRouteType;
 import static com.example.tiptop.Database.Database.setStatus;
 import static com.example.tiptop.Database.Database.setTaskComment;
@@ -47,12 +45,10 @@ public class TaskInfoChildActivity  extends AppCompatActivity implements DataCha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getRouteType().equals("With bonuses"))
-        {
+        if(getRouteType().equals("With bonuses")) {
             setContentView(R.layout.activity_task_info_child);
         }
-        else
-        {
+        else {
             setContentView(R.layout.activity_task_info_child_no_bonus);
         }
         initializationFromXML();

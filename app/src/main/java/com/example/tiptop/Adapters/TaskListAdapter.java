@@ -1,5 +1,6 @@
 package com.example.tiptop.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
@@ -12,14 +13,13 @@ import com.example.tiptop.Objects.Task;
 import com.example.tiptop.R;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
 
-    Context mContext;
-    int mLayoutResourceId;
-    ArrayList<Task> mData = null;
+    private final Context mContext;
+    private final int mLayoutResourceId;
+    private final ArrayList<Task> mData;
 
     //default constructor
     public TaskListAdapter(Context context, int resource, ArrayList<Task> data) {
@@ -34,10 +34,11 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         return super.getItem(position);
     }
 
+    @SuppressLint({"ViewHolder", "NonConstantResourceId", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
+        View row;
         //inflate the layout for a single row
         LayoutInflater inflater = LayoutInflater.from(mContext);
         row = inflater.inflate(mLayoutResourceId, parent, false);

@@ -74,13 +74,8 @@
         //Chat
         <activity android:name=".Chat.ChatActivity"/>
 
-        //Without Packages
-
-        <activity android:name=".ImageActivity"/>
-
-        <activity android:name=".ProfileActivity"/>
-
-        <activity android:name=".StatisticsActivity"/>
+        //Statistics
+        <activity android:name=".Statistics.StatisticsActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -57,7 +57,7 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
 
     private void setRouteInformation(){
         route_information.setOnClickListener(new View.OnClickListener() {
-            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(CreateFamilyActivity.this);
+            final AlertDialog.Builder dlgAlert = new AlertDialog.Builder(CreateFamilyActivity.this);
             @Override
             public void onClick(View v) {
                 if(route_type_in_firebase.equals("With bonuses")){
@@ -89,7 +89,7 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
     }
 
     private void setRouteTypeSpinner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateFamilyActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateFamilyActivity.this,
                 android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.Route));
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
