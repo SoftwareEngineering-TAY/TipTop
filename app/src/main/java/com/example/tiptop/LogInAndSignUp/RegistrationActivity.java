@@ -38,6 +38,21 @@ public class RegistrationActivity extends AppCompatActivity {
         setLoginButton();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
+    private void initializeClassVariables(){
+        next = (Button)findViewById(R.id.next);
+        login = (TextView)findViewById(R.id.login);
+        name = findViewById(R.id.name);
+        email = findViewById(R.id.newEmail);
+        password = findViewById(R.id.newPassword);
+        confirm_password = findViewById(R.id.confirmPassword);
+        birthday = (EditText) findViewById(R.id.birthday);
+        user = new User();
+    }
+
+
     private void setLoginButton(){
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,17 +115,6 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeClassVariables(){
-        next = (Button)findViewById(R.id.next);
-        login = (TextView)findViewById(R.id.login);
-        name = findViewById(R.id.name);
-        email = findViewById(R.id.newEmail);
-        password = findViewById(R.id.newPassword);
-        confirm_password = findViewById(R.id.confirmPassword);
-        birthday = (EditText) findViewById(R.id.birthday);
-//        select_date = (Button) findViewById(R.id.selectDate);
-        user = new User();
-    }
 
     private boolean validateName(){
         String user_name = name.getText().toString();

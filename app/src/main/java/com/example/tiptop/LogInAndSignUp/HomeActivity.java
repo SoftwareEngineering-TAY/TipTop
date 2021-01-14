@@ -81,6 +81,9 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
     private void initializationFromXML() {
         //Set the followUp button
         followUp = findViewById(R.id.followUp);

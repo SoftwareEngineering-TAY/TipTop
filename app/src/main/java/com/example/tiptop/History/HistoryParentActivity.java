@@ -32,10 +32,17 @@ public class HistoryParentActivity extends AppCompatActivity implements DataChan
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
     private void initializeClassVariables(){
         AssociatedTasks = (ExpandableListView) findViewById(R.id.ListHistoryTasks);
     }
 
+    /**
+     *The function is responsible for creating the expanding list in which the names of all the
+     * children and within each child's tab there is a list of all his tasks in status Confirmed
+     */
     private void createExpandableListOfTask() {
         ListChildForTask = new ArrayList<>(); //list group
         ListTaskGroups = new HashMap<>(); //list child

@@ -45,6 +45,9 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
     private void initializeClassVariables(){
         newImage = (ImageButton) findViewById(R.id.newImage);
         route_type = (Spinner) findViewById(R.id.route_type_spinner);
@@ -55,6 +58,9 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
         uri_image = null;
     }
 
+    /**
+     * This function is responsible for defining Route Information regarding the various routes that exist in the application.
+     */
     private void setRouteInformation(){
         route_information.setOnClickListener(new View.OnClickListener() {
             final AlertDialog.Builder dlgAlert = new AlertDialog.Builder(CreateFamilyActivity.this);
@@ -87,6 +93,7 @@ public class CreateFamilyActivity extends AppCompatActivity implements DataChang
             }
         });
     }
+
 
     private void setRouteTypeSpinner() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateFamilyActivity.this,

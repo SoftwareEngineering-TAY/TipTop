@@ -29,10 +29,17 @@ public class HistoryChildActivity extends AppCompatActivity implements DataChang
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
     private void initializeClassVariables() {
         historyList = (ListView) findViewById(R.id.historyList);
     }
 
+    /**
+     * This function is responsible for creating a list.
+     * The list will contain all the tasks in the Confirmed status
+     */
     private void createListOfTask() {
         list = new ArrayList<>();
         listID = new ArrayList<>();
@@ -40,6 +47,10 @@ public class HistoryChildActivity extends AppCompatActivity implements DataChang
         historyList.setAdapter(mTaskListAdapter);
     }
 
+    /**
+     * The function is responsible for listening to a click on the history task list and if a
+     * click was made to move a screen to a screen where the information of the task appears
+     */
     private void crateClickEvent() {
         historyList.setOnItemClickListener((adapterView,view,i,l) -> {
             Intent intent = new Intent(view.getContext(), TaskInfoHistoryActivity.class);

@@ -31,15 +31,9 @@ public class TaskInfoHistoryActivity extends AppCompatActivity {
         setTextInfo();
     }
 
-    private void getExtrasFromIntent() {
-        Bundle extras = getIntent().getExtras();
-        if(extras!=null) {
-            if(extras.get("task")!=null){
-                taskToShow = (Task) extras.get("task");
-            }
-        }
-    }
-
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
     private void initializeClassVariables(){
         ImageView taskImage = (ImageView) findViewById(R.id.taskImage);
         taskName = (TextView)findViewById(R.id.taskName);
@@ -47,6 +41,18 @@ public class TaskInfoHistoryActivity extends AppCompatActivity {
         taskComment = (TextView)findViewById(R.id.taskComment);
         if(getRouteType().equals("With bonuses")) {
             taskBonus = (TextView) findViewById(R.id.taskBonus);
+        }
+    }
+
+    /**
+     * The function is responsible for retrieving information from the Intent
+     */
+    private void getExtrasFromIntent() {
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null) {
+            if(extras.get("task")!=null){
+                taskToShow = (Task) extras.get("task");
+            }
         }
     }
 

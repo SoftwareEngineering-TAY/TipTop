@@ -35,6 +35,17 @@ public class LoginActivity extends AppCompatActivity {
         setLoginButton();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file
+     */
+    private void initializeClassVariables(){
+        login = (Button)findViewById(R.id.login);
+        sign_up = (TextView) findViewById(R.id.signUp);
+        email =  findViewById(R.id.enterEmail);
+        password = findViewById(R.id.enterPassword);
+        mAuth = FirebaseAuth.getInstance();
+    }
+
     private void setLoginButton(){
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,11 +94,4 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeClassVariables(){
-        login = (Button)findViewById(R.id.login);
-        sign_up = (TextView) findViewById(R.id.signUp);
-        email =  findViewById(R.id.enterEmail);
-        password = findViewById(R.id.enterPassword);
-        mAuth = FirebaseAuth.getInstance();
-    }
 }
