@@ -37,6 +37,9 @@ public class StatisticsActivity extends AppCompatActivity implements DataChangeL
         notifyOnChange();
     }
 
+    /**
+     * This function initializes all the required fields from the relevant XML file And of the class
+     */
     private void initializeClassVariables() {
         barChart = findViewById(R.id.BarChart);
         visitors = new ArrayList<>();
@@ -44,6 +47,9 @@ public class StatisticsActivity extends AppCompatActivity implements DataChangeL
         visitors2 = new ArrayList<>();
     }
 
+    /**
+     * all settings of the charts
+     */
     private void setSettingsCharts() {
         BarDataSet barDataSet = new BarDataSet(visitors,"");
         barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);

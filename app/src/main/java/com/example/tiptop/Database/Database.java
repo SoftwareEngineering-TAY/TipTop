@@ -83,15 +83,12 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_logo);
-        TextView logo_text = (TextView) findViewById(R.id.logo_text);
-        ImageView logo_image = (ImageView) findViewById(R.id.logo_image);
-
-//        if(!FirebaseApp.getApps(this).isEmpty()) {
-//            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//        }
         reference.addValueEventListener(this);
         listeners = new ArrayList<>();
 
+        /**
+         * Loading the logo page
+         */
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -103,6 +100,9 @@ public class Database extends AppCompatActivity implements ValueEventListener {
 
     }
 
+    /**
+     * Notify when change was made in the DB
+     */
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
         dataSnapshot = snapshot;
@@ -114,6 +114,9 @@ public class Database extends AppCompatActivity implements ValueEventListener {
 
     }
 
+    /**
+     * Menage the list of listeners fot notify
+     */
     public static void addListener(DataChangeListener listener){
         listeners.add(listener);
     }
@@ -122,12 +125,37 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         return listeners.remove(listener);
     }
 
+    /**
+     * notify the listeners by calling theirs notifyOnChange() method
+     */
     private static void notifyAllListeners(){
         for (DataChangeListener listener : listeners) {
             listener.notifyOnChange();
         }
     }
 
+    /**
+     * initialize User Settings
+     */
+    public static void initializationUserId() {
+        userID = mAuth.getCurrentUser().getUid();
+    }
+
+    public static void initializationCurrFamilyId() {
+        currFamilyId = dataSnapshot.child("Users").child(userID).child("currFamilyId").getValue(String.class);
+    }
+
+    public static void initializationPermission() {
+        permission = dataSnapshot.child("Users").child(userID).child("type").getValue(String.class);
+    }
+
+    public static void initializationRouteType() {
+        routeType = dataSnapshot.child("Families").child(currFamilyId).child("Route Type").getValue(String.class);
+    }
+
+    /**
+     * Getters - from DB
+     */
     public static String getUserID() {
         return userID;
     }
@@ -140,8 +168,12 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         return permission;
     }
 
-    public static String getNameByUid(){
+    public static String getName(){
         return dataSnapshot.child("Users").child(userID).child("name").getValue(String.class);
+    }
+
+    public static String getEmail() {
+        return dataSnapshot.child("Users").child(userID).child("email").getValue(String.class);
     }
 
     public static String getFamilyName(){
@@ -160,10 +192,49 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         return reference.child("Chats").child(currFamilyId).push().getKey();
     }
 
-    public static void getPoints (TextView numOfPoints ){
-        numOfPoints.setText (String.valueOf(dataSnapshot.child("Users").child(userID).child("points").getValue(long.class)));
+    public static long getPoints (){
+        return dataSnapshot.child("Users").child(userID).child("points").getValue(long.class);
     }
 
+    public static ArrayList<User> getListOfChilds(){
+        ArrayList<User> toReturn = new ArrayList<>();
+        String key;
+        Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
+        for (DataSnapshot User : UsersInFamily) {
+            key = User.getKey();
+            if (!key.equals("Family name")&&!key.equals("Route Type")) {
+                User user = dataSnapshot.child("Users").child(key).getValue(User.class);
+                if (user.getType().equals("Child")) {
+                    toReturn.add(user);
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    public static void getScreenViewByFamily(Context context, ListView circle_members, TextView family_members){
+        ArrayList<String> membersArray = new ArrayList<>();
+        ArrayAdapter membersAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, membersArray);
+        circle_members.setAdapter(membersAdapter);
+        String key;
+        String value;
+        Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
+        for (DataSnapshot User : UsersInFamily) {
+            key = User.getKey();
+            value = User.getValue(String.class);
+            if (key.equals("Family name")){
+                family_members.setText(value+"'s members");
+            }
+            else if(!key.equals("Route Type")){
+                membersArray.add(value);
+            }
+        }
+        membersAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Setters - to DB
+     */
     public static void setStatus(String taskID, String Status) {
         reference.child("Tasks").child(currFamilyId).child(taskID).child("status").setValue(Status);
     }
@@ -185,6 +256,27 @@ public class Database extends AppCompatActivity implements ValueEventListener {
             reference.child("Tasks").child(currFamilyId).child(taskID).child("belongsToUID").setValue(uid);
         else
             reference.child("Tasks").child(currFamilyId).child(taskID).child("belongsToUID").removeValue();
+    }
+
+    public static void createUserInFireBase(User user_to_add, String familyName,String routeType, Uri uri, Bitmap bitmap , String familyID) {
+        String key;
+        if (familyID.equals(null)) key = reference.child("Families").push().getKey();
+        else key = familyID;
+        user_to_add.setCurrFamilyId(key);
+        mAuth.createUserWithEmailAndPassword(user_to_add.getEmail(), user_to_add.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    if (familyID.equals(null)) userID = task.getResult().getUser().getUid();
+                    setFamilyName(key, familyName);
+                    setRouteType(key, routeType);
+                    setUserToFamily(key, user_to_add.getName());
+                    setUserToUserFamily(key, familyName);
+                    setUser(user_to_add);
+                    if (!uri.equals(null)) uploadImage(key, uri, bitmap,"Families");
+                }
+            }
+        });
     }
 
     public static void setFamilyName(String key, String familyName) {
@@ -237,6 +329,17 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         reference.child("Users").child(conformedTask.getBelongsToUID()).child("points").setValue(currPoint);
     }
 
+    public static void sendMessage(String texkMsg) {
+        Message toAdd =new Message(getName(),userID,texkMsg, currentTimeMillis());
+        String key = getKeyForNewMessage();
+        reference.child("Chats").child(currFamilyId).child(key).setValue(toAdd);
+    }
+
+
+
+    /**
+     * Update Lists - from DB
+     */
     public static void updateListOfChildFromDB(ArrayList<String> allKeys, ArrayList<String> allKids, ArrayAdapter adapter) {
         allKids.clear();
         allKeys.clear();
@@ -284,6 +387,7 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         mAdapter.notifyDataSetChanged();
     }
 
+    //for the statistics
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void initializeArraysFromDB(ArrayList<BarEntry> visitors, ArrayList<PieEntry> visitors2) {
         visitors.clear();
@@ -327,12 +431,6 @@ public class Database extends AppCompatActivity implements ValueEventListener {
                 }
             }
         }
-    }
-
-    public static void sendMessage(String texkMsg) {
-        Message toAdd =new Message(getNameByUid(),userID,texkMsg, currentTimeMillis());
-        String key = getKeyForNewMessage();
-        reference.child("Chats").child(currFamilyId).child(key).setValue(toAdd);
     }
 
     public static void updateTaskListFromDB(ArrayList<Task> toUpdate, ArrayList<String> idToUpdate, String status, ArrayAdapter<Task> mTaskListAdapter) {
@@ -385,17 +483,9 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         }
     }
 
-    public static void initializationCurrFamilyIdAndPermission() {
-        userID = mAuth.getCurrentUser().getUid();
-        currFamilyId = dataSnapshot.child("Users").child(userID).child("currFamilyId").getValue(String.class);
-        permission = dataSnapshot.child("Users").child(userID).child("type").getValue(String.class);
-
-    }
-
-    public static void initializationRouteType() {
-        routeType = dataSnapshot.child("Families").child(currFamilyId).child("Route Type").getValue(String.class);
-    }
-
+    /**
+     * deal with Images
+     */
     public static void uploadImage(String family_key, Uri uri_image, Bitmap bitmap_image, String folder) {
         String path =folder+"/" + family_key;
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -422,33 +512,6 @@ public class Database extends AppCompatActivity implements ValueEventListener {
                 }
             });
         }
-    }
-
-    public static void createUserInFireBase(User user_to_add, String familyName,String routeType, Uri uri, Bitmap bitmap , String familyID) {
-        String key;
-        if (familyID.equals(null)) key = reference.child("Families").push().getKey();
-        else key = familyID;
-        user_to_add.setCurrFamilyId(key);
-        mAuth.createUserWithEmailAndPassword(user_to_add.getEmail(), user_to_add.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    if (familyID.equals(null)) userID = task.getResult().getUser().getUid();
-                    setFamilyName(key, familyName);
-                    setRouteType(key, routeType);
-                    setUserToFamily(key, user_to_add.getName());
-                    setUserToUserFamily(key, familyName);
-                    setUser(user_to_add);
-                    if (!uri.equals(null)) uploadImage(key, uri, bitmap,"Families");
-                }
-            }
-        });
-    }
-
-    public static void setScreenViewByUser(TextView name, TextView email) {
-        name.setText((String) dataSnapshot.child("Users").child(userID).child("name").getValue());
-        if (email != null)
-            email.setText((String) dataSnapshot.child("Users").child(userID).child("email").getValue());
     }
 
     public static void updatePicture(ImageButton imageButton, Context context,String key,String folder) {
@@ -499,41 +562,10 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         });
     }
 
-    public static void setNamesAndScores(PointsParentActivity act){
-        String key;
-        Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
-        for (DataSnapshot User : UsersInFamily) {
-            key = User.getKey();
-            if (!key.equals("Family name")&&!key.equals("Route Type")) {
-                User user = dataSnapshot.child("Users").child(key).getValue(User.class);
-                if (user.getType().equals("Child")) {
-                    act.setChildName(user.getName(), user.getPoints());
-                }
-            }
-        }
-    }
-
-    public static void setScreenViewByFamily(Context context, ListView circle_members,TextView family_members){
-        ArrayList<String> membersArray = new ArrayList<>();
-        ArrayAdapter membersAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, membersArray);
-        circle_members.setAdapter(membersAdapter);
-        String key;
-        String value;
-        Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
-        for (DataSnapshot User : UsersInFamily) {
-            key = User.getKey();
-            value = User.getValue(String.class);
-            if (key.equals("Family name")){
-                family_members.setText(value+"'s members");
-            }
-            else if(!key.equals("Route Type")){
-                membersArray.add(value);
-            }
-        }
-        membersAdapter.notifyDataSetChanged();
-    }
-
-    public static void createSwitchForEveryUser(Context context, LinearLayout parent_layout ,LinearLayout child_layout){
+    /**
+     * Create the switches to change permissions to family members
+     */
+    public static void createSwitchForEveryUser(Context context, LinearLayout parentSwitch ,LinearLayout childSwitch){
         String key;
         Iterable<DataSnapshot> UsersInFamily = dataSnapshot.child("Families").child(currFamilyId).getChildren();
         for (DataSnapshot User : UsersInFamily) {
@@ -547,24 +579,24 @@ public class Database extends AppCompatActivity implements ValueEventListener {
 
                 if(user.getType().equals("Parent")){
                     user_switch.setChecked(true);
-                    parent_layout.addView(user_switch);
+                    parentSwitch.addView(user_switch);
                 }
                 else if(user.getType().equals("Child")){
                     user_switch.setChecked(false);
-                    child_layout.addView(user_switch);
+                    childSwitch.addView(user_switch);
                 }
                 DatabaseReference childReference = reference.child("Users").child(key);
                 user_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if(user.getType().equals("Child")) {
-                            child_layout.removeView(user_switch);
-                            parent_layout.addView(user_switch);
+                            childSwitch.removeView(user_switch);
+                            parentSwitch.addView(user_switch);
                             user.setType("Parent");
                             childReference.child("type").setValue("Parent");
                         }
                         else if(user.getType().equals("Parent")){
-                            parent_layout.removeView(user_switch);
-                            child_layout.addView(user_switch);
+                            parentSwitch.removeView(user_switch);
+                            childSwitch.addView(user_switch);
                             user.setType("Child");
                             childReference.child("type").setValue("Child");
                         }
@@ -574,6 +606,9 @@ public class Database extends AppCompatActivity implements ValueEventListener {
         }
     }
 
+    /**
+     * Login & Logout
+     */
     public static void login(String mail, String pass, View v , Context context){
         mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

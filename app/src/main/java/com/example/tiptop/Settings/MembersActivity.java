@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.R;
-import static com.example.tiptop.Database.Database.setScreenViewByFamily;
+import static com.example.tiptop.Database.Database.getScreenViewByFamily;
 
 public class MembersActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -51,7 +51,7 @@ public class MembersActivity extends AppCompatActivity implements DataChangeList
 
     @Override
     public void notifyOnChange() {
-        setScreenViewByFamily(this, circle_members, family_members);
+        getScreenViewByFamily(this, circle_members, family_members);
         setCreateAChildAccountButton();
     }
 

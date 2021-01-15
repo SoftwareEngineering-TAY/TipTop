@@ -12,8 +12,10 @@ import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.R;
+
+import static com.example.tiptop.Database.Database.getName;
 import static com.example.tiptop.Database.Database.logout;
-import static com.example.tiptop.Database.Database.setScreenViewByUser;
+import static com.example.tiptop.Database.Database.getEmail;
 
 public class SettingParentActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -80,7 +82,9 @@ public class SettingParentActivity extends AppCompatActivity implements DataChan
 
     @Override
     public void notifyOnChange() {
-        setScreenViewByUser(name,email);
+        name.setText(getName());
+        if (email != null)
+            email.setText(getEmail());
         setManageCirclesButton();
     }
 

@@ -23,7 +23,7 @@ public class PointsChildActivity extends AppCompatActivity implements DataChange
 
     @Override
     public void notifyOnChange() {
-        getPoints(numOfPoints);
+        numOfPoints.setText(String.valueOf(getPoints()));
     }
 
     @Override

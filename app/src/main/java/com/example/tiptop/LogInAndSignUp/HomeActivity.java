@@ -35,8 +35,10 @@ import java.util.ArrayList;
 import static com.example.tiptop.Database.Database.getCurrFamilyId;
 import static com.example.tiptop.Database.Database.getPermission;
 import static com.example.tiptop.Database.Database.getRouteType;
-import static com.example.tiptop.Database.Database.initializationCurrFamilyIdAndPermission;
+import static com.example.tiptop.Database.Database.initializationCurrFamilyId;
+import static com.example.tiptop.Database.Database.initializationPermission;
 import static com.example.tiptop.Database.Database.initializationRouteType;
+import static com.example.tiptop.Database.Database.initializationUserId;
 import static com.example.tiptop.Database.Database.setCurrFamilyId;
 import static com.example.tiptop.Database.Database.updateListOfFamilyFromDB;
 import static com.example.tiptop.Database.Database.updatePicture;
@@ -68,17 +70,19 @@ public class HomeActivity extends AppCompatActivity implements DataChangeListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializationCurrFamilyIdAndPermission();
-        initializationRouteType();
-        if(getRouteType().equals("With bonuses")) {
-            setContentView(R.layout.activity_home);
-        }
-        else {
-            setContentView(R.layout.activity_home_no_bonus);
-        }
+        initializationUserSettings();
+        if(getRouteType().equals("With bonuses")) setContentView(R.layout.activity_home);
+        else setContentView(R.layout.activity_home_no_bonus);
         initializationFromXML();
         initializeClassVariables();
         notifyOnChange();
+    }
+
+    private void initializationUserSettings() {
+        initializationUserId();
+        initializationCurrFamilyId();
+        initializationPermission();
+        initializationRouteType();
     }
 
     /**

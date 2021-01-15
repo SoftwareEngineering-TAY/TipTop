@@ -10,13 +10,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
+import com.example.tiptop.Objects.User;
 import com.example.tiptop.R;
-import static com.example.tiptop.Database.Database.setNamesAndScores;
+import java.util.ArrayList;
+import static com.example.tiptop.Database.Database.getListOfChilds;
 
 public class PointsParentActivity extends AppCompatActivity implements DataChangeListener {
 
     private TableLayout pointsTable;
     private TableRow titlesRow;
+    private ArrayList<User> Childs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,39 +31,39 @@ public class PointsParentActivity extends AppCompatActivity implements DataChang
     }
 
     /**
-     * This function creates a row in the table that has the child's name and its bonus points.
-     * @param name
-     * @param score
+     * This function creates a table that has the child's name and its bonus points.
      */
-    public void setChildName(String name, Long score){
+    public void setChildInfo(){
+        for (User child : Childs) {
+            TableRow tr = new TableRow(this);
+            TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+            tableRowParams.setMargins(0, 80, 0, 0);
+            tr.setLayoutParams(tableRowParams);
 
-        TableRow tr = new TableRow(this);
-        TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT,TableLayout.LayoutParams.WRAP_CONTENT);
-        tableRowParams.setMargins(0, 80, 0,0 );
-        tr.setLayoutParams(tableRowParams);
+            TextView nameText = new TextView(this);
+            nameText.setText(child.getName());
+            nameText.setTextColor(Color.BLACK);
+            nameText.setTextSize(18);
+            nameText.setGravity(Gravity.CENTER_HORIZONTAL);
 
-        TextView nameText = new TextView(this);
-        nameText.setText(name);
-        nameText.setTextColor(Color.BLACK);
-        nameText.setTextSize(18);
-        nameText.setGravity(Gravity.CENTER_HORIZONTAL);
+            TextView scoreText = new TextView(this);
+            scoreText.setText((int) child.getPoints());
+            scoreText.setTextColor(Color.BLACK);
+            scoreText.setTextSize(18);
+            scoreText.setGravity(Gravity.CENTER_HORIZONTAL);
 
-        TextView scoreText = new TextView(this);
-        scoreText.setText(score.toString());
-        scoreText.setTextColor(Color.BLACK);
-        scoreText.setTextSize(18);
-        scoreText.setGravity(Gravity.CENTER_HORIZONTAL);
-
-        tr.addView(nameText);
-        tr.addView(scoreText);
-        pointsTable.addView(tr);
+            tr.addView(nameText);
+            tr.addView(scoreText);
+            pointsTable.addView(tr);
+        }
     }
 
     @Override
     public void notifyOnChange() {
         pointsTable.removeAllViews();
         pointsTable.addView(titlesRow);
-        setNamesAndScores(this);
+        Childs = getListOfChilds();
+        setChildInfo();
     }
 
     @Override

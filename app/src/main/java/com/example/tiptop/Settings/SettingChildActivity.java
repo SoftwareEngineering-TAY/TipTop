@@ -11,8 +11,9 @@ import com.example.tiptop.Database.DataChangeListener;
 import com.example.tiptop.Database.Database;
 import com.example.tiptop.LogInAndSignUp.LoginActivity;
 import com.example.tiptop.R;
+
+import static com.example.tiptop.Database.Database.getName;
 import static com.example.tiptop.Database.Database.logout;
-import static com.example.tiptop.Database.Database.setScreenViewByUser;
 
 public class SettingChildActivity extends AppCompatActivity implements DataChangeListener {
 
@@ -60,7 +61,7 @@ public class SettingChildActivity extends AppCompatActivity implements DataChang
 
     @Override
     public void notifyOnChange() {
-        setScreenViewByUser(name, null);
+        name.setText(getName());
     }
 
     @Override
